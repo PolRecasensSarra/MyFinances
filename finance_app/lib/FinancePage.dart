@@ -11,10 +11,10 @@ class FinancePage extends StatefulWidget {
 class _FinancePageState extends State<FinancePage> {
   TextEditingController nameTextCtrl = TextEditingController();
   TextEditingController valueTextCtrl = TextEditingController();
-  List<Map> expenses = [];
-  List<Map> incomes = [];
+  List<Map<double, String>> expensesList = [];
+  List<Map<double, String>> incomesList = [];
   String error = "";
-  String name = "";
+  String concept = "";
   double value = 0.0;
 
   @override
@@ -54,18 +54,19 @@ class _FinancePageState extends State<FinancePage> {
                     tileMode: TileMode.mirror,
                   ),
                 ),
-                child: const Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 10.0),
                   child: Center(
-                      child: Text(
-                    "0 €",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18.0,
-                      color: Colors.white,
+                    child: Text(
+                      getFormattedBalance(),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22.0,
+                        color: Colors.white,
+                      ),
                     ),
-                  )),
+                  ),
                 ),
               ),
             ),
@@ -149,10 +150,10 @@ class _FinancePageState extends State<FinancePage> {
                         ),
                       ),
                       validator: (val) =>
-                          name.isEmpty ? "Enter a new entry" : null,
+                          concept.isEmpty ? "Enter a new entry" : null,
                       onChanged: (val) {
                         setState(() {
-                          name = val;
+                          concept = val;
                         });
                       },
                     ),
@@ -224,24 +225,7 @@ class _FinancePageState extends State<FinancePage> {
                                 "Add income",
                               ),
                               onPressed: () {
-                                error = "";
-                                if (nameTextCtrl.text.isNotEmpty &&
-                                    (valueTextCtrl.text.isEmpty
-                                            ? 0.0
-                                            : double.tryParse(
-                                                valueTextCtrl.text))! >
-                                        0.0) {
-                                  Map<double, String> income = <double, String>{
-                                    value: name
-                                  };
-                                  nameTextCtrl.clear();
-                                  valueTextCtrl.clear();
-                                  name = "";
-                                  value = 0.0;
-                                } else {
-                                  error = "Concept and value cannot be null.";
-                                }
-                                setState(() {});
+                                updateBalance(incomesList);
                               },
                             ),
                           ),
@@ -258,7 +242,9 @@ class _FinancePageState extends State<FinancePage> {
                               child: const Text(
                                 "Add expense",
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                updateBalance(expensesList);
+                              },
                             ),
                           ),
                         ],
@@ -268,7 +254,7 @@ class _FinancePageState extends State<FinancePage> {
                       child: Text(
                         error,
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.red,
                           fontSize: 14,
                         ),
@@ -282,5 +268,54 @@ class _FinancePageState extends State<FinancePage> {
         ),
       ),
     );
+  }
+
+// Method that updates the current balance.
+  void updateBalance(List<Map<double, String>> listDestination) {
+    error = "";
+    // Check that the concept and value are filled.
+    if (nameTextCtrl.text.isNotEmpty &&
+        (valueTextCtrl.text.isEmpty
+                ? 0.0
+                : double.tryParse(valueTextCtrl.text))! >
+            0.0) {
+      // Add a new income to the list.
+      listDestination.add(<double, String>{value: concept});
+
+      // Clear the input field texts.
+      nameTextCtrl.clear();
+      valueTextCtrl.clear();
+      concept = "";
+      value = 0.0;
+    } else {
+      error = "Concept and value cannot be null.";
+    }
+    // Force update the state.
+    setState(() {});
+  }
+
+  // Method that returns the current balance given the incomes and expenses.
+  double getBalance() {
+    double balance = 0.0;
+    // Iterate the incomes and add it to the balance.
+    for (var map in incomesList) {
+      for (var key in map.keys) {
+        balance += key;
+      }
+    }
+    // Iterate all the expenses and subtract it from the balance.
+    for (var map in expensesList) {
+      for (var key in map.keys) {
+        balance -= key;
+      }
+    }
+    return balance;
+  }
+
+  // Method that returns the formatted balance with the current coin symbol.
+  String getFormattedBalance() {
+    double balance = getBalance();
+    String formattedBalance = "$balance €";
+    return formattedBalance;
   }
 }
