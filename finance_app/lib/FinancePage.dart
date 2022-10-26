@@ -38,7 +38,7 @@ class _FinancePageState extends State<FinancePage> {
         child: Center(
           child: Column(children: [
             const Expanded(
-              flex: 15,
+              flex: 10,
               child: Align(
                 alignment: Alignment.center,
                 child: Text(
@@ -88,7 +88,7 @@ class _FinancePageState extends State<FinancePage> {
             ),
             // History box.
             Expanded(
-              flex: 30,
+              flex: 35,
               child: Column(
                 children: [
                   const Align(
@@ -104,38 +104,47 @@ class _FinancePageState extends State<FinancePage> {
                   const SizedBox(
                     height: 10.0,
                   ),
-                  Scrollbar(
-                    thumbVisibility: true,
-                    controller: scrollController,
-                    child: ListView.builder(
-                      shrinkWrap: true,
+                  Expanded(
+                    child: Scrollbar(
+                      thumbVisibility: true,
                       controller: scrollController,
-                      itemCount: balanceList.length,
-                      itemBuilder: (context, index) {
-                        return Card(
-                          color: const Color.fromARGB(255, 88, 88, 88),
-                          child: ListTile(
-                            title: Text(
-                              balanceList[index].values.first,
-                              style: const TextStyle(
-                                color: Colors.white,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        controller: scrollController,
+                        itemCount: balanceList.length,
+                        itemBuilder: (context, index) {
+                          return Card(
+                            color: const Color.fromARGB(255, 88, 88, 88),
+                            child: ListTile(
+                              title: Text(
+                                balanceList[index].values.first,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                ),
                               ),
-                            ),
-                            trailing: Text(
-                              "${balanceList[index].keys.first.toPrecision(decimalPrecission)} €",
-                              style: const TextStyle(
-                                color: Colors.white,
+                              subtitle: const Text(
+                                "Category",
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 180, 180, 180),
+                                  fontSize: 10.0,
+                                ),
                               ),
+                              trailing: Text(
+                                "${balanceList[index].keys.first.toPrecision(decimalPrecission)} €",
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              hoverColor: getColorByEntryValue(
+                                  balanceList[index].keys.first),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                              onTap: () {},
                             ),
-                            hoverColor: getColorByEntryValue(
-                                balanceList[index].keys.first),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
-                            onTap: () {},
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ],
@@ -163,100 +172,107 @@ class _FinancePageState extends State<FinancePage> {
                     const SizedBox(
                       height: 10.0,
                     ),
-                    TextFormField(
-                      controller: nameTextCtrl,
-                      cursorColor: Colors.white,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: const Color.fromARGB(255, 94, 94, 94),
-                        contentPadding:
-                            const EdgeInsets.all(8.0), //here your padding
-                        hintText: "Add expense or income concept",
-                        suffixIcon:
-                            const Icon(Icons.text_snippet, color: Colors.white),
-                        hintStyle: const TextStyle(
-                          fontSize: 12,
-                          color: Color.fromARGB(255, 163, 163, 163),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: const BorderSide(color: Colors.white),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: const BorderSide(
-                            color: Color.fromARGB(255, 146, 146, 146),
+                    Expanded(
+                      flex: 30,
+                      child: TextFormField(
+                        controller: nameTextCtrl,
+                        cursorColor: Colors.white,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: const Color.fromARGB(255, 94, 94, 94),
+                          contentPadding:
+                              const EdgeInsets.all(8.0), //here your padding
+                          hintText: "Add expense or income concept",
+                          suffixIcon: const Icon(Icons.text_snippet,
+                              color: Colors.white),
+                          hintStyle: const TextStyle(
+                            fontSize: 12,
+                            color: Color.fromARGB(255, 163, 163, 163),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: const BorderSide(color: Colors.white),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: const BorderSide(
+                              color: Color.fromARGB(255, 146, 146, 146),
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: const BorderSide(
+                                color: Color.fromARGB(255, 146, 146, 146)),
                           ),
                         ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: const BorderSide(
-                              color: Color.fromARGB(255, 146, 146, 146)),
-                        ),
+                        validator: (val) =>
+                            concept.isEmpty ? "Enter a new entry" : null,
+                        onChanged: (val) {
+                          setState(() {
+                            concept = val;
+                          });
+                        },
                       ),
-                      validator: (val) =>
-                          concept.isEmpty ? "Enter a new entry" : null,
-                      onChanged: (val) {
-                        setState(() {
-                          concept = val;
-                        });
-                      },
-                    ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    TextFormField(
-                      controller: valueTextCtrl,
-                      cursorColor: Colors.white,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(RegExp('[0-9.,]')),
-                      ], // Only numbers can be entered
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: const Color.fromARGB(255, 94, 94, 94),
-                        contentPadding:
-                            const EdgeInsets.all(8.0), //here your padding
-                        hintText: "Add expense or income value",
-                        suffixIcon: const Icon(Icons.attach_money_outlined,
-                            color: Colors.white),
-                        alignLabelWithHint: true,
-                        hintStyle: const TextStyle(
-                          fontSize: 12,
-                          color: Color.fromARGB(255, 163, 163, 163),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: const BorderSide(color: Colors.white),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: const BorderSide(
-                            color: Color.fromARGB(255, 146, 146, 146),
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: const BorderSide(
-                              color: Color.fromARGB(255, 146, 146, 146)),
-                        ),
-                      ),
-                      validator: (val) =>
-                          value == 0.0 ? "Enter a new entry" : null,
-                      onChanged: (val) {
-                        setState(() {
-                          final tmpValue =
-                              val.isEmpty ? 0.0 : double.tryParse(val);
-                          if (tmpValue != null) {
-                            value = tmpValue;
-                          }
-                        });
-                      },
                     ),
                     const SizedBox(
                       height: 10.0,
                     ),
                     Expanded(
+                      flex: 30,
+                      child: TextFormField(
+                        controller: valueTextCtrl,
+                        cursorColor: Colors.white,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp('[0-9.,]')),
+                        ], // Only numbers can be entered
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: const Color.fromARGB(255, 94, 94, 94),
+                          contentPadding:
+                              const EdgeInsets.all(8.0), //here your padding
+                          hintText: "Add expense or income value",
+                          suffixIcon: const Icon(Icons.attach_money_outlined,
+                              color: Colors.white),
+                          alignLabelWithHint: true,
+                          hintStyle: const TextStyle(
+                            fontSize: 12,
+                            color: Color.fromARGB(255, 163, 163, 163),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: const BorderSide(color: Colors.white),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: const BorderSide(
+                              color: Color.fromARGB(255, 146, 146, 146),
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: const BorderSide(
+                                color: Color.fromARGB(255, 146, 146, 146)),
+                          ),
+                        ),
+                        validator: (val) =>
+                            value == 0.0 ? "Enter a new entry" : null,
+                        onChanged: (val) {
+                          setState(() {
+                            final tmpValue =
+                                val.isEmpty ? 0.0 : double.tryParse(val);
+                            if (tmpValue != null) {
+                              value = tmpValue;
+                            }
+                          });
+                        },
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    Expanded(
+                      flex: 30,
                       child: Row(
                         children: [
                           Expanded(
@@ -296,6 +312,7 @@ class _FinancePageState extends State<FinancePage> {
                       ),
                     ),
                     Expanded(
+                      flex: 10,
                       child: Text(
                         error,
                         textAlign: TextAlign.center,
@@ -327,7 +344,7 @@ class _FinancePageState extends State<FinancePage> {
             0.0) {
       // Add a new income to the list. Change the value sign given the entry type.
       double entryValue = value * (entryType == EntryTpe.income ? 1.0 : -1.0);
-      balanceList.add(<double, String>{entryValue: concept});
+      balanceList.insert(0, <double, String>{entryValue: concept});
 
       // Save the data.
       saveBalanceToJson();
