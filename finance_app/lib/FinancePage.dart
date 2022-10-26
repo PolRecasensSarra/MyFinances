@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+enum EntryTpe { income, expense }
+
 class FinancePage extends StatefulWidget {
   const FinancePage({super.key});
 
@@ -9,13 +11,23 @@ class FinancePage extends StatefulWidget {
 }
 
 class _FinancePageState extends State<FinancePage> {
+  final int decimalPrecission = 2;
   TextEditingController nameTextCtrl = TextEditingController();
   TextEditingController valueTextCtrl = TextEditingController();
-  List<Map<double, String>> expensesList = [];
-  List<Map<double, String>> incomesList = [];
+  ScrollController scrollController = ScrollController();
+  // List with all the incomes and expenses.
+  List<Map<double, String>> balanceList = [];
+  // Used to show an error when adding a new income/expense.
   String error = "";
+  // Variables used in the TextField.
   String concept = "";
   double value = 0.0;
+
+  @override
+  void initState() {
+    parseBalanceFromJson();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +51,7 @@ class _FinancePageState extends State<FinancePage> {
                 ),
               ),
             ),
+            // Balance box.
             Expanded(
               flex: 20,
               child: Container(
@@ -73,6 +86,7 @@ class _FinancePageState extends State<FinancePage> {
             const SizedBox(
               height: 20.0,
             ),
+            // History box.
             Expanded(
               flex: 30,
               child: Column(
@@ -90,9 +104,39 @@ class _FinancePageState extends State<FinancePage> {
                   const SizedBox(
                     height: 10.0,
                   ),
-                  Container(
-                    height: 130.0,
-                    color: Colors.pink,
+                  Scrollbar(
+                    thumbVisibility: true,
+                    controller: scrollController,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      controller: scrollController,
+                      itemCount: balanceList.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          color: const Color.fromARGB(255, 88, 88, 88),
+                          child: ListTile(
+                            title: Text(
+                              balanceList[index].values.first,
+                              style: const TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            trailing: Text(
+                              "${balanceList[index].keys.first.toPrecision(decimalPrecission)} €",
+                              style: const TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            hoverColor: getColorByEntryValue(
+                                balanceList[index].keys.first),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                            onTap: () {},
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -100,6 +144,7 @@ class _FinancePageState extends State<FinancePage> {
             const SizedBox(
               height: 20.0,
             ),
+            // New entry box.
             Expanded(
               flex: 35,
               child: Container(
@@ -165,7 +210,7 @@ class _FinancePageState extends State<FinancePage> {
                       cursorColor: Colors.white,
                       keyboardType: TextInputType.number,
                       inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
+                        FilteringTextInputFormatter.allow(RegExp('[0-9.,]')),
                       ], // Only numbers can be entered
                       decoration: InputDecoration(
                         filled: true,
@@ -225,7 +270,7 @@ class _FinancePageState extends State<FinancePage> {
                                 "Add income",
                               ),
                               onPressed: () {
-                                updateBalance(incomesList);
+                                updateBalance(EntryTpe.income);
                               },
                             ),
                           ),
@@ -243,7 +288,7 @@ class _FinancePageState extends State<FinancePage> {
                                 "Add expense",
                               ),
                               onPressed: () {
-                                updateBalance(expensesList);
+                                updateBalance(EntryTpe.expense);
                               },
                             ),
                           ),
@@ -271,7 +316,8 @@ class _FinancePageState extends State<FinancePage> {
   }
 
 // Method that updates the current balance.
-  void updateBalance(List<Map<double, String>> listDestination) {
+  void updateBalance(EntryTpe entryType) {
+    // Reset the error message.
     error = "";
     // Check that the concept and value are filled.
     if (nameTextCtrl.text.isNotEmpty &&
@@ -279,8 +325,12 @@ class _FinancePageState extends State<FinancePage> {
                 ? 0.0
                 : double.tryParse(valueTextCtrl.text))! >
             0.0) {
-      // Add a new income to the list.
-      listDestination.add(<double, String>{value: concept});
+      // Add a new income to the list. Change the value sign given the entry type.
+      double entryValue = value * (entryType == EntryTpe.income ? 1.0 : -1.0);
+      balanceList.add(<double, String>{entryValue: concept});
+
+      // Save the data.
+      saveBalanceToJson();
 
       // Clear the input field texts.
       nameTextCtrl.clear();
@@ -297,16 +347,10 @@ class _FinancePageState extends State<FinancePage> {
   // Method that returns the current balance given the incomes and expenses.
   double getBalance() {
     double balance = 0.0;
-    // Iterate the incomes and add it to the balance.
-    for (var map in incomesList) {
+    // Iterate the expenses and incomes and add it to the balance.
+    for (var map in balanceList) {
       for (var key in map.keys) {
         balance += key;
-      }
-    }
-    // Iterate all the expenses and subtract it from the balance.
-    for (var map in expensesList) {
-      for (var key in map.keys) {
-        balance -= key;
       }
     }
     return balance;
@@ -315,7 +359,27 @@ class _FinancePageState extends State<FinancePage> {
   // Method that returns the formatted balance with the current coin symbol.
   String getFormattedBalance() {
     double balance = getBalance();
-    String formattedBalance = "$balance €";
+    String formattedBalance = "${balance.toPrecision(decimalPrecission)} €";
     return formattedBalance;
   }
+
+  // TODO: save to json.
+  void saveBalanceToJson() {}
+
+  // TODO: parse from json.
+  void parseBalanceFromJson() {
+    // balanceList afegir tota la info aquí a dins.
+    setState(() {});
+  }
+
+  // Return a color depending on if the value is positive or negative.
+  Color getColorByEntryValue(double value) {
+    return value >= 0.0
+        ? const Color.fromARGB(255, 88, 110, 88)
+        : const Color.fromARGB(255, 110, 88, 88);
+  }
+}
+
+extension Ex on double {
+  double toPrecision(int n) => double.parse(toStringAsFixed(n));
 }
