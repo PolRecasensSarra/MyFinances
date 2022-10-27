@@ -105,45 +105,56 @@ class _FinancePageState extends State<FinancePage> {
                     height: 10.0,
                   ),
                   Expanded(
-                    child: Scrollbar(
-                      thumbVisibility: true,
-                      controller: scrollController,
-                      child: ListView.builder(
-                        shrinkWrap: true,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(34, 146, 146, 146),
+                        border: Border.all(
+                          color: Color.fromARGB(45, 146, 146, 146),
+                          width: 2.0,
+                          style: BorderStyle.solid,
+                        ),
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      child: Scrollbar(
+                        thumbVisibility: true,
                         controller: scrollController,
-                        itemCount: balanceList.length,
-                        itemBuilder: (context, index) {
-                          return Card(
-                            color: const Color.fromARGB(255, 88, 88, 88),
-                            child: ListTile(
-                              title: Text(
-                                balanceList[index].values.first,
-                                style: const TextStyle(
-                                  color: Colors.white,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          controller: scrollController,
+                          itemCount: balanceList.length,
+                          itemBuilder: (context, index) {
+                            return Card(
+                              color: const Color.fromARGB(255, 88, 88, 88),
+                              child: ListTile(
+                                title: Text(
+                                  balanceList[index].values.first,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                  ),
                                 ),
-                              ),
-                              subtitle: const Text(
-                                "Category",
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 180, 180, 180),
-                                  fontSize: 10.0,
+                                subtitle: const Text(
+                                  "Category",
+                                  style: TextStyle(
+                                    color: Color.fromARGB(255, 180, 180, 180),
+                                    fontSize: 10.0,
+                                  ),
                                 ),
-                              ),
-                              trailing: Text(
-                                "${balanceList[index].keys.first.toPrecision(decimalPrecission)} €",
-                                style: const TextStyle(
-                                  color: Colors.white,
+                                trailing: Text(
+                                  "${balanceList[index].keys.first.toPrecision(decimalPrecission)} €",
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                  ),
                                 ),
+                                hoverColor: getColorByEntryValue(
+                                    balanceList[index].keys.first),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                                onTap: () {},
                               ),
-                              hoverColor: getColorByEntryValue(
-                                  balanceList[index].keys.first),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                              ),
-                              onTap: () {},
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -202,7 +213,8 @@ class _FinancePageState extends State<FinancePage> {
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5),
                             borderSide: const BorderSide(
-                                color: Color.fromARGB(255, 146, 146, 146)),
+                              color: Color.fromARGB(255, 146, 146, 146),
+                            ),
                           ),
                         ),
                         validator: (val) =>
