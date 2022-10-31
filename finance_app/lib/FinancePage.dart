@@ -32,142 +32,143 @@ class _FinancePageState extends State<FinancePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: const Color.fromARGB(255, 58, 51, 73),
       body: Padding(
         padding: const EdgeInsets.only(left: 40.0, right: 40.0, bottom: 20.0),
         child: Center(
-          child: Column(children: [
-            const Expanded(
-              flex: 10,
-              child: Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "Finance App",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 22.0,
-                  ),
-                ),
-              ),
-            ),
-            // Balance box.
-            Expanded(
-              flex: 20,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  gradient: const LinearGradient(
-                    colors: [
-                      Colors.blueAccent,
-                      Color.fromARGB(255, 135, 30, 233)
-                    ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    tileMode: TileMode.mirror,
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 10.0),
-                  child: Center(
-                    child: Text(
-                      getFormattedBalance(),
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22.0,
-                        color: Colors.white,
-                      ),
+          child: Column(
+            children: [
+              const Expanded(
+                flex: 10,
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Finance App",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 22.0,
                     ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 20.0,
-            ),
-            // History box.
-            Expanded(
-              flex: 35,
-              child: Column(
-                children: [
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "History",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
+              // Balance box.
+              Expanded(
+                flex: 20,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    gradient: const LinearGradient(
+                      colors: [
+                        Colors.blueAccent,
+                        Color.fromARGB(255, 135, 30, 233)
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      tileMode: TileMode.mirror,
                     ),
                   ),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(34, 146, 146, 146),
-                        border: Border.all(
-                          color: Color.fromARGB(45, 146, 146, 146),
-                          width: 2.0,
-                          style: BorderStyle.solid,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 10.0),
+                    child: Center(
+                      child: Text(
+                        getFormattedBalance(),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 22.0,
+                          color: Colors.white,
                         ),
-                        borderRadius: BorderRadius.circular(5.0),
                       ),
-                      child: Scrollbar(
-                        thumbVisibility: true,
-                        controller: scrollController,
-                        child: ListView.builder(
-                          shrinkWrap: true,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20.0,
+              ),
+              // History box.
+              Expanded(
+                flex: 35,
+                child: Column(
+                  children: [
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "History",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(34, 146, 146, 146),
+                          border: Border.all(
+                            color: Color.fromARGB(45, 146, 146, 146),
+                            width: 2.0,
+                            style: BorderStyle.solid,
+                          ),
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        child: Scrollbar(
+                          thumbVisibility: true,
                           controller: scrollController,
-                          itemCount: balanceList.length,
-                          itemBuilder: (context, index) {
-                            return Card(
-                              color: const Color.fromARGB(255, 88, 88, 88),
-                              child: ListTile(
-                                title: Text(
-                                  balanceList[index].values.first,
-                                  style: const TextStyle(
-                                    color: Colors.white,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            controller: scrollController,
+                            itemCount: balanceList.length,
+                            itemBuilder: (context, index) {
+                              return Card(
+                                color: const Color.fromARGB(255, 88, 88, 88),
+                                child: ListTile(
+                                  title: Text(
+                                    balanceList[index].values.first,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                    ),
                                   ),
-                                ),
-                                subtitle: const Text(
-                                  "Category",
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 180, 180, 180),
-                                    fontSize: 10.0,
+                                  subtitle: const Text(
+                                    "Category",
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 180, 180, 180),
+                                      fontSize: 10.0,
+                                    ),
                                   ),
-                                ),
-                                trailing: Text(
-                                  "${balanceList[index].keys.first.toPrecision(decimalPrecission)} €",
-                                  style: const TextStyle(
-                                    color: Colors.white,
+                                  trailing: Text(
+                                    "${balanceList[index].keys.first.toPrecision(decimalPrecission)} €",
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                    ),
                                   ),
+                                  hoverColor: getColorByEntryValue(
+                                      balanceList[index].keys.first),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                  ),
+                                  onTap: () {},
                                 ),
-                                hoverColor: getColorByEntryValue(
-                                    balanceList[index].keys.first),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                ),
-                                onTap: () {},
-                              ),
-                            );
-                          },
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 20.0,
-            ),
-            // New entry box.
-            Expanded(
-              flex: 35,
-              child: Container(
+              const SizedBox(
+                height: 20.0,
+              ),
+              // New entry box.
+              Expanded(
+                flex: 35,
                 child: Column(
                   children: [
                     const Align(
@@ -337,8 +338,8 @@ class _FinancePageState extends State<FinancePage> {
                   ],
                 ),
               ),
-            ),
-          ]),
+            ],
+          ),
         ),
       ),
     );
