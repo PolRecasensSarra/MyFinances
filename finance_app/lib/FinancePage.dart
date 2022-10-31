@@ -1,5 +1,10 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:finance_app/Entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 
 enum EntryTpe { income, expense }
 
@@ -16,7 +21,7 @@ class _FinancePageState extends State<FinancePage> {
   TextEditingController valueTextCtrl = TextEditingController();
   ScrollController scrollController = ScrollController();
   // List with all the incomes and expenses.
-  List<Map<double, String>> balanceList = [];
+  List<Entry> entryList = [];
   // Used to show an error when adding a new income/expense.
   String error = "";
   // Variables used in the TextField.
@@ -123,13 +128,13 @@ class _FinancePageState extends State<FinancePage> {
                             child: ListView.builder(
                               shrinkWrap: true,
                               controller: scrollController,
-                              itemCount: balanceList.length,
+                              itemCount: entryList.length,
                               itemBuilder: (context, index) {
                                 return Card(
                                   color: const Color.fromARGB(255, 88, 88, 88),
                                   child: ListTile(
                                     title: Text(
-                                      balanceList[index].values.first,
+                                      entryList[index].concept,
                                       style: const TextStyle(
                                         color: Colors.white,
                                       ),
@@ -143,13 +148,13 @@ class _FinancePageState extends State<FinancePage> {
                                       ),
                                     ),
                                     trailing: Text(
-                                      "${balanceList[index].keys.first.toPrecision(decimalPrecission)} €",
+                                      "${entryList[index].value.toPrecision(decimalPrecission)} €",
                                       style: const TextStyle(
                                         color: Colors.white,
                                       ),
                                     ),
                                     hoverColor: getColorByEntryValue(
-                                        balanceList[index].keys.first),
+                                        entryList[index].value),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5.0),
                                     ),
@@ -360,7 +365,7 @@ class _FinancePageState extends State<FinancePage> {
             0.0) {
       // Add a new income to the list. Change the value sign given the entry type.
       double entryValue = value * (entryType == EntryTpe.income ? 1.0 : -1.0);
-      balanceList.insert(0, <double, String>{entryValue: concept});
+      entryList.insert(0, Entry(concept, entryValue));
 
       // Save the data.
       saveBalanceToJson();
@@ -381,10 +386,8 @@ class _FinancePageState extends State<FinancePage> {
   double getBalance() {
     double balance = 0.0;
     // Iterate the expenses and incomes and add it to the balance.
-    for (var map in balanceList) {
-      for (var key in map.keys) {
-        balance += key;
-      }
+    for (var entry in entryList) {
+      balance += entry.value;
     }
     return balance;
   }
@@ -396,13 +399,40 @@ class _FinancePageState extends State<FinancePage> {
     return formattedBalance;
   }
 
-  // TODO: save to json.
-  void saveBalanceToJson() {}
+  // Method that writes info to the save data file.
+  void saveBalanceToJson() async {
+    // Get the data file.
+    File dataFile = await getSaveDataFile();
+    // Encode the entry list as a json string.
+    String encodedData = jsonEncode(entryList);
+    // Save the data. If the file does not exist, it will be created.
+    await dataFile.writeAsString(encodedData);
+  }
 
-  // TODO: parse from json.
-  void parseBalanceFromJson() {
-    // balanceList afegir tota la info aquí a dins.
+  // Method that reads from the savedata file.
+  void parseBalanceFromJson() async {
+    // Clear the entry list to make sure no residual data stays.
+    entryList.clear();
+    // Get the save data file.
+    File dataFile = await getSaveDataFile();
+    List<dynamic> jsonData;
+    // If the file exists, read it as a String.
+    if (await dataFile.exists()) {
+      String content = await dataFile.readAsString();
+      jsonData = jsonDecode(content);
+      // Iterate the jsonData and fill the entry list with the info.
+      for (var entry in jsonData) {
+        entryList.add(Entry.fromJson(entry));
+      }
+    }
+    // Force update state.
     setState(() {});
+  }
+
+  // Method that returns the curent File object fo the save data file.
+  Future<File> getSaveDataFile() async {
+    Directory directory = await getApplicationDocumentsDirectory();
+    return File("${directory.path}/savedata.save");
   }
 
   // Return a color depending on if the value is positive or negative.
