@@ -82,7 +82,7 @@ class _FinancePageState extends State<FinancePage> {
                           getFormattedBalance(),
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 22.0,
+                            fontSize: 30.0,
                             color: Colors.white,
                           ),
                         ),
@@ -153,6 +153,8 @@ class _FinancePageState extends State<FinancePage> {
                                         color: Colors.white,
                                       ),
                                     ),
+                                    focusColor: getColorByEntryValue(
+                                        entryList[index].value),
                                     hoverColor: getColorByEntryValue(
                                         entryList[index].value),
                                     shape: RoundedRectangleBorder(
@@ -195,6 +197,9 @@ class _FinancePageState extends State<FinancePage> {
                         child: TextFormField(
                           controller: nameTextCtrl,
                           cursorColor: Colors.white,
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: const Color.fromARGB(255, 94, 94, 94),
@@ -246,6 +251,9 @@ class _FinancePageState extends State<FinancePage> {
                             FilteringTextInputFormatter.allow(
                                 RegExp('[0-9.,]')),
                           ], // Only numbers can be entered
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: const Color.fromARGB(255, 94, 94, 94),
