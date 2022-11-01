@@ -99,15 +99,36 @@ class _FinancePageState extends State<FinancePage> {
                   flex: 35,
                   child: Column(
                     children: [
-                      const Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "History",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Expanded(
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "History",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
+                          Expanded(
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: IconButton(
+                                onPressed: () {
+                                  showAlertDialog(context);
+                                },
+                                icon: const Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(
                         height: 10.0,
@@ -115,9 +136,9 @@ class _FinancePageState extends State<FinancePage> {
                       Expanded(
                         child: Container(
                           decoration: BoxDecoration(
-                            color: Color.fromARGB(34, 146, 146, 146),
+                            color: const Color.fromARGB(34, 146, 146, 146),
                             border: Border.all(
-                              color: Color.fromARGB(45, 146, 146, 146),
+                              color: const Color.fromARGB(45, 146, 146, 146),
                               width: 2.0,
                               style: BorderStyle.solid,
                             ),
@@ -466,6 +487,67 @@ class _FinancePageState extends State<FinancePage> {
     return difference <= DateTime.daysPerWeek
         ? (difference != 0 ? DateFormat.EEEE().format(givenDate) : "Today")
         : DateFormat.yMd().add_Hm().format(DateTime.now());
+  }
+
+  showAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = ElevatedButton(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(
+          Colors.blueAccent,
+        ),
+      ),
+      child: const Text(
+        "Cancel",
+      ),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = ElevatedButton(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(
+          const Color.fromARGB(255, 175, 69, 69),
+        ),
+      ),
+      child: const Text(
+        "Continue",
+      ),
+      onPressed: () {
+        deleteAllHistory();
+        Navigator.pop(context);
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: const Text(
+        "Delete all history record",
+      ),
+      content: const Text(
+        "Are you sure that you want to delete all the entry history record? This action can't be undone.",
+      ),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  // Method that deletes all the entry history from the save data file.
+  void deleteAllHistory() {
+    // Clear the entire list.
+    entryList.clear();
+    // Save the data.
+    saveBalanceToJson();
+    // Force update state.
+    setState(() {});
   }
 }
 
