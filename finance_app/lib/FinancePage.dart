@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:finance_app/Entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -31,8 +32,13 @@ class _FinancePageState extends State<FinancePage> {
 
   @override
   void initState() {
+    initializeLocale();
     parseBalanceFromJson();
     super.initState();
+  }
+
+  void initializeLocale() async {
+    await initializeDateFormatting();
   }
 
   @override
@@ -486,7 +492,7 @@ class _FinancePageState extends State<FinancePage> {
     // is 0, set "Today".
     return difference <= DateTime.daysPerWeek
         ? (difference != 0 ? DateFormat.EEEE().format(givenDate) : "Today")
-        : DateFormat('dd-MM-yyy').add_Hm().format(DateTime.now());
+        : DateFormat.yMd(Platform.localeName).add_Hm().format(DateTime.now());
   }
 
   // Method that shows an alert dialog in order to delete the record history.
