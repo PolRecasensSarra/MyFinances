@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:finance_app/Entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
 enum EntryTpe { income, expense }
@@ -139,9 +140,10 @@ class _FinancePageState extends State<FinancePage> {
                                         color: Colors.white,
                                       ),
                                     ),
-                                    subtitle: const Text(
-                                      "Category",
-                                      style: TextStyle(
+                                    subtitle: Text(
+                                      getFormattedDateTime(
+                                          entryList[index].date),
+                                      style: const TextStyle(
                                         color:
                                             Color.fromARGB(255, 180, 180, 180),
                                         fontSize: 10.0,
@@ -361,7 +363,7 @@ class _FinancePageState extends State<FinancePage> {
     );
   }
 
-// Method that updates the current balance.
+  // Method that updates the current balance.
   void updateBalance(EntryTpe entryType) {
     // Reset the error message.
     error = "";
@@ -373,7 +375,8 @@ class _FinancePageState extends State<FinancePage> {
             0.0) {
       // Add a new income to the list. Change the value sign given the entry type.
       double entryValue = value * (entryType == EntryTpe.income ? 1.0 : -1.0);
-      entryList.insert(0, Entry(concept, entryValue));
+      entryList.insert(
+          0, Entry(concept, entryValue, DateTime.now().toString()));
 
       // Save the data.
       saveBalanceToJson();
@@ -449,8 +452,23 @@ class _FinancePageState extends State<FinancePage> {
         ? const Color.fromARGB(255, 88, 110, 88)
         : const Color.fromARGB(255, 110, 88, 88);
   }
+
+  // Method that given a date time, formats it to day of the week if the date time is inside the current week or the day-month otherwise.
+  // @param dateTime String the stored date time.
+  String getFormattedDateTime(String dateTime) {
+    // Convert the saved date string to DateTime.
+    DateTime givenDate = DateTime.parse(dateTime);
+    // Get the current DateTime and get the difference with the given date.
+    DateTime now = DateTime.now();
+    int difference = now.difference(givenDate).inDays;
+    // If the difference if bigger than the days per week, show the date, otherwise show the weekday name and if the difference
+    // is 0, set "Today".
+    return difference <= DateTime.daysPerWeek
+        ? (difference != 0 ? DateFormat.EEEE().format(givenDate) : "Today")
+        : DateFormat.yMd().add_Hm().format(DateTime.now());
+  }
 }
 
-extension Ex on double {
+extension FormatDouble on double {
   double toPrecision(int n) => double.parse(toStringAsFixed(n));
 }
