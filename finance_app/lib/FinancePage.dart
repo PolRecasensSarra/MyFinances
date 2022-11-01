@@ -486,9 +486,10 @@ class _FinancePageState extends State<FinancePage> {
     // is 0, set "Today".
     return difference <= DateTime.daysPerWeek
         ? (difference != 0 ? DateFormat.EEEE().format(givenDate) : "Today")
-        : DateFormat.yMd().add_Hm().format(DateTime.now());
+        : DateFormat('dd-MM-yyy').add_Hm().format(DateTime.now());
   }
 
+  // Method that shows an alert dialog in order to delete the record history.
   showAlertDialog(BuildContext context) {
     // set up the buttons
     Widget cancelButton = ElevatedButton(
