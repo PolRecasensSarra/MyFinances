@@ -10,7 +10,7 @@ class InfoManager {
   List<Entry> entryList = [];
 
   // Method that reads from the savedata file.
-  void parseBalanceFromJson() async {
+  Future<void> parseBalanceFromJson() async {
     // Clear the entry list to make sure no residual data stays.
     entryList.clear();
     // Get the save data file.

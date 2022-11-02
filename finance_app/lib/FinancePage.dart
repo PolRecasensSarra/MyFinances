@@ -35,13 +35,19 @@ class _FinancePageState extends State<FinancePage> {
   @override
   void initState() {
     initializeLocale();
-    infoManager.parseBalanceFromJson();
-    setState(() {});
+    parseBalanceFromJson();
     super.initState();
   }
 
+  // Method to initialize the locales.
   void initializeLocale() async {
     await initializeDateFormatting();
+  }
+
+  // Async method to parse all the info.
+  void parseBalanceFromJson() async {
+    await infoManager.parseBalanceFromJson();
+    setState(() {});
   }
 
   @override
