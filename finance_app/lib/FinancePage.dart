@@ -2,11 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:finance_app/Entry.dart';
+import 'package:finance_app/HistoryRecord.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
+
+import 'Utils.dart';
 
 enum EntryTpe { income, expense }
 
@@ -18,7 +20,6 @@ class FinancePage extends StatefulWidget {
 }
 
 class _FinancePageState extends State<FinancePage> {
-  final int decimalPrecission = 2;
   TextEditingController nameTextCtrl = TextEditingController();
   TextEditingController valueTextCtrl = TextEditingController();
   ScrollController scrollController = ScrollController();
@@ -29,6 +30,8 @@ class _FinancePageState extends State<FinancePage> {
   // Variables used in the TextField.
   String concept = "";
   double value = 0.0;
+  // Utils instance.
+  Utils utils = Utils();
 
   @override
   void initState() {
@@ -47,7 +50,8 @@ class _FinancePageState extends State<FinancePage> {
       backgroundColor: const Color.fromARGB(255, 58, 51, 73),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.only(left: 40.0, right: 40.0, bottom: 20.0),
+          padding: const EdgeInsets.only(
+              left: 40.0, right: 40.0, bottom: 20.0, top: 20.0),
           child: Center(
             child: Column(
               children: [
@@ -56,7 +60,7 @@ class _FinancePageState extends State<FinancePage> {
                   child: Align(
                     alignment: Alignment.center,
                     child: Text(
-                      "Finance App",
+                      "My Finances",
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -108,15 +112,37 @@ class _FinancePageState extends State<FinancePage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Expanded(
+                          Expanded(
                             child: Align(
                               alignment: Alignment.centerLeft,
-                              child: Text(
-                                "History",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              child: Row(
+                                children: [
+                                  const Text(
+                                    "History",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (contextCallback) =>
+                                              HistoryRecordPage(
+                                            entryList: entryList,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    icon: const Icon(
+                                      Icons.open_in_new,
+                                      color: Colors.white,
+                                      size: 22,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -128,7 +154,7 @@ class _FinancePageState extends State<FinancePage> {
                                   showAlertDialog(context);
                                 },
                                 icon: const Icon(
-                                  Icons.delete,
+                                  Icons.delete_forever,
                                   color: Colors.white,
                                 ),
                               ),
@@ -159,7 +185,8 @@ class _FinancePageState extends State<FinancePage> {
                               itemCount: entryList.length,
                               itemBuilder: (context, index) {
                                 return Card(
-                                  color: const Color.fromARGB(255, 88, 88, 88),
+                                  color: utils.getColorByEntryValue(
+                                      entryList[index].value),
                                   child: ListTile(
                                     title: Text(
                                       entryList[index].concept,
@@ -168,7 +195,7 @@ class _FinancePageState extends State<FinancePage> {
                                       ),
                                     ),
                                     subtitle: Text(
-                                      getFormattedDateTime(
+                                      utils.getFormattedDateTime(
                                           entryList[index].date),
                                       style: const TextStyle(
                                         color:
@@ -177,14 +204,14 @@ class _FinancePageState extends State<FinancePage> {
                                       ),
                                     ),
                                     trailing: Text(
-                                      "${entryList[index].value.toPrecision(decimalPrecission)} €",
+                                      "${entryList[index].value.toPrecision(utils.decimalPrecission)} €",
                                       style: const TextStyle(
                                         color: Colors.white,
                                       ),
                                     ),
-                                    focusColor: getColorByEntryValue(
+                                    focusColor: utils.getColorByEntryValue(
                                         entryList[index].value),
-                                    hoverColor: getColorByEntryValue(
+                                    hoverColor: utils.getColorByEntryValue(
                                         entryList[index].value),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5.0),
@@ -215,6 +242,7 @@ class _FinancePageState extends State<FinancePage> {
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
+                            fontSize: 16,
                           ),
                         ),
                       ),
@@ -236,7 +264,7 @@ class _FinancePageState extends State<FinancePage> {
                                 const EdgeInsets.all(8.0), //here your padding
                             hintText: "Add expense or income concept",
                             suffixIcon: const Icon(Icons.text_snippet,
-                                color: Colors.white),
+                                color: Colors.white54),
                             hintStyle: const TextStyle(
                               fontSize: 12,
                               color: Color.fromARGB(255, 163, 163, 163),
@@ -290,7 +318,7 @@ class _FinancePageState extends State<FinancePage> {
                                 const EdgeInsets.all(8.0), //here your padding
                             hintText: "Add expense or income value",
                             suffixIcon: const Icon(Icons.attach_money_outlined,
-                                color: Colors.white),
+                                color: Colors.white54),
                             alignLabelWithHint: true,
                             hintStyle: const TextStyle(
                               fontSize: 12,
@@ -433,7 +461,8 @@ class _FinancePageState extends State<FinancePage> {
   // Method that returns the formatted balance with the current coin symbol.
   String getFormattedBalance() {
     double balance = getBalance();
-    String formattedBalance = "${balance.toPrecision(decimalPrecission)} €";
+    String formattedBalance =
+        "${balance.toPrecision(utils.decimalPrecission)} €";
     return formattedBalance;
   }
 
@@ -471,28 +500,6 @@ class _FinancePageState extends State<FinancePage> {
   Future<File> getSaveDataFile() async {
     Directory directory = await getApplicationDocumentsDirectory();
     return File("${directory.path}/savedata.save");
-  }
-
-  // Return a color depending on if the value is positive or negative.
-  Color getColorByEntryValue(double value) {
-    return value >= 0.0
-        ? const Color.fromARGB(255, 88, 110, 88)
-        : const Color.fromARGB(255, 110, 88, 88);
-  }
-
-  // Method that given a date time, formats it to day of the week if the date time is inside the current week or the day-month otherwise.
-  // @param dateTime String the stored date time.
-  String getFormattedDateTime(String dateTime) {
-    // Convert the saved date string to DateTime.
-    DateTime givenDate = DateTime.parse(dateTime);
-    // Get the current DateTime and get the difference with the given date.
-    DateTime now = DateTime.now();
-    int difference = now.difference(givenDate).inDays;
-    // If the difference if bigger than the days per week, show the date, otherwise show the weekday name and if the difference
-    // is 0, set "Today".
-    return difference <= DateTime.daysPerWeek
-        ? (difference != 0 ? DateFormat.EEEE().format(givenDate) : "Today")
-        : DateFormat.yMd(Platform.localeName).add_Hm().format(DateTime.now());
   }
 
   // Method that shows an alert dialog in order to delete the record history.
@@ -556,8 +563,4 @@ class _FinancePageState extends State<FinancePage> {
     // Force update state.
     setState(() {});
   }
-}
-
-extension FormatDouble on double {
-  double toPrecision(int n) => double.parse(toStringAsFixed(n));
 }
