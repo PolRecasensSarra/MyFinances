@@ -1,12 +1,13 @@
+import 'package:finance_app/InfoManager.dart';
 import 'package:flutter/material.dart';
 
 import 'Entry.dart';
 import 'Utils.dart';
 
 class HistoryRecordPage extends StatefulWidget {
-  final List<Entry> entryList;
+  final InfoManager infoManager;
   HistoryRecordPage({
-    required this.entryList,
+    required this.infoManager,
   });
   @override
   _HistoryRecordPageState createState() => _HistoryRecordPageState();
@@ -61,36 +62,36 @@ class _HistoryRecordPageState extends State<HistoryRecordPage> {
                       child: ListView.builder(
                         shrinkWrap: true,
                         controller: scrollController,
-                        itemCount: widget.entryList.length,
+                        itemCount: widget.infoManager.entryList.length,
                         itemBuilder: (context, index) {
                           return Card(
                             color: utils.getColorByEntryValue(
-                                widget.entryList[index].value),
+                                widget.infoManager.entryList[index].value),
                             child: ListTile(
                               title: Text(
-                                widget.entryList[index].concept,
+                                widget.infoManager.entryList[index].concept,
                                 style: const TextStyle(
                                   color: Colors.white,
                                 ),
                               ),
                               subtitle: Text(
                                 utils.getFormattedDateTime(
-                                    widget.entryList[index].date),
+                                    widget.infoManager.entryList[index].date),
                                 style: const TextStyle(
                                   color: Color.fromARGB(255, 180, 180, 180),
                                   fontSize: 10.0,
                                 ),
                               ),
                               trailing: Text(
-                                "${widget.entryList[index].value.toPrecision(utils.decimalPrecission)} €",
+                                "${widget.infoManager.entryList[index].value.toPrecision(utils.decimalPrecission)} €",
                                 style: const TextStyle(
                                   color: Colors.white,
                                 ),
                               ),
                               focusColor: utils.getColorByEntryValue(
-                                  widget.entryList[index].value),
+                                  widget.infoManager.entryList[index].value),
                               hoverColor: utils.getColorByEntryValue(
-                                  widget.entryList[index].value),
+                                  widget.infoManager.entryList[index].value),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5.0),
                               ),

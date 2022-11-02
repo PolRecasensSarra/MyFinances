@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:finance_app/Entry.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

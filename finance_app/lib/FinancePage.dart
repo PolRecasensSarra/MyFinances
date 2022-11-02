@@ -1,12 +1,9 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:finance_app/Entry.dart';
 import 'package:finance_app/HistoryRecord.dart';
+import 'package:finance_app/InfoManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:path_provider/path_provider.dart';
 
 import 'Utils.dart';
 
@@ -24,7 +21,7 @@ class _FinancePageState extends State<FinancePage> {
   TextEditingController valueTextCtrl = TextEditingController();
   ScrollController scrollController = ScrollController();
   // List with all the incomes and expenses.
-  List<Entry> entryList = [];
+  //List<Entry> entryList = [];
   // Used to show an error when adding a new income/expense.
   String error = "";
   // Variables used in the TextField.
@@ -32,11 +29,14 @@ class _FinancePageState extends State<FinancePage> {
   double value = 0.0;
   // Utils instance.
   Utils utils = Utils();
+  // Info Manager instance.
+  InfoManager infoManager = InfoManager();
 
   @override
   void initState() {
     initializeLocale();
-    parseBalanceFromJson();
+    infoManager.parseBalanceFromJson();
+    setState(() {});
     super.initState();
   }
 
@@ -131,7 +131,7 @@ class _FinancePageState extends State<FinancePage> {
                                         MaterialPageRoute(
                                           builder: (contextCallback) =>
                                               HistoryRecordPage(
-                                            entryList: entryList,
+                                            infoManager: infoManager,
                                           ),
                                         ),
                                       );
@@ -151,7 +151,7 @@ class _FinancePageState extends State<FinancePage> {
                               alignment: Alignment.centerRight,
                               child: IconButton(
                                 onPressed: () {
-                                  showAlertDialog(context);
+                                  showAlertDialog(context, false);
                                 },
                                 icon: const Icon(
                                   Icons.delete_forever,
@@ -182,21 +182,21 @@ class _FinancePageState extends State<FinancePage> {
                             child: ListView.builder(
                               shrinkWrap: true,
                               controller: scrollController,
-                              itemCount: entryList.length,
+                              itemCount: infoManager.entryList.length,
                               itemBuilder: (context, index) {
                                 return Card(
                                   color: utils.getColorByEntryValue(
-                                      entryList[index].value),
+                                      infoManager.entryList[index].value),
                                   child: ListTile(
                                     title: Text(
-                                      entryList[index].concept,
+                                      infoManager.entryList[index].concept,
                                       style: const TextStyle(
                                         color: Colors.white,
                                       ),
                                     ),
                                     subtitle: Text(
                                       utils.getFormattedDateTime(
-                                          entryList[index].date),
+                                          infoManager.entryList[index].date),
                                       style: const TextStyle(
                                         color:
                                             Color.fromARGB(255, 180, 180, 180),
@@ -204,19 +204,22 @@ class _FinancePageState extends State<FinancePage> {
                                       ),
                                     ),
                                     trailing: Text(
-                                      "${entryList[index].value.toPrecision(utils.decimalPrecission)} €",
+                                      "${infoManager.entryList[index].value.toPrecision(utils.decimalPrecission)} €",
                                       style: const TextStyle(
                                         color: Colors.white,
                                       ),
                                     ),
                                     focusColor: utils.getColorByEntryValue(
-                                        entryList[index].value),
+                                        infoManager.entryList[index].value),
                                     hoverColor: utils.getColorByEntryValue(
-                                        entryList[index].value),
+                                        infoManager.entryList[index].value),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5.0),
                                     ),
-                                    onTap: () {},
+                                    onLongPress: () {
+                                      showAlertDialog(context, true,
+                                          entry: infoManager.entryList[index]);
+                                    },
                                   ),
                                 );
                               },
@@ -430,11 +433,10 @@ class _FinancePageState extends State<FinancePage> {
             0.0) {
       // Add a new income to the list. Change the value sign given the entry type.
       double entryValue = value * (entryType == EntryTpe.income ? 1.0 : -1.0);
-      entryList.insert(
-          0, Entry(concept, entryValue, DateTime.now().toString()));
-
+      infoManager
+          .addNewEntry(Entry(concept, entryValue, DateTime.now().toString()));
       // Save the data.
-      saveBalanceToJson();
+      infoManager.saveBalanceToJson();
 
       // Clear the input field texts.
       nameTextCtrl.clear();
@@ -452,7 +454,7 @@ class _FinancePageState extends State<FinancePage> {
   double getBalance() {
     double balance = 0.0;
     // Iterate the expenses and incomes and add it to the balance.
-    for (var entry in entryList) {
+    for (var entry in infoManager.entryList) {
       balance += entry.value;
     }
     return balance;
@@ -466,44 +468,19 @@ class _FinancePageState extends State<FinancePage> {
     return formattedBalance;
   }
 
-  // Method that writes info to the save data file.
-  void saveBalanceToJson() async {
-    // Get the data file.
-    File dataFile = await getSaveDataFile();
-    // Encode the entry list as a json string.
-    String encodedData = jsonEncode(entryList);
-    // Save the data. If the file does not exist, it will be created.
-    await dataFile.writeAsString(encodedData);
-  }
-
-  // Method that reads from the savedata file.
-  void parseBalanceFromJson() async {
-    // Clear the entry list to make sure no residual data stays.
-    entryList.clear();
-    // Get the save data file.
-    File dataFile = await getSaveDataFile();
-    List<dynamic> jsonData;
-    // If the file exists, read it as a String.
-    if (await dataFile.exists()) {
-      String content = await dataFile.readAsString();
-      jsonData = jsonDecode(content);
-      // Iterate the jsonData and fill the entry list with the info.
-      for (var entry in jsonData) {
-        entryList.add(Entry.fromJson(entry));
-      }
-    }
-    // Force update state.
-    setState(() {});
-  }
-
-  // Method that returns the curent File object fo the save data file.
-  Future<File> getSaveDataFile() async {
-    Directory directory = await getApplicationDocumentsDirectory();
-    return File("${directory.path}/savedata.save");
-  }
-
   // Method that shows an alert dialog in order to delete the record history.
-  showAlertDialog(BuildContext context) {
+  showAlertDialog(BuildContext context, bool partialDelete, {Entry? entry}) {
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alertDialog(partialDelete, entry: entry);
+      },
+    );
+  }
+
+  // Method that returns an alert dialog depending on if we want to delete an entry or the entire history.
+  Widget alertDialog(bool partialDelete, {Entry? entry}) {
     // set up the buttons
     Widget cancelButton = ElevatedButton(
       style: ButtonStyle(
@@ -528,38 +505,44 @@ class _FinancePageState extends State<FinancePage> {
         "Continue",
       ),
       onPressed: () {
-        deleteAllHistory();
+        if (partialDelete) {
+          deleteEntry(entry);
+        } else {
+          deleteAllHistory();
+        }
         Navigator.pop(context);
       },
     );
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: const Text(
-        "Delete all history record",
+      title: Text(
+        partialDelete ? "Delete entry" : "Delete all history record",
       ),
-      content: const Text(
-        "Are you sure that you want to delete all the entry history record? This action can't be undone.",
+      content: Text(
+        partialDelete
+            ? "Are you sure that you want to delete this entry? This action can't be undone."
+            : "Are you sure that you want to delete all the entry history record? This action can't be undone.",
       ),
       actions: [
         cancelButton,
         continueButton,
       ],
     );
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
+    return alert;
   }
 
   // Method that deletes all the entry history from the save data file.
   void deleteAllHistory() {
     // Clear the entire list.
-    entryList.clear();
-    // Save the data.
-    saveBalanceToJson();
+    infoManager.deleteAllHistory();
+    // Force update state.
+    setState(() {});
+  }
+
+  // Method to delete an entry.
+  void deleteEntry(Entry? entry) {
+    // Remove the entry.
+    infoManager.deleteEntry(entry);
     // Force update state.
     setState(() {});
   }
