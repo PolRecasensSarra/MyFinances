@@ -1,16 +1,24 @@
 import 'dart:io';
-
-import 'package:finance_app/Entry.dart';
+import 'package:finance_app/Filter.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Utils {
   // Decimal precision.
-  final int decimalPrecission = 2;
+  static int decimalPrecission = 2;
+  static List<String> filters = [
+    "Day",
+    "7 days",
+    "Week",
+    "Month",
+    "6 months",
+    "12 months",
+    "Year"
+  ];
 
   // Method that given a date time, formats it to day of the week if the date time is inside the current week or the day-month otherwise.
   // @param dateTime String the stored date time.
-  String getFormattedDateTime(String dateTime) {
+  static String getFormattedDateTime(String dateTime) {
     // Convert the saved date string to DateTime.
     DateTime givenDate = DateTime.parse(dateTime);
     // Get the current DateTime and get the difference with the given date.
@@ -24,11 +32,32 @@ class Utils {
   }
 
   // Return a color depending on if the value is positive or negative.
-  Color getColorByEntryValue(double value) {
+  static Color getColorByEntryValue(double value) {
     return value >= 0.0
         ? const Color.fromARGB(255, 80, 95, 110)
         : const Color.fromARGB(255, 94, 80, 110);
   }
+
+  // Method that returns the list of filters as Filter class.
+  static List<Filter> getFilters() {
+    List<Filter> filtersList = [];
+    for (String filterStr in filters) {
+      filtersList.add(Filter(filterStr));
+    }
+    return filtersList;
+  }
+
+  // List that returns a list of drop down menu items given a filter list.
+  /*List<DropdownMenuItem<Filter>> getFiltersAsItemsList() {
+    List<DropdownMenuItem<Filter>> listItems = [];
+    for (Filter filter in getFilters()) {
+      listItems.add(DropdownMenuItem<Filter>(
+        value: filter,
+        child: Text(filter.filterName),
+      ));
+    }
+    return listItems;
+  }*/
 }
 
 extension FormatDouble on double {

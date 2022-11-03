@@ -27,8 +27,6 @@ class _FinancePageState extends State<FinancePage> {
   // Variables used in the TextField.
   String concept = "";
   double value = 0.0;
-  // Utils instance.
-  Utils utils = Utils();
   // Info Manager instance.
   InfoManager infoManager = InfoManager();
 
@@ -191,7 +189,7 @@ class _FinancePageState extends State<FinancePage> {
                               itemCount: infoManager.entryList.length,
                               itemBuilder: (context, index) {
                                 return Card(
-                                  color: utils.getColorByEntryValue(
+                                  color: Utils.getColorByEntryValue(
                                       infoManager.entryList[index].value),
                                   child: ListTile(
                                     title: Text(
@@ -201,7 +199,7 @@ class _FinancePageState extends State<FinancePage> {
                                       ),
                                     ),
                                     subtitle: Text(
-                                      utils.getFormattedDateTime(
+                                      Utils.getFormattedDateTime(
                                           infoManager.entryList[index].date),
                                       style: const TextStyle(
                                         color:
@@ -210,14 +208,14 @@ class _FinancePageState extends State<FinancePage> {
                                       ),
                                     ),
                                     trailing: Text(
-                                      "${infoManager.entryList[index].value.toPrecision(utils.decimalPrecission)} €",
+                                      "${infoManager.entryList[index].value.toPrecision(Utils.decimalPrecission)} €",
                                       style: const TextStyle(
                                         color: Colors.white,
                                       ),
                                     ),
-                                    focusColor: utils.getColorByEntryValue(
+                                    focusColor: Utils.getColorByEntryValue(
                                         infoManager.entryList[index].value),
-                                    hoverColor: utils.getColorByEntryValue(
+                                    hoverColor: Utils.getColorByEntryValue(
                                         infoManager.entryList[index].value),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5.0),
@@ -470,7 +468,7 @@ class _FinancePageState extends State<FinancePage> {
   String getFormattedBalance() {
     double balance = getBalance();
     String formattedBalance =
-        "${balance.toPrecision(utils.decimalPrecission)} €";
+        "${balance.toPrecision(Utils.decimalPrecission)} €";
     return formattedBalance;
   }
 
