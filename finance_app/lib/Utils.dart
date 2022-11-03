@@ -1,19 +1,17 @@
 import 'dart:io';
-import 'package:finance_app/Filter.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Utils {
   // Decimal precision.
   static int decimalPrecission = 2;
+  // List of all filters.
   static List<String> filters = [
     "All",
     "Day",
-    "7 days",
     "Week",
     "Month",
     "6 months",
-    "12 months",
     "Year"
   ];
 
@@ -39,26 +37,40 @@ class Utils {
         : const Color.fromARGB(255, 94, 80, 110);
   }
 
-  // Method that returns the list of filters as Filter class.
-  static List<Filter> getFilters() {
-    List<Filter> filtersList = [];
-    for (String filterStr in filters) {
-      filtersList.add(Filter(filterStr));
-    }
-    return filtersList;
-  }
+  // Method that checks if the entryDate fits inside the filte.
+  static bool filterEntryByDate(String entryDate, String filter) {
+    bool returnValue = false;
+    DateTime entryDateTime = DateTime.parse(entryDate);
+    DateTime currentDateTime = DateTime.now();
 
-  // List that returns a list of drop down menu items given a filter list.
-  /*List<DropdownMenuItem<Filter>> getFiltersAsItemsList() {
-    List<DropdownMenuItem<Filter>> listItems = [];
-    for (Filter filter in getFilters()) {
-      listItems.add(DropdownMenuItem<Filter>(
-        value: filter,
-        child: Text(filter.filterName),
-      ));
+    switch (filter) {
+      case "All":
+        returnValue = true;
+        break;
+      case "Day":
+        returnValue = currentDateTime.difference(entryDateTime).inDays == 0;
+        break;
+      case "Week":
+        int entryWeek = (entryDateTime.day / DateTime.daysPerWeek).ceil();
+        int currentWeek = (currentDateTime.day / DateTime.daysPerWeek).ceil();
+        returnValue = currentDateTime.month == entryDateTime.month &&
+            currentDateTime.year == entryDateTime.year &&
+            entryWeek == currentWeek;
+        break;
+      case "Month":
+        returnValue = currentDateTime.month == entryDateTime.month &&
+            currentDateTime.year == entryDateTime.year;
+        break;
+      case "6 months":
+        returnValue = currentDateTime.difference(entryDateTime).inDays <=
+            DateTime.daysPerWeek * 4 * 6;
+        break;
+      case "Year":
+        returnValue = currentDateTime.year == entryDateTime.year;
+        break;
     }
-    return listItems;
-  }*/
+    return returnValue;
+  }
 }
 
 extension FormatDouble on double {

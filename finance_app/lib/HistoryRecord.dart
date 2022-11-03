@@ -1,5 +1,4 @@
 import 'package:finance_app/Entry.dart';
-import 'package:finance_app/Filter.dart';
 import 'package:finance_app/InfoManager.dart';
 import 'package:flutter/material.dart';
 import 'Utils.dart';
@@ -23,15 +22,14 @@ class _HistoryRecordPageState extends State<HistoryRecordPage> {
   // Local entry list modified by the view selected type.
   List<Entry> entryListByView = [];
   // Get the list of filters.
-  List<Filter> filterList = Utils.getFilters();
+  List<String> filterList = Utils.filters;
   // Filter selected by the drop down menu.
-  late Filter filterSelected;
+  late String filterSelected = filterList.first;
 
   @override
   void initState() {
-    updateEntriesByViewType();
-    // Save the filter list to make sure that the object hash code doesn't change later.
-    filterSelected = filterList.first;
+    // Force update iew type.
+    updateEntries();
     setState(() {});
     super.initState();
   }
@@ -100,7 +98,7 @@ class _HistoryRecordPageState extends State<HistoryRecordPage> {
                       ),
                       borderRadius: BorderRadius.circular(5.0),
                     ),
-                    child: DropdownButton<Filter>(
+                    child: DropdownButton<String>(
                       value: filterSelected,
                       style: const TextStyle(
                         color: Colors.white,
@@ -118,17 +116,18 @@ class _HistoryRecordPageState extends State<HistoryRecordPage> {
                         height: 0,
                       ),
                       focusColor: const Color.fromARGB(255, 58, 51, 73),
-                      items: filterList.map((Filter filter) {
+                      items: filterList.map((String filter) {
                         return DropdownMenuItem(
                           value: filter,
                           child: Text(
-                            filter.filterName,
+                            filter,
                           ),
                         );
                       }).toList(),
                       onChanged: (newValue) {
                         setState(() {
                           filterSelected = newValue!;
+                          updateEntries();
                         });
                       },
                     ),
@@ -189,7 +188,9 @@ class _HistoryRecordPageState extends State<HistoryRecordPage> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5.0),
                               ),
-                              onTap: () {},
+                              onTap: () {
+                                /*TODO: show the entry detail infomation*/
+                              },
                             ),
                           );
                         },
@@ -209,11 +210,16 @@ class _HistoryRecordPageState extends State<HistoryRecordPage> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedViewType = ViewTypes.values[index];
-      updateEntriesByViewType();
+      updateEntries();
     });
   }
 
-  // Method that updates the entry list given the view type.
+  void updateEntries() {
+    updateEntriesByViewType();
+    updateEntriesByFilter();
+  }
+
+  // Method that updates the entry list given a view type.
   void updateEntriesByViewType() {
     // Clear the list.
     entryListByView.clear();
@@ -239,5 +245,16 @@ class _HistoryRecordPageState extends State<HistoryRecordPage> {
         }
         break;
     }
+  }
+
+  // Method that updates the entry list given a filter.
+  void updateEntriesByFilter() {
+    List<Entry> tmpEntryList = [];
+    for (Entry entry in entryListByView) {
+      if (Utils.filterEntryByDate(entry.date, filterSelected)) {
+        tmpEntryList.add(entry);
+      }
+    }
+    entryListByView = List.from(tmpEntryList);
   }
 }
