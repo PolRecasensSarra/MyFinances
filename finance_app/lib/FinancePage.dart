@@ -211,6 +211,7 @@ class _FinancePageState extends State<FinancePage> {
                                       "${infoManager.entryList[index].value.toPrecision(Utils.decimalPrecission)} €",
                                       style: const TextStyle(
                                         color: Colors.white,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                     focusColor: Utils.getColorByEntryValue(

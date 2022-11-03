@@ -22,11 +22,16 @@ class _HistoryRecordPageState extends State<HistoryRecordPage> {
   ViewTypes _selectedViewType = ViewTypes.all;
   // Local entry list modified by the view selected type.
   List<Entry> entryListByView = [];
-  String filterSelected = Utils.filters.first;
+  // Get the list of filters.
+  List<Filter> filterList = Utils.getFilters();
+  // Filter selected by the drop down menu.
+  late Filter filterSelected;
 
   @override
   void initState() {
     updateEntriesByViewType();
+    // Save the filter list to make sure that the object hash code doesn't change later.
+    filterSelected = filterList.first;
     setState(() {});
     super.initState();
   }
@@ -78,34 +83,59 @@ class _HistoryRecordPageState extends State<HistoryRecordPage> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 40.0),
+          padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 40.0),
           child: Center(
             child: Column(
               children: [
                 Expanded(
                   flex: 10,
-                  child: DropdownButton<String>(
-                    value: filterSelected,
-                    icon: const Icon(
-                      Icons.arrow_downward,
-                      color: Colors.white,
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(34, 146, 146, 146),
+                      border: Border.all(
+                        color: const Color.fromARGB(45, 146, 146, 146),
+                        width: 2.0,
+                        style: BorderStyle.solid,
+                      ),
+                      borderRadius: BorderRadius.circular(5.0),
                     ),
-                    iconSize: 24,
-                    elevation: 16,
-                    items: Utils.filters.map((String filter) {
-                      return DropdownMenuItem(
-                        value: filter,
-                        child: Text(
-                          filter,
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (newValue) {
-                      setState(() {
-                        filterSelected = newValue!;
-                      });
-                    },
+                    child: DropdownButton<Filter>(
+                      value: filterSelected,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      icon: const Icon(
+                        Icons.arrow_downward,
+                        color: Colors.white,
+                      ),
+                      iconSize: 20,
+                      elevation: 16,
+                      dropdownColor: const Color.fromARGB(255, 58, 51, 73),
+                      underline: Container(
+                        height: 0,
+                      ),
+                      focusColor: const Color.fromARGB(255, 58, 51, 73),
+                      items: filterList.map((Filter filter) {
+                        return DropdownMenuItem(
+                          value: filter,
+                          child: Text(
+                            filter.filterName,
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (newValue) {
+                        setState(() {
+                          filterSelected = newValue!;
+                        });
+                      },
+                    ),
                   ),
+                ),
+                const SizedBox(
+                  height: 20.0,
                 ),
                 Expanded(
                   flex: 90,
@@ -149,6 +179,7 @@ class _HistoryRecordPageState extends State<HistoryRecordPage> {
                                 "${entryListByView[index].value.toPrecision(Utils.decimalPrecission)} €",
                                 style: const TextStyle(
                                   color: Colors.white,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                               focusColor: Utils.getColorByEntryValue(

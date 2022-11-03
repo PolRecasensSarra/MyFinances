@@ -7,6 +7,7 @@ class Utils {
   // Decimal precision.
   static int decimalPrecission = 2;
   static List<String> filters = [
+    "All",
     "Day",
     "7 days",
     "Week",
