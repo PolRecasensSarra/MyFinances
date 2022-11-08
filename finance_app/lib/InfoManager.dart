@@ -60,7 +60,9 @@ class InfoManager {
 
   // Method that returns the curent File object fo the save data file.
   Future<File> getSaveDataFile() async {
-    Directory directory = await getApplicationDocumentsDirectory();
-    return File("${directory.path}/savedata.save");
+    Directory? directory = Platform.isAndroid
+        ? await getExternalStorageDirectory()
+        : await getApplicationDocumentsDirectory();
+    return File("${directory!.path}/savedata.save");
   }
 }
