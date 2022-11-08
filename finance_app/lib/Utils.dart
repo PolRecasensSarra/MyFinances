@@ -22,12 +22,14 @@ class Utils {
     DateTime givenDate = DateTime.parse(dateTime);
     // Get the current DateTime and get the difference with the given date.
     DateTime now = DateTime.now();
-    int difference = now.difference(givenDate).inDays;
-    // If the difference if bigger than the days per week, show the date, otherwise show the weekday name and if the difference
-    // is 0, set "Today".
-    return difference <= DateTime.daysPerWeek
-        ? (difference != 0 ? DateFormat.EEEE().format(givenDate) : "Today")
-        : DateFormat.yMd(Platform.localeName).add_Hm().format(DateTime.now());
+
+    // If the two dates belongs to the same week, show the day of the week or "Today" according to the difference of days.
+    // Otherwise show the date.
+    return isSameWeek(givenDate, now)
+        ? (isSameDay(givenDate, now)
+            ? "Today"
+            : DateFormat.EEEE().format(givenDate))
+        : DateFormat.yMd(Platform.localeName).add_Hm().format(givenDate);
   }
 
   // Return a color depending on if the value is positive or negative.
@@ -48,29 +50,65 @@ class Utils {
         returnValue = true;
         break;
       case "Day":
-        returnValue = currentDateTime.difference(entryDateTime).inDays == 0;
+        returnValue = isSameDay(entryDateTime, currentDateTime);
         break;
       case "Week":
-        int entryWeek = (entryDateTime.day / DateTime.daysPerWeek).ceil();
-        int currentWeek = (currentDateTime.day / DateTime.daysPerWeek).ceil();
-        returnValue = currentDateTime.month == entryDateTime.month &&
-            currentDateTime.year == entryDateTime.year &&
-            entryWeek == currentWeek;
+        returnValue = isSameWeek(entryDateTime, currentDateTime);
         break;
       case "Month":
-        returnValue = currentDateTime.month == entryDateTime.month &&
-            currentDateTime.year == entryDateTime.year;
+        returnValue = isSameMonth(entryDateTime, currentDateTime);
         break;
       case "6 months":
         returnValue = currentDateTime.difference(entryDateTime).inDays <=
             DateTime.daysPerWeek * 4 * 6;
         break;
       case "Year":
-        returnValue = currentDateTime.year == entryDateTime.year;
+        returnValue = isSameYear(entryDateTime, currentDateTime);
         break;
     }
     return returnValue;
   }
+}
+
+// Method that returns true if two dates are the same day of the same month and year.
+bool isSameDay(DateTime dateA, DateTime dateB) {
+  return dateA.day == dateB.day &&
+      dateA.year == dateB.year &&
+      dateA.month == dateB.month;
+}
+
+// Method that returns true if the two dates share the same week of the year and belong to the same year.
+bool isSameWeek(DateTime dateA, DateTime dateB) {
+  return weekNumber(dateA) == weekNumber(dateB) && isSameYear(dateA, dateB);
+}
+
+// Method that returns true if the two dates share the same month of the year and belong to the same year.
+bool isSameMonth(DateTime dateA, DateTime dateB) {
+  return dateA.month == dateB.month && dateA.year == dateB.year;
+}
+
+// Method that returns true if the two dates share the same year.
+bool isSameYear(DateTime dateA, DateTime dateB) {
+  return dateA.year == dateB.year;
+}
+
+/// Calculates number of weeks for a given year as per https://en.wikipedia.org/wiki/ISO_week_date#Weeks_per_year
+int numOfWeeks(int year) {
+  DateTime dec28 = DateTime(year, 12, 28);
+  int dayOfDec28 = int.parse(DateFormat("D").format(dec28));
+  return ((dayOfDec28 - dec28.weekday + 10) / 7).floor();
+}
+
+/// Calculates week number from a date as per https://en.wikipedia.org/wiki/ISO_week_date#Calculation
+int weekNumber(DateTime date) {
+  int dayOfYear = int.parse(DateFormat("D").format(date));
+  int woy = ((dayOfYear - date.weekday + 10) / 7).floor();
+  if (woy < 1) {
+    woy = numOfWeeks(date.year - 1);
+  } else if (woy > numOfWeeks(date.year)) {
+    woy = 1;
+  }
+  return woy;
 }
 
 extension FormatDouble on double {
