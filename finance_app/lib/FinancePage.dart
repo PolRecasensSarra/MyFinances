@@ -352,8 +352,9 @@ class _FinancePageState extends State<FinancePage> {
                               value == 0.0 ? "Enter a new entry" : null,
                           onChanged: (val) {
                             setState(() {
-                              final tmpValue =
-                                  val.isEmpty ? 0.0 : double.tryParse(val);
+                              final tmpValue = val.isEmpty
+                                  ? 0.0
+                                  : double.tryParse(val.replaceAll(",", "."));
                               if (tmpValue != null) {
                                 value = tmpValue;
                               }
@@ -434,7 +435,7 @@ class _FinancePageState extends State<FinancePage> {
     if (nameTextCtrl.text.isNotEmpty &&
         (valueTextCtrl.text.isEmpty
                 ? 0.0
-                : double.tryParse(valueTextCtrl.text))! >
+                : double.tryParse(valueTextCtrl.text.replaceAll(",", ".")))! >
             0.0) {
       // Add a new income to the list. Change the value sign given the entry type.
       double entryValue = value * (entryType == EntryTpe.income ? 1.0 : -1.0);
