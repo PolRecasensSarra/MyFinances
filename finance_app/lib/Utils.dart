@@ -29,7 +29,18 @@ class Utils {
         ? (isSameDay(givenDate, now)
             ? "Today"
             : DateFormat.EEEE().format(givenDate))
-        : DateFormat.yMd(Platform.localeName).add_Hm().format(givenDate);
+        : getDateFormattedByLocale(givenDate);
+  }
+
+  // Method that given a DateTime returns a formatted string with the locale format.
+  // @param date the current date to format.
+  // @param showHour if the hour has to be calculated or not.
+  static String getDateFormattedByLocale(DateTime date,
+      {bool showHour = true}) {
+    DateFormat dateFormat = DateFormat.yMd(Platform.localeName);
+    return showHour
+        ? dateFormat.add_Hm().format(date)
+        : dateFormat.format(date);
   }
 
   // Return a color depending on if the value is positive or negative.
