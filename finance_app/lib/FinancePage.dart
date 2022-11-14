@@ -20,6 +20,7 @@ class _FinancePageState extends State<FinancePage> {
   TextEditingController nameTextCtrl = TextEditingController();
   TextEditingController valueTextCtrl = TextEditingController();
   TextEditingController dateController = TextEditingController();
+  TextEditingController timeController = TextEditingController();
   ScrollController scrollController = ScrollController();
   // List with all the incomes and expenses.
   //List<Entry> entryList = [];
@@ -29,6 +30,7 @@ class _FinancePageState extends State<FinancePage> {
   String concept = "";
   double value = 0.0;
   String date = "";
+  TimeOfDay timeOfDay = TimeOfDay.now();
   // Info Manager instance.
   InfoManager infoManager = InfoManager();
 
@@ -280,7 +282,7 @@ class _FinancePageState extends State<FinancePage> {
                                     const Color.fromARGB(255, 94, 94, 94),
                                 contentPadding: const EdgeInsets.all(
                                     8.0), //here your padding
-                                hintText: "Add expense or income concept",
+                                hintText: "Add expense or income concept*",
                                 suffixIcon: const Icon(Icons.text_snippet,
                                     color: Colors.white54),
                                 hintStyle: const TextStyle(
@@ -335,7 +337,7 @@ class _FinancePageState extends State<FinancePage> {
                                     const Color.fromARGB(255, 94, 94, 94),
                                 contentPadding: const EdgeInsets.all(
                                     8.0), //here your padding
-                                hintText: "Add expense or income value",
+                                hintText: "Add expense or income value*",
                                 suffixIcon: const Icon(
                                     Icons.attach_money_outlined,
                                     color: Colors.white54),
@@ -381,63 +383,137 @@ class _FinancePageState extends State<FinancePage> {
                             height: 10.0,
                           ),
                           Expanded(
-                            child: TextField(
-                              cursorColor: Colors.white,
-                              controller: dateController,
-                              style: const TextStyle(
-                                color: Colors.white,
-                              ),
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor:
-                                    const Color.fromARGB(255, 94, 94, 94),
-                                contentPadding: const EdgeInsets.all(
-                                    8.0), //here your padding
-                                hintText: "Enter Date",
-                                suffixIcon: const Icon(
-                                  Icons.calendar_today,
-                                  color: Colors.white54,
-                                ),
-                                alignLabelWithHint: true,
-                                hintStyle: const TextStyle(
-                                  fontSize: 12,
-                                  color: Color.fromARGB(255, 163, 163, 163),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5),
-                                  borderSide:
-                                      const BorderSide(color: Colors.white),
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5),
-                                  borderSide: const BorderSide(
-                                    color: Color.fromARGB(255, 146, 146, 146),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 45,
+                                  child: TextField(
+                                    cursorColor: Colors.white,
+                                    controller: dateController,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                    decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor:
+                                          const Color.fromARGB(255, 94, 94, 94),
+                                      contentPadding: const EdgeInsets.all(
+                                          8.0), //here your padding
+                                      hintText: "Enter Date",
+                                      suffixIcon: const Icon(
+                                        Icons.calendar_today,
+                                        color: Colors.white54,
+                                      ),
+                                      alignLabelWithHint: true,
+                                      hintStyle: const TextStyle(
+                                        fontSize: 12,
+                                        color:
+                                            Color.fromARGB(255, 163, 163, 163),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                        borderSide: const BorderSide(
+                                            color: Colors.white),
+                                      ),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                        borderSide: const BorderSide(
+                                          color: Color.fromARGB(
+                                              255, 146, 146, 146),
+                                        ),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                        borderSide: const BorderSide(
+                                            color: Color.fromARGB(
+                                                255, 146, 146, 146)),
+                                      ),
+                                    ),
+                                    onTap: () async {
+                                      DateTime? pickedDate =
+                                          await showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime(2000),
+                                              lastDate: DateTime(2101));
+                                      // Check if the picked date is a valid date and save it.
+                                      if (pickedDate != null) {
+                                        setState(() {
+                                          date = pickedDate.toString();
+                                          dateController.text =
+                                              Utils.getDateFormattedByLocale(
+                                                  pickedDate,
+                                                  showHour: false);
+                                        });
+                                      }
+                                    },
                                   ),
                                 ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5),
-                                  borderSide: const BorderSide(
-                                      color:
-                                          Color.fromARGB(255, 146, 146, 146)),
+                                const Expanded(
+                                  flex: 5,
+                                  child: SizedBox(),
                                 ),
-                              ),
-                              onTap: () async {
-                                DateTime? pickedDate = await showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    firstDate: DateTime(2000),
-                                    lastDate: DateTime(2101));
-                                // Check if the picked date is a valid date and save it.
-                                if (pickedDate != null) {
-                                  setState(() {
-                                    date = pickedDate.toString();
-                                    dateController.text =
-                                        Utils.getDateFormattedByLocale(
-                                            pickedDate,
-                                            showHour: false);
-                                  });
-                                }
-                              },
+                                Expanded(
+                                  flex: 45,
+                                  child: TextField(
+                                    cursorColor: Colors.white,
+                                    controller: timeController,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                    decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor:
+                                          const Color.fromARGB(255, 94, 94, 94),
+                                      contentPadding: const EdgeInsets.all(8.0),
+                                      hintText: "Enter Time",
+                                      suffixIcon: const Icon(
+                                        Icons.access_time,
+                                        color: Colors.white54,
+                                      ),
+                                      alignLabelWithHint: true,
+                                      hintStyle: const TextStyle(
+                                        fontSize: 12,
+                                        color:
+                                            Color.fromARGB(255, 163, 163, 163),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                        borderSide: const BorderSide(
+                                            color: Colors.white),
+                                      ),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                        borderSide: const BorderSide(
+                                          color: Color.fromARGB(
+                                              255, 146, 146, 146),
+                                        ),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                        borderSide: const BorderSide(
+                                            color: Color.fromARGB(
+                                                255, 146, 146, 146)),
+                                      ),
+                                    ),
+                                    onTap: () async {
+                                      TimeOfDay? pickedTime =
+                                          await showTimePicker(
+                                              context: context,
+                                              initialTime: TimeOfDay.now());
+                                      // Check if the picked date is a valid date and save it.
+                                      if (pickedTime != null) {
+                                        setState(() {
+                                          timeOfDay = pickedTime;
+                                          timeController.text =
+                                              Utils.timeOfDayToString(
+                                                  pickedTime);
+                                        });
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           const SizedBox(
@@ -518,7 +594,14 @@ class _FinancePageState extends State<FinancePage> {
                 : double.tryParse(valueTextCtrl.text.replaceAll(",", ".")))! >
             0.0) {
       double entryValue = value * (entryType == EntryTpe.income ? 1.0 : -1.0);
-      String entryDate = date.isNotEmpty ? date : DateTime.now().toString();
+      // If the selected date is valid, add it with the selected time. Otherwise set the current time. If the date is valid
+      // but the hour was not picked, get the current time.
+      String entryDate = date.isNotEmpty
+          ? Utils.addCustomHourToDate(DateTime.parse(date),
+                  timeController.text.isNotEmpty ? timeOfDay : TimeOfDay.now())
+              .toString()
+          : DateTime.now().toString();
+
       // Add a new income to the list. Change the value sign given the entry type.
       infoManager.addNewEntry(Entry(concept, entryValue, entryDate));
       // Save the data.
@@ -528,6 +611,7 @@ class _FinancePageState extends State<FinancePage> {
       nameTextCtrl.clear();
       valueTextCtrl.clear();
       dateController.clear();
+      timeController.clear();
       concept = "";
       value = 0.0;
       date = "";

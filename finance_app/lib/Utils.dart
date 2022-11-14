@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -78,6 +79,27 @@ class Utils {
         break;
     }
     return returnValue;
+  }
+
+  static String addLeadingZeroIfNeeded(int value) {
+    if (value < 10) {
+      return '0$value';
+    }
+    return value.toString();
+  }
+
+  // Method that retuns a TimeOfDay as a String.
+  static String timeOfDayToString(TimeOfDay timeOfDay) {
+    final String hourLabel = addLeadingZeroIfNeeded(timeOfDay.hour);
+    final String minuteLabel = addLeadingZeroIfNeeded(timeOfDay.minute);
+
+    return '$hourLabel:$minuteLabel';
+  }
+
+  // Method that returns a DateTime with a given date and time.
+  static DateTime addCustomHourToDate(DateTime dateTime, TimeOfDay timeOfDay) {
+    return DateTime(dateTime.year, dateTime.month, dateTime.day, timeOfDay.hour,
+        timeOfDay.minute);
   }
 }
 
