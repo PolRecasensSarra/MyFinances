@@ -1,4 +1,5 @@
 import 'package:finance_app/FinancePage.dart';
+import 'package:finance_app/Utils.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -18,7 +19,13 @@ class MyApp extends StatelessWidget {
           color: Color.fromARGB(255, 33, 28, 48),
         ),
       ),
+      darkTheme: ThemeData(
+        appBarTheme: AppBarTheme(color: Colors.grey[900]),
+        brightness: Brightness.dark,
+        primarySwatch: Utils.createMaterialColor(Colors.blueAccent),
+      ),
       debugShowCheckedModeBanner: false,
+      themeMode: ThemeMode.dark,
       home: const FinancePage(),
     );
   }
