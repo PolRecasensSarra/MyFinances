@@ -62,7 +62,7 @@ class _FinancePageState extends State<FinancePage> {
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.only(
-                  left: 40.0, right: 40.0, bottom: 20.0, top: 20.0),
+                  left: 40.0, right: 40.0, bottom: 20.0, top: 5.0),
               child: LimitedBox(
                 maxHeight: MediaQuery.of(context).size.height,
                 child: Column(
