@@ -121,6 +121,18 @@ class Utils {
     });
     return MaterialColor(color.value, swatch);
   }
+
+  // Method that returns true if a given date is between two other dates.
+  // @param givenDate the date we want to compare.
+  // @param startDate the start date to compare from.
+  // @param endDate the end date to compare from.
+  static bool isBetweenDates(
+      DateTime givenDate, DateTime startDate, DateTime endDate) {
+    // TODO: ensure that endDate starts at 00:00.
+    // Add 1 day to the end date to make it inclusive, because the DateTime starts from 00:00.
+    endDate = endDate.add(const Duration(days: 1));
+    return givenDate.isAfter(startDate) && givenDate.isBefore(endDate);
+  }
 }
 
 // Method that returns true if two dates are the same day of the same month and year.

@@ -201,7 +201,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                                       8.0), //here your padding
                                   hintText: "Enter Date",
                                   suffixIcon: const Icon(
-                                    Icons.calendar_today,
+                                    Icons.calendar_month,
                                     color: Colors.white54,
                                   ),
                                   alignLabelWithHint: true,
