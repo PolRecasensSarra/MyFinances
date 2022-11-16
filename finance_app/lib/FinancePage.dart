@@ -55,7 +55,7 @@ class _FinancePageState extends State<FinancePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       backgroundColor: const Color.fromARGB(255, 58, 51, 73),
       body: SafeArea(
         child: Center(
