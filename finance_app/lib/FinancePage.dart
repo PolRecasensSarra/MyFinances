@@ -280,11 +280,11 @@ class _FinancePageState extends State<FinancePage> {
     );
   }
 
-  // Method that returns the current balance given the incomes and expenses.
+  // Method that returns the current balance given the incomes and expenses and filters.
   double getBalance() {
     double balance = 0.0;
     // Iterate the expenses and incomes and add it to the balance.
-    for (var entry in infoManager.entryList) {
+    for (var entry in entryListByView) {
       balance += entry.value;
     }
     return balance;
