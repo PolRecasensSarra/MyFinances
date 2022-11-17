@@ -54,29 +54,29 @@ class Utils {
   }
 
   // Method that checks if the entryDate fits inside the filte.
-  static bool filterEntryByDate(String entryDate, String filter) {
+  static bool filterEntryByDate(String entryDate, Filters filter) {
     bool returnValue = false;
     DateTime entryDateTime = DateTime.parse(entryDate);
     DateTime currentDateTime = DateTime.now();
 
     switch (filter) {
-      case "All":
+      case Filters.all:
         returnValue = true;
         break;
-      case "Day":
+      case Filters.day:
         returnValue = isSameDay(entryDateTime, currentDateTime);
         break;
-      case "Week":
+      case Filters.week:
         returnValue = isSameWeek(entryDateTime, currentDateTime);
         break;
-      case "Month":
+      case Filters.month:
         returnValue = isSameMonth(entryDateTime, currentDateTime);
         break;
-      case "6 months":
+      case Filters.halfyear:
         returnValue = currentDateTime.difference(entryDateTime).inDays <=
             DateTime.daysPerWeek * 4 * 6;
         break;
-      case "Year":
+      case Filters.year:
         returnValue = isSameYear(entryDateTime, currentDateTime);
         break;
     }

@@ -24,7 +24,7 @@ class _FinancePageState extends State<FinancePage> {
   // Local entry list modified by the view selected type.
   List<Entry> entryListByView = [];
   // Selected filter.
-  String? filterSelected = Utils.filtersMap[Filters.month];
+  Filters filterSelected = Filters.month;
 
   // Info Manager instance.
   InfoManager infoManager = InfoManager();
@@ -427,7 +427,7 @@ class _FinancePageState extends State<FinancePage> {
   void updateEntriesByFilter() {
     List<Entry> tmpEntryList = [];
     for (Entry entry in entryListByView) {
-      if (Utils.filterEntryByDate(entry.date, filterSelected!)) {
+      if (Utils.filterEntryByDate(entry.date, filterSelected)) {
         tmpEntryList.add(entry);
       }
     }
@@ -447,7 +447,7 @@ class _FinancePageState extends State<FinancePage> {
         ),
         borderRadius: BorderRadius.circular(5.0),
       ),
-      child: DropdownButton<String>(
+      child: DropdownButton<Filters>(
         value: filterSelected,
         style: const TextStyle(
           color: Colors.white,
@@ -465,11 +465,11 @@ class _FinancePageState extends State<FinancePage> {
           height: 0,
         ),
         focusColor: const Color.fromARGB(255, 45, 48, 51),
-        items: Utils.filtersMap.values.map((String filter) {
+        items: Utils.filtersMap.keys.map((Filters filter) {
           return DropdownMenuItem(
             value: filter,
             child: Text(
-              filter,
+              Utils.filtersMap[filter]!,
             ),
           );
         }).toList(),
