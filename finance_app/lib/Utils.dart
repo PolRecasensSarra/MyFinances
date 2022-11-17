@@ -1,20 +1,22 @@
-import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+// Enum of all possible filters.
+enum Filters { all, day, week, month, halfyear, year }
+
 class Utils {
   // Decimal precision.
   static int decimalPrecission = 2;
-  // List of all filters.
-  static List<String> filters = [
-    "All",
-    "Day",
-    "Week",
-    "Month",
-    "6 months",
-    "Year"
-  ];
+  // Map with all the possible filters.
+  static Map<Filters, String> filtersMap = {
+    Filters.all: "All",
+    Filters.day: "Day",
+    Filters.week: "Week",
+    Filters.month: "Month",
+    Filters.halfyear: "6 months",
+    Filters.year: "Year"
+  };
 
   // Method that given a date time, formats it to day of the week if the date time is inside the current week or the day-month otherwise.
   // @param dateTime String the stored date time.
