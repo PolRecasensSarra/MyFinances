@@ -22,7 +22,7 @@ class _FinancePageState extends State<FinancePage> {
   // Enum variable that indicates the view type.
   ViewTypes _selectedViewType = ViewTypes.all;
   // Local entry list modified by the view selected type.
-  List<Entry> entryListByView = [];
+  List<Entry> entryListFiltered = [];
   // Selected filter.
   Filters filterSelected = Filters.month;
 
@@ -190,43 +190,43 @@ class _FinancePageState extends State<FinancePage> {
                       child: ListView.builder(
                         shrinkWrap: true,
                         controller: scrollController,
-                        itemCount: entryListByView.length,
+                        itemCount: entryListFiltered.length,
                         itemBuilder: (context, index) {
                           return Card(
                             color: Utils.getColorByEntryValue(
-                                entryListByView[index].value),
+                                entryListFiltered[index].value),
                             child: ListTile(
                               title: Text(
-                                entryListByView[index].concept,
+                                entryListFiltered[index].concept,
                                 style: const TextStyle(
                                   color: Colors.white,
                                 ),
                               ),
                               subtitle: Text(
                                 Utils.getFormattedDateTime(
-                                    entryListByView[index].date),
+                                    entryListFiltered[index].date),
                                 style: const TextStyle(
                                   color: Color.fromARGB(255, 180, 180, 180),
                                   fontSize: 10.0,
                                 ),
                               ),
                               trailing: Text(
-                                "${entryListByView[index].value.toPrecision(Utils.decimalPrecission)} €",
+                                "${entryListFiltered[index].value.toPrecision(Utils.decimalPrecission)} €",
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               focusColor: Utils.getColorByEntryValue(
-                                  entryListByView[index].value),
+                                  entryListFiltered[index].value),
                               hoverColor: Utils.getColorByEntryValue(
-                                  entryListByView[index].value),
+                                  entryListFiltered[index].value),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5.0),
                               ),
                               onLongPress: () {
                                 showAlertDialog(context, true,
-                                    entry: entryListByView[index]);
+                                    entry: entryListFiltered[index]);
                               },
                             ),
                           );
@@ -282,7 +282,7 @@ class _FinancePageState extends State<FinancePage> {
   double getBalance() {
     double balance = 0.0;
     // Iterate the expenses and incomes and add it to the balance.
-    for (var entry in entryListByView) {
+    for (var entry in entryListFiltered) {
       balance += entry.value;
     }
     return balance;
@@ -393,22 +393,23 @@ class _FinancePageState extends State<FinancePage> {
   void updateEntries() {
     updateEntriesByViewType();
     updateEntriesByFilter();
+    entryListFiltered = Utils.customSortByDate(entryListFiltered);
   }
 
   // Method that updates the entry list given a view type.
   void updateEntriesByViewType() {
     // Clear the list.
-    entryListByView.clear();
+    entryListFiltered.clear();
     // Get the entries given the view type.
     switch (_selectedViewType) {
       case ViewTypes.all:
-        entryListByView = List.from(infoManager.entryList);
+        entryListFiltered = List.from(infoManager.entryList);
         break;
       case ViewTypes.income:
         // For every entry, check if its value is positive and add it to the list.
         for (Entry entry in List.from(infoManager.entryList)) {
           if (entry.value >= 0.0) {
-            entryListByView.add(entry);
+            entryListFiltered.add(entry);
           }
         }
         break;
@@ -416,7 +417,7 @@ class _FinancePageState extends State<FinancePage> {
         // For every entry, check if its value is negative and add it to the list.
         for (Entry entry in List.from(infoManager.entryList)) {
           if (entry.value < 0.0) {
-            entryListByView.add(entry);
+            entryListFiltered.add(entry);
           }
         }
         break;
@@ -426,12 +427,12 @@ class _FinancePageState extends State<FinancePage> {
   // Method that updates the entry list given a filter.
   void updateEntriesByFilter() {
     List<Entry> tmpEntryList = [];
-    for (Entry entry in entryListByView) {
+    for (Entry entry in entryListFiltered) {
       if (Utils.filterEntryByDate(entry.date, filterSelected)) {
         tmpEntryList.add(entry);
       }
     }
-    entryListByView = List.from(tmpEntryList);
+    entryListFiltered = List.from(tmpEntryList);
   }
 
   // Custom Dropdown for the filters.

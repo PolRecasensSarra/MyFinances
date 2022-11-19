@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'Entry.dart';
+
 // Enum of all possible filters.
 enum Filters { all, day, week, month, halfyear, year }
 
@@ -130,11 +132,31 @@ class Utils {
   // @param endDate the end date to compare from.
   static bool isBetweenDates(
       DateTime givenDate, DateTime startDate, DateTime endDate) {
+    // TODO: will be used for the custom filter date.
     // TODO: ensure that endDate starts at 00:00.
     // Add 1 day to the end date to make it inclusive, because the DateTime starts from 00:00.
     endDate = endDate.add(const Duration(days: 1));
     return givenDate.isAfter(startDate) && givenDate.isBefore(endDate);
   }
+
+
+  // Method that order a list of Entry by date.
+  // @param entryList the list that has to be ordered by date.
+  // @param result the list ordered by date from newest to oldest.
+  static List<Entry> customSortByDate(List<Entry> entryList){
+    List<Entry> result = List.from(entryList);
+    result.sort(dateCompareSort);
+    return List.from(result);
+  }
+
+}
+
+// Custom sort method that compares two dates.
+int dateCompareSort(Entry dateA, Entry dateB){
+  DateTime dateTimeA = DateTime.parse(dateA.date);
+  DateTime dateTimeB = DateTime.parse(dateB.date);
+  // Compare reversed in order to get the list from newest to oldest dates.
+  return dateTimeB.compareTo(dateTimeA);
 }
 
 // Method that returns true if two dates are the same day of the same month and year.

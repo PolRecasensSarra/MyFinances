@@ -55,7 +55,7 @@ class InfoManager {
 
   // Method to add a new entry to the list.
   void addNewEntry(Entry entry) {
-    entryList.insert(0, entry);
+    entryList.add(entry);
   }
 
   // Method that returns the curent File object fo the save data file.
