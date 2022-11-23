@@ -15,13 +15,16 @@ class InfoManager {
     entryList.clear();
     // Get the save data file.
     File dataFile = await getSaveDataFile();
-    List<dynamic> jsonData;
+    Map<String, dynamic> jsonDataEntries;
+    List<dynamic> entries;
     // If the file exists, read it as a String.
     if (await dataFile.exists()) {
       String content = await dataFile.readAsString();
-      jsonData = jsonDecode(content);
+      jsonDataEntries = jsonDecode(content);
+      // Decode the entries. {"entries":[entry00, entry01...]}
+      entries = jsonDecode(jsonDataEntries["entries"]);
       // Iterate the jsonData and fill the entry list with the info.
-      for (var entry in jsonData) {
+      for (var entry in entries) {
         entryList.add(Entry.fromJson(entry));
       }
     }
@@ -33,6 +36,7 @@ class InfoManager {
     File dataFile = await getSaveDataFile();
     // Encode the entry list as a json string.
     String encodedData = jsonEncode(entryList);
+    encodedData = jsonEncode({"entries": encodedData});
     // Save the data. If the file does not exist, it will be created.
     await dataFile.writeAsString(encodedData);
   }
