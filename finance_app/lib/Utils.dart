@@ -51,8 +51,8 @@ class Utils {
   // Return a color depending on if the value is positive or negative.
   static Color getColorByEntryValue(double value) {
     return value >= 0.0
-        ? const Color.fromARGB(255, 94, 128, 95)
-        : const Color.fromARGB(255, 146, 101, 101);
+        ? const Color.fromARGB(255, 101, 129, 102)
+        : const Color.fromARGB(255, 150, 112, 112);
   }
 
   // Method that checks if the entryDate fits inside the filte.

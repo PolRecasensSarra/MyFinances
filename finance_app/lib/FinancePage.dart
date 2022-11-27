@@ -112,7 +112,7 @@ class _FinancePageState extends State<FinancePage> {
                       gradient: const LinearGradient(
                         colors: [
                           Colors.blueAccent,
-                          Color.fromARGB(255, 135, 30, 233)
+                          Color.fromARGB(255, 164, 93, 230)
                         ],
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
@@ -184,55 +184,58 @@ class _FinancePageState extends State<FinancePage> {
                       ),
                       borderRadius: BorderRadius.circular(5.0),
                     ),
-                    child: Scrollbar(
-                      thumbVisibility: true,
-                      controller: scrollController,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        controller: scrollController,
-                        itemCount: entryListFiltered.length,
-                        itemBuilder: (context, index) {
-                          return Card(
-                            color: Utils.getColorByEntryValue(
-                                entryListFiltered[index].value),
-                            child: ListTile(
-                              title: Text(
-                                entryListFiltered[index].concept,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                              subtitle: Text(
-                                Utils.getFormattedDateTime(
-                                    entryListFiltered[index].date),
-                                style: const TextStyle(
-                                  color: Color.fromARGB(255, 180, 180, 180),
-                                  fontSize: 10.0,
-                                ),
-                              ),
-                              trailing: Text(
-                                "${entryListFiltered[index].value.toPrecision(Utils.decimalPrecission)} €",
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              focusColor: Utils.getColorByEntryValue(
-                                  entryListFiltered[index].value),
-                              hoverColor: Utils.getColorByEntryValue(
-                                  entryListFiltered[index].value),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                              ),
-                              onLongPress: () {
-                                showAlertDialog(context, true,
-                                    entry: entryListFiltered[index]);
+                    child: entryListFiltered.isEmpty
+                        ? emptyBalanceListPlaceholder()
+                        : Scrollbar(
+                            thumbVisibility: true,
+                            controller: scrollController,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              controller: scrollController,
+                              itemCount: entryListFiltered.length,
+                              itemBuilder: (context, index) {
+                                return Card(
+                                  color: Utils.getColorByEntryValue(
+                                      entryListFiltered[index].value),
+                                  child: ListTile(
+                                    title: Text(
+                                      entryListFiltered[index].concept,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    subtitle: Text(
+                                      Utils.getFormattedDateTime(
+                                          entryListFiltered[index].date),
+                                      style: const TextStyle(
+                                        color:
+                                            Color.fromARGB(255, 196, 196, 196),
+                                        fontSize: 10.0,
+                                      ),
+                                    ),
+                                    trailing: Text(
+                                      "${entryListFiltered[index].value.toPrecision(Utils.decimalPrecission)} €",
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    focusColor: Utils.getColorByEntryValue(
+                                        entryListFiltered[index].value),
+                                    hoverColor: Utils.getColorByEntryValue(
+                                        entryListFiltered[index].value),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                    ),
+                                    onLongPress: () {
+                                      showAlertDialog(context, true,
+                                          entry: entryListFiltered[index]);
+                                    },
+                                  ),
+                                );
                               },
                             ),
-                          );
-                        },
-                      ),
-                    ),
+                          ),
                   ),
                 ),
                 const Expanded(
@@ -480,6 +483,29 @@ class _FinancePageState extends State<FinancePage> {
             updateEntries();
           });
         },
+      ),
+    );
+  }
+
+  Widget emptyBalanceListPlaceholder() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Text(
+            "Wow, it's really calm in here!",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            "Add a new entry to the balance.",
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ],
       ),
     );
   }
