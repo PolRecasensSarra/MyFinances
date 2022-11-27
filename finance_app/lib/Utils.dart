@@ -51,8 +51,8 @@ class Utils {
   // Return a color depending on if the value is positive or negative.
   static Color getColorByEntryValue(double value) {
     return value >= 0.0
-        ? const Color.fromARGB(255, 80, 95, 110)
-        : const Color.fromARGB(255, 94, 80, 110);
+        ? const Color.fromARGB(255, 94, 128, 95)
+        : const Color.fromARGB(255, 146, 101, 101);
   }
 
   // Method that checks if the entryDate fits inside the filte.
@@ -139,20 +139,18 @@ class Utils {
     return givenDate.isAfter(startDate) && givenDate.isBefore(endDate);
   }
 
-
   // Method that order a list of Entry by date.
   // @param entryList the list that has to be ordered by date.
   // @param result the list ordered by date from newest to oldest.
-  static List<Entry> customSortByDate(List<Entry> entryList){
+  static List<Entry> customSortByDate(List<Entry> entryList) {
     List<Entry> result = List.from(entryList);
     result.sort(dateCompareSort);
     return List.from(result);
   }
-
 }
 
 // Custom sort method that compares two dates.
-int dateCompareSort(Entry dateA, Entry dateB){
+int dateCompareSort(Entry dateA, Entry dateB) {
   DateTime dateTimeA = DateTime.parse(dateA.date);
   DateTime dateTimeB = DateTime.parse(dateB.date);
   // Compare reversed in order to get the list from newest to oldest dates.

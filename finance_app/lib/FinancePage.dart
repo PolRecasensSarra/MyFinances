@@ -70,7 +70,7 @@ class _FinancePageState extends State<FinancePage> {
         selectedLabelStyle: const TextStyle(
           fontWeight: FontWeight.bold,
         ),
-        selectedItemColor: const Color.fromARGB(255, 120, 187, 255),
+        selectedItemColor: const Color.fromARGB(255, 121, 170, 255),
         unselectedItemColor: Colors.white,
         backgroundColor: const Color.fromARGB(255, 39, 41, 43),
         items: const [
@@ -244,7 +244,7 @@ class _FinancePageState extends State<FinancePage> {
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       shape: const CircleBorder(),
-                      backgroundColor: const Color.fromARGB(255, 89, 138, 187),
+                      backgroundColor: const Color.fromARGB(255, 91, 151, 255),
                     ),
                     child: const Align(
                       alignment: Alignment.center,

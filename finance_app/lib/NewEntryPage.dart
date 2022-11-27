@@ -319,7 +319,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                               child: ElevatedButton(
                                 style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all(
-                                    Colors.blueAccent,
+                                    const Color.fromARGB(255, 94, 128, 95),
                                   ),
                                 ),
                                 child: const Text(
@@ -337,7 +337,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                               child: ElevatedButton(
                                 style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all(
-                                    const Color.fromARGB(255, 124, 69, 175),
+                                    const Color.fromARGB(255, 146, 101, 101),
                                   ),
                                 ),
                                 child: const Text(
