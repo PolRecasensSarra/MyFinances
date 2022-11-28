@@ -96,9 +96,23 @@ class _FinancePageState extends State<FinancePage> {
         child: Center(
           child: Padding(
             padding: const EdgeInsets.only(
-                left: 40.0, right: 40.0, bottom: 15.0, top: 20.0),
+                left: 40.0, right: 40.0, bottom: 15.0, top: 15.0),
             child: Column(
               children: [
+                const Expanded(
+                  flex: 4,
+                  child: Text(
+                    "Your balance",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const Expanded(
+                  flex: 2,
+                  child: SizedBox(),
+                ),
                 // Balance box.
                 Expanded(
                   flex: 21,
@@ -132,7 +146,7 @@ class _FinancePageState extends State<FinancePage> {
                   ),
                 ),
                 const Expanded(
-                  flex: 4,
+                  flex: 3,
                   child: SizedBox(),
                 ),
                 // History box.
@@ -219,7 +233,7 @@ class _FinancePageState extends State<FinancePage> {
                   ),
                 ),
                 const Expanded(
-                  flex: 2,
+                  flex: 1,
                   child: SizedBox(),
                 ),
                 Expanded(

@@ -49,7 +49,7 @@ class _FiltersPageState extends State<FiltersPage> {
                   child: TabBarView(
                     children: [
                       Text(
-                        "Classic mdoe",
+                        "Classic mode",
                       ),
                       Text(
                         "Advanced mode",
