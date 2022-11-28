@@ -52,222 +52,221 @@ class _FinancePageState extends State<FinancePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("My Finances"),
-        backgroundColor: const Color.fromARGB(255, 39, 41, 43),
-        actions: [
-          popUpMenuButton(),
-        ],
-      ),
-      resizeToAvoidBottomInset: true,
-      backgroundColor: const Color.fromARGB(255, 29, 31, 33),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedLabelStyle: const TextStyle(
-          fontWeight: FontWeight.bold,
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("My Finances"),
+          backgroundColor: const Color.fromARGB(255, 39, 41, 43),
+          actions: [
+            popUpMenuButton(),
+          ],
+          bottom: TabBar(
+            unselectedLabelColor: const Color.fromARGB(255, 182, 182, 182),
+            indicatorColor: Colors.blueAccent,
+            tabs: const [
+              Tab(
+                child: Text(
+                  "All",
+                ),
+              ),
+              Tab(
+                child: Text(
+                  "Incomes",
+                ),
+              ),
+              Tab(
+                child: Text(
+                  "Expenses",
+                ),
+              ),
+            ],
+            onTap: (value) {
+              _onItemTapped(value);
+            },
+          ),
         ),
-        selectedItemColor: const Color.fromARGB(255, 121, 170, 255),
-        unselectedItemColor: Colors.white,
-        backgroundColor: const Color.fromARGB(255, 39, 41, 43),
-        items: const [
-          BottomNavigationBarItem(
-            label: "Show All",
-            icon: Icon(
-              Icons.savings,
-            ),
-          ),
-          BottomNavigationBarItem(
-            label: "Show Incomes",
-            icon: Icon(
-              Icons.paid,
-            ),
-          ),
-          BottomNavigationBarItem(
-            label: "Show Expenses",
-            icon: Icon(
-              Icons.payments,
-            ),
-          ),
-        ],
-        currentIndex: _selectedViewType.index,
-        onTap: _onItemTapped,
-      ),
-      body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.only(
-                left: 40.0, right: 40.0, bottom: 15.0, top: 15.0),
-            child: Column(
-              children: [
-                const Expanded(
-                  flex: 4,
-                  child: Text(
-                    "Your balance",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                const Expanded(
-                  flex: 2,
-                  child: SizedBox(),
-                ),
-                // Balance box.
-                Expanded(
-                  flex: 21,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      gradient: const LinearGradient(
-                        colors: [
-                          Colors.blueAccent,
-                          Color.fromARGB(255, 164, 93, 230)
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        tileMode: TileMode.mirror,
+        resizeToAvoidBottomInset: true,
+        backgroundColor: const Color.fromARGB(255, 29, 31, 33),
+        body: SafeArea(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  left: 40.0, right: 40.0, bottom: 20.0, top: 15.0),
+              child: Column(
+                children: [
+                  const Expanded(
+                    flex: 4,
+                    child: Text(
+                      "Your balance",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 10.0),
-                      child: Center(
-                        child: Text(
-                          getFormattedBalance(),
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 30.0,
-                            color: Colors.white,
-                          ),
+                  ),
+                  const Expanded(
+                    flex: 2,
+                    child: SizedBox(),
+                  ),
+                  // Balance box.
+                  Expanded(
+                    flex: 21,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        gradient: const LinearGradient(
+                          colors: [
+                            Colors.blueAccent,
+                            Color.fromARGB(255, 164, 93, 230)
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          tileMode: TileMode.mirror,
                         ),
                       ),
-                    ),
-                  ),
-                ),
-                const Expanded(
-                  flex: 3,
-                  child: SizedBox(),
-                ),
-                // History box.
-                Expanded(
-                  flex: 55,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(34, 146, 146, 146),
-                      border: Border.all(
-                        color: const Color.fromARGB(45, 146, 146, 146),
-                        width: 2.0,
-                        style: BorderStyle.solid,
-                      ),
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    child: entryListFiltered.isEmpty
-                        ? emptyBalanceListPlaceholder()
-                        : Scrollbar(
-                            thumbVisibility: true,
-                            controller: scrollController,
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              controller: scrollController,
-                              itemCount: entryListFiltered.length,
-                              itemBuilder: (context, index) {
-                                return Card(
-                                  color: Utils.getColorByEntryValue(
-                                      entryListFiltered[index].value),
-                                  child: ListTile(
-                                    title: Text(
-                                      entryListFiltered[index].concept,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    subtitle: Text(
-                                      Utils.getFormattedDateTime(
-                                          entryListFiltered[index].date),
-                                      style: const TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 196, 196, 196),
-                                        fontSize: 10.0,
-                                      ),
-                                    ),
-                                    trailing: Text(
-                                      "${entryListFiltered[index].value.toPrecision(Utils.decimalPrecission)} €",
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    focusColor: Utils.getColorByEntryValue(
-                                        entryListFiltered[index].value),
-                                    hoverColor: Utils.getColorByEntryValue(
-                                        entryListFiltered[index].value),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                    ),
-                                    onLongPress: () {
-                                      showAlertDialog(context, true,
-                                          entry: entryListFiltered[index]);
-                                    },
-                                  ),
-                                );
-                              },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 10.0),
+                        child: Center(
+                          child: Text(
+                            getFormattedBalance(),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 30.0,
+                              color: Colors.white,
                             ),
                           ),
-                  ),
-                ),
-                const Expanded(
-                  flex: 1,
-                  child: SizedBox(),
-                ),
-                Expanded(
-                  flex: 4,
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Filter: ${Utils.filtersMap[filterSelected]!}",
-                      style: const TextStyle(
-                        fontSize: 12,
-                      ),
-                    ),
-                  ),
-                ),
-                const Expanded(
-                  flex: 1,
-                  child: SizedBox(),
-                ),
-                Expanded(
-                  flex: 9,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: const CircleBorder(),
-                      backgroundColor: const Color.fromARGB(255, 91, 151, 255),
-                    ),
-                    child: const Align(
-                      alignment: Alignment.center,
-                      child: Icon(
-                        Icons.add,
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context)
-                          .push(
-                        MaterialPageRoute(
-                          builder: (contextCallback) => NewEntryPage(
-                            infoManager: infoManager,
-                          ),
                         ),
-                      )
-                          .then((_) {
-                        setState(() {
-                          // Update the entries when the entry page pops.
-                          updateEntries();
-                        });
-                      });
-                    },
+                      ),
+                    ),
                   ),
-                ),
-              ],
+                  const Expanded(
+                    flex: 3,
+                    child: SizedBox(),
+                  ),
+                  // History box.
+                  Expanded(
+                    flex: 55,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(34, 146, 146, 146),
+                        border: Border.all(
+                          color: const Color.fromARGB(45, 146, 146, 146),
+                          width: 2.0,
+                          style: BorderStyle.solid,
+                        ),
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      child: entryListFiltered.isEmpty
+                          ? emptyBalanceListPlaceholder()
+                          : Scrollbar(
+                              thumbVisibility: true,
+                              controller: scrollController,
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                controller: scrollController,
+                                itemCount: entryListFiltered.length,
+                                itemBuilder: (context, index) {
+                                  return Card(
+                                    color: Utils.getColorByEntryValue(
+                                        entryListFiltered[index].value),
+                                    child: ListTile(
+                                      title: Text(
+                                        entryListFiltered[index].concept,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      subtitle: Text(
+                                        Utils.getFormattedDateTime(
+                                            entryListFiltered[index].date),
+                                        style: const TextStyle(
+                                          color: Color.fromARGB(
+                                              255, 196, 196, 196),
+                                          fontSize: 10.0,
+                                        ),
+                                      ),
+                                      trailing: Text(
+                                        "${entryListFiltered[index].value.toPrecision(Utils.decimalPrecission)} €",
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      focusColor: Utils.getColorByEntryValue(
+                                          entryListFiltered[index].value),
+                                      hoverColor: Utils.getColorByEntryValue(
+                                          entryListFiltered[index].value),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(5.0),
+                                      ),
+                                      onLongPress: () {
+                                        showAlertDialog(context, true,
+                                            entry: entryListFiltered[index]);
+                                      },
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                    ),
+                  ),
+                  const Expanded(
+                    flex: 1,
+                    child: SizedBox(),
+                  ),
+                  Expanded(
+                    flex: 4,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Filter: ${Utils.filtersMap[filterSelected]!}",
+                        style: const TextStyle(
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Expanded(
+                    flex: 1,
+                    child: SizedBox(),
+                  ),
+                  Expanded(
+                    flex: 9,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: const CircleBorder(),
+                        backgroundColor:
+                            const Color.fromARGB(255, 91, 151, 255),
+                      ),
+                      child: const Align(
+                        alignment: Alignment.center,
+                        child: Icon(
+                          Icons.add,
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context)
+                            .push(
+                          MaterialPageRoute(
+                            builder: (contextCallback) => NewEntryPage(
+                              infoManager: infoManager,
+                            ),
+                          ),
+                        )
+                            .then((_) {
+                          setState(() {
+                            // Update the entries when the entry page pops.
+                            updateEntries();
+                          });
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
