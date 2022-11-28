@@ -1,4 +1,5 @@
 import 'package:finance_app/Entry.dart';
+import 'package:finance_app/FiltersPage.dart';
 import 'package:finance_app/NewEntryPage.dart';
 import 'package:finance_app/InfoManager.dart';
 import 'package:flutter/material.dart';
@@ -56,12 +57,7 @@ class _FinancePageState extends State<FinancePage> {
         title: const Text("My Finances"),
         backgroundColor: const Color.fromARGB(255, 39, 41, 43),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.more_vert,
-            ),
-          ),
+          popUpMenuButton(),
         ],
       ),
       resizeToAvoidBottomInset: true,
@@ -136,39 +132,7 @@ class _FinancePageState extends State<FinancePage> {
                   ),
                 ),
                 const Expanded(
-                  flex: 3,
-                  child: SizedBox(),
-                ),
-                Expanded(
-                  flex: 8,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: dropDownFilters(),
-                        ),
-                      ),
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: IconButton(
-                            onPressed: () {
-                              showAlertDialog(context, false);
-                            },
-                            icon: const Icon(
-                              Icons.delete_forever,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const Expanded(
-                  flex: 3,
+                  flex: 4,
                   child: SizedBox(),
                 ),
                 // History box.
@@ -239,11 +203,27 @@ class _FinancePageState extends State<FinancePage> {
                   ),
                 ),
                 const Expanded(
+                  flex: 1,
+                  child: SizedBox(),
+                ),
+                Expanded(
+                  flex: 4,
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Filter: ${Utils.filtersMap[filterSelected]!}",
+                      style: const TextStyle(
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                ),
+                const Expanded(
                   flex: 2,
                   child: SizedBox(),
                 ),
                 Expanded(
-                  flex: 8,
+                  flex: 9,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       shape: const CircleBorder(),
@@ -439,7 +419,7 @@ class _FinancePageState extends State<FinancePage> {
   }
 
   // Custom Dropdown for the filters.
-  Widget dropDownFilters() {
+  /*Widget dropDownFilters() {
     return Container(
       padding: const EdgeInsets.only(left: 15.0, right: 15.0),
       decoration: BoxDecoration(
@@ -485,8 +465,9 @@ class _FinancePageState extends State<FinancePage> {
         },
       ),
     );
-  }
+  }*/
 
+  // Method that returns a placeholder text when there are no entries.
   Widget emptyBalanceListPlaceholder() {
     return Center(
       child: Column(
@@ -507,6 +488,63 @@ class _FinancePageState extends State<FinancePage> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget popUpMenuButton() {
+    return PopupMenuButton(
+      itemBuilder: (context) {
+        return [
+          PopupMenuItem(
+            value: 0,
+            child: Row(
+              children: const [
+                Text(
+                  "Filters",
+                ),
+                Icon(
+                  Icons.filter_alt_outlined,
+                ),
+              ],
+            ),
+          ),
+          PopupMenuItem(
+            value: 1,
+            child: Row(
+              children: const [
+                Text(
+                  "Delete History",
+                ),
+                Icon(
+                  Icons.delete_forever_rounded,
+                ),
+              ],
+            ),
+          ),
+        ];
+      },
+      onSelected: (value) {
+        if (value == 0) {
+          Navigator.of(context)
+              .push(
+            MaterialPageRoute(
+              builder: (contextCallback) => FiltersPage(),
+            ),
+          )
+              .then((value) {
+            setState(() {
+              // Check that the value recieved is valid and is type Filters.
+              if (value != null && value is Filters) {
+                filterSelected = value;
+              }
+              // Update the entries when the entry page pops.
+              updateEntries();
+            });
+          });
+        } else if (value == 1) {
+          showAlertDialog(context, false);
+        }
+      },
     );
   }
 }
