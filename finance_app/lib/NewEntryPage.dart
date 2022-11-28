@@ -142,7 +142,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                             contentPadding:
                                 const EdgeInsets.all(8.0), //here your padding
                             hintText: "Add expense or income value*",
-                            suffixIcon: const Icon(Icons.attach_money_outlined,
+                            suffixIcon: const Icon(Icons.euro_symbol,
                                 color: Colors.white54),
                             alignLabelWithHint: true,
                             hintStyle: const TextStyle(

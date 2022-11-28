@@ -66,8 +66,8 @@ class _FinancePageState extends State<FinancePage> {
         selectedLabelStyle: const TextStyle(
           fontWeight: FontWeight.bold,
         ),
-        selectedItemColor: const Color.fromARGB(255, 121, 170, 255),
-        unselectedItemColor: Colors.white,
+        selectedItemColor: const Color.fromARGB(255, 255, 255, 255),
+        unselectedItemColor: const Color.fromARGB(255, 194, 194, 194),
         backgroundColor: const Color.fromARGB(255, 39, 41, 43),
         items: const [
           BottomNavigationBarItem(
@@ -79,7 +79,7 @@ class _FinancePageState extends State<FinancePage> {
           BottomNavigationBarItem(
             label: "Show Incomes",
             icon: Icon(
-              Icons.paid,
+              Icons.euro_symbol_outlined,
             ),
           ),
           BottomNavigationBarItem(

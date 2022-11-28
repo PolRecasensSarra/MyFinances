@@ -45,15 +45,11 @@ class _FiltersPageState extends State<FiltersPage> {
               padding: const EdgeInsets.only(
                   left: 40.0, right: 40.0, bottom: 40.0, top: 20.0),
               child: Column(children: [
-                const Expanded(
+                Expanded(
                   child: TabBarView(
                     children: [
-                      Text(
-                        "Classic mode",
-                      ),
-                      Text(
-                        "Advanced mode",
-                      ),
+                      classicMode(),
+                      advancedMode(),
                     ],
                   ),
                 ),
@@ -76,5 +72,15 @@ class _FiltersPageState extends State<FiltersPage> {
         ),
       ),
     );
+  }
+
+  // Method that returns the classic mode view.
+  Widget classicMode() {
+    return const Text("Classic Mode");
+  }
+
+  // Method that returns the advanced mode view.
+  Widget advancedMode() {
+    return const Text("Advanced Mode");
   }
 }
