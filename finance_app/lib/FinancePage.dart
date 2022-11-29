@@ -123,17 +123,17 @@ class _FinancePageState extends State<FinancePage> {
             child: Column(
               children: [
                 const Expanded(
-                  flex: 4,
+                  flex: 5,
                   child: Text(
                     "Your balance",
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
                 const Expanded(
-                  flex: 3,
+                  flex: 2,
                   child: SizedBox(),
                 ),
                 // Balance box.
