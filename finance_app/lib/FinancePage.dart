@@ -92,6 +92,29 @@ class _FinancePageState extends State<FinancePage> {
         currentIndex: _selectedViewType.index,
         onTap: _onItemTapped,
       ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: const Color.fromARGB(255, 79, 135, 231),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          Navigator.of(context)
+              .push(
+            MaterialPageRoute(
+              builder: (contextCallback) => NewEntryPage(
+                infoManager: infoManager,
+              ),
+            ),
+          )
+              .then((_) {
+            setState(() {
+              // Update the entries when the entry page pops.
+              updateEntries();
+            });
+          });
+        },
+      ),
       body: SafeArea(
         child: Center(
           child: Padding(
@@ -110,12 +133,12 @@ class _FinancePageState extends State<FinancePage> {
                   ),
                 ),
                 const Expanded(
-                  flex: 2,
+                  flex: 3,
                   child: SizedBox(),
                 ),
                 // Balance box.
                 Expanded(
-                  flex: 21,
+                  flex: 22,
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
@@ -151,7 +174,7 @@ class _FinancePageState extends State<FinancePage> {
                 ),
                 // History box.
                 Expanded(
-                  flex: 55,
+                  flex: 62,
                   child: Container(
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(34, 146, 146, 146),
@@ -235,37 +258,6 @@ class _FinancePageState extends State<FinancePage> {
                 const Expanded(
                   flex: 1,
                   child: SizedBox(),
-                ),
-                Expanded(
-                  flex: 9,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: const CircleBorder(),
-                      backgroundColor: const Color.fromARGB(255, 91, 151, 255),
-                    ),
-                    child: const Align(
-                      alignment: Alignment.center,
-                      child: Icon(
-                        Icons.add,
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context)
-                          .push(
-                        MaterialPageRoute(
-                          builder: (contextCallback) => NewEntryPage(
-                            infoManager: infoManager,
-                          ),
-                        ),
-                      )
-                          .then((_) {
-                        setState(() {
-                          // Update the entries when the entry page pops.
-                          updateEntries();
-                        });
-                      });
-                    },
-                  ),
                 ),
               ],
             ),
@@ -432,55 +424,6 @@ class _FinancePageState extends State<FinancePage> {
     entryListFiltered = List.from(tmpEntryList);
   }
 
-  // Custom Dropdown for the filters.
-  /*Widget dropDownFilters() {
-    return Container(
-      padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(34, 146, 146, 146),
-        border: Border.all(
-          color: const Color.fromARGB(45, 146, 146, 146),
-          width: 2.0,
-          style: BorderStyle.solid,
-        ),
-        borderRadius: BorderRadius.circular(5.0),
-      ),
-      child: DropdownButton<Filters>(
-        value: filterSelected,
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-        ),
-        icon: const Icon(
-          Icons.arrow_downward,
-          color: Colors.white,
-        ),
-        iconSize: 20,
-        elevation: 16,
-        dropdownColor: const Color.fromARGB(255, 45, 48, 51),
-        underline: Container(
-          height: 0,
-        ),
-        focusColor: const Color.fromARGB(255, 45, 48, 51),
-        items: Utils.filtersMap.keys.map((Filters filter) {
-          return DropdownMenuItem(
-            value: filter,
-            child: Text(
-              Utils.filtersMap[filter]!,
-            ),
-          );
-        }).toList(),
-        onChanged: (newValue) {
-          setState(() {
-            filterSelected = newValue!;
-            updateEntries();
-          });
-        },
-      ),
-    );
-  }*/
-
   // Method that returns a placeholder text when there are no entries.
   Widget emptyBalanceListPlaceholder() {
     return Center(
@@ -509,35 +452,22 @@ class _FinancePageState extends State<FinancePage> {
     return PopupMenuButton(
       itemBuilder: (context) {
         return [
-          PopupMenuItem(
+          const PopupMenuItem(
             value: 0,
-            child: Row(
-              children: const [
-                Text(
-                  "Filters",
-                ),
-                Icon(
-                  Icons.filter_alt_outlined,
-                ),
-              ],
+            child: Text(
+              "Filters",
             ),
           ),
-          PopupMenuItem(
+          const PopupMenuItem(
             value: 1,
-            child: Row(
-              children: const [
-                Text(
-                  "Delete History",
-                ),
-                Icon(
-                  Icons.delete_forever_rounded,
-                ),
-              ],
+            child: Text(
+              "Delete History",
             ),
           ),
         ];
       },
       onSelected: (value) {
+        // Filter option selected.
         if (value == 0) {
           Navigator.of(context)
               .push(
@@ -555,7 +485,9 @@ class _FinancePageState extends State<FinancePage> {
               updateEntries();
             });
           });
-        } else if (value == 1) {
+        }
+        // Delete history record option selected.
+        else if (value == 1) {
           showAlertDialog(context, false);
         }
       },
