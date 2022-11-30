@@ -114,6 +114,8 @@ class _FiltersPageState extends State<FiltersPage> {
   // Method that returns the classic mode view.
   Widget classicMode() {
     return Container(
+      padding:
+          const EdgeInsets.only(left: 5.0, right: 5.0, bottom: 5.0, top: 5.0),
       decoration: BoxDecoration(
         color: const Color.fromARGB(34, 146, 146, 146),
         border: Border.all(
@@ -127,6 +129,7 @@ class _FiltersPageState extends State<FiltersPage> {
         itemCount: checkboxList.length,
         itemBuilder: (context, index) {
           return Card(
+            color: const Color.fromARGB(255, 78, 78, 78),
             child: CheckboxListTile(
               value: checkboxList[index].checked,
               title: Text(
