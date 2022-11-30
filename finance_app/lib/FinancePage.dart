@@ -472,7 +472,8 @@ class _FinancePageState extends State<FinancePage> {
           Navigator.of(context)
               .push(
             MaterialPageRoute(
-              builder: (contextCallback) => FiltersPage(),
+              builder: (contextCallback) =>
+                  FiltersPage(currentFilter: filterSelected),
             ),
           )
               .then((value) {

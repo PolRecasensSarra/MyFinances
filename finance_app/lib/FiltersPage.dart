@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'Utils.dart';
 
 class FiltersPage extends StatefulWidget {
-  const FiltersPage({super.key});
+  final Filters currentFilter;
+  const FiltersPage({super.key, required this.currentFilter});
 
   @override
   State<FiltersPage> createState() => _FiltersPageState();
@@ -12,6 +13,13 @@ class FiltersPage extends StatefulWidget {
 class _FiltersPageState extends State<FiltersPage> {
   // Selected filter.
   Filters filterSelected = Filters.month;
+  List<CheckBoxFilterTile> checkboxList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    generateCheckBoxList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +28,7 @@ class _FiltersPageState extends State<FiltersPage> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text(
-            "Apply filter",
+            "Filters",
           ),
           bottom: const TabBar(
             unselectedLabelColor: Color.fromARGB(255, 182, 182, 182),
@@ -44,29 +52,58 @@ class _FiltersPageState extends State<FiltersPage> {
             child: Padding(
               padding: const EdgeInsets.only(
                   left: 40.0, right: 40.0, bottom: 40.0, top: 20.0),
-              child: Column(children: [
-                Expanded(
-                  child: TabBarView(
-                    children: [
-                      classicMode(),
-                      advancedMode(),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pop(context, filterSelected);
-                      },
-                      child: const Text(
-                        "Apply",
+              child: Column(
+                children: [
+                  const Expanded(
+                    flex: 5,
+                    child: Text(
+                      "Select a filter",
+                      style: TextStyle(
+                        fontSize: 20,
                       ),
                     ),
                   ),
-                ),
-              ]),
+                  const Expanded(
+                    flex: 3,
+                    child: SizedBox(),
+                  ),
+                  Expanded(
+                    flex: 81,
+                    child: TabBarView(
+                      children: [
+                        classicMode(),
+                        advancedMode(),
+                      ],
+                    ),
+                  ),
+                  const Expanded(
+                    flex: 3,
+                    child: SizedBox(),
+                  ),
+                  Expanded(
+                    flex: 8,
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: SizedBox(
+                        height: double.infinity,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                              const Color.fromARGB(255, 79, 135, 231),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context, filterSelected);
+                          },
+                          child: const Text(
+                            "Apply",
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -76,11 +113,77 @@ class _FiltersPageState extends State<FiltersPage> {
 
   // Method that returns the classic mode view.
   Widget classicMode() {
-    return const Text("Classic Mode");
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(34, 146, 146, 146),
+        border: Border.all(
+          color: const Color.fromARGB(45, 146, 146, 146),
+          width: 2.0,
+          style: BorderStyle.solid,
+        ),
+        borderRadius: BorderRadius.circular(5.0),
+      ),
+      child: ListView.builder(
+        itemCount: checkboxList.length,
+        itemBuilder: (context, index) {
+          return Card(
+            child: CheckboxListTile(
+              value: checkboxList[index].checked,
+              title: Text(
+                Utils.filtersMap[checkboxList[index].filter]!,
+              ),
+              activeColor: const Color.fromARGB(255, 79, 135, 231),
+              onChanged: (bool? value) {
+                itemChanged(value!, index);
+              },
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  // Function called when a checkbox is clicked.
+  // @param value Bool if the checkbox has been selected or deselected.
+  // @param index the selected checkbox index in the list.
+  void itemChanged(bool value, int index) {
+    setState(() {
+      if (value && !checkboxList[index].checked) {
+        checkboxList[index].checked = value;
+
+        // Save the new selected filter.
+        filterSelected = checkboxList[index].filter;
+
+        // Set all the checkbox that are not the selected one to false.
+        for (var element in checkboxList) {
+          if (element.filter != filterSelected) {
+            element.checked = false;
+          }
+        }
+      }
+    });
   }
 
   // Method that returns the advanced mode view.
   Widget advancedMode() {
     return const Text("Advanced Mode");
   }
+
+  // Method that generates the checkbox list with all the filters.
+  generateCheckBoxList() {
+    filterSelected = widget.currentFilter;
+    checkboxList.clear();
+    for (var key in Utils.filtersMap.keys) {
+      checkboxList
+          .add(CheckBoxFilterTile(filter: key, checked: key == filterSelected));
+    }
+  }
+}
+
+// Class for the checbox tile filter.
+class CheckBoxFilterTile {
+  Filters filter = Filters.month;
+  bool checked = false;
+  // Class constructor.
+  CheckBoxFilterTile({required this.filter, required this.checked});
 }
