@@ -34,94 +34,73 @@ class _FiltersPageState extends State<FiltersPage> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            "Filters",
-          ),
-          bottom: const TabBar(
-            unselectedLabelColor: Color.fromARGB(255, 182, 182, 182),
-            indicatorColor: Colors.blueAccent,
-            tabs: [
-              Tab(
-                child: Text(
-                  "Classic",
-                ),
-              ),
-              Tab(
-                child: Text(
-                  "Advanced",
-                ),
-              ),
-            ],
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          "Filters",
         ),
-        body: SafeArea(
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  left: 40.0, right: 40.0, bottom: 20.0, top: 10.0),
-              child: Column(
-                children: [
-                  const Expanded(
-                    flex: 8,
-                    child: Text(
-                      "Select a filter",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+      ),
+      body: SafeArea(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(
+                left: 40.0, right: 40.0, bottom: 20.0, top: 20.0),
+            child: Column(
+              children: [
+                const Expanded(
+                  flex: 8,
+                  child: Text(
+                    "Select a filter to apply",
+                    style: TextStyle(
+                      fontSize: 20,
                     ),
                   ),
-                  Expanded(
-                    flex: 70,
-                    child: TabBarView(
-                      children: [
-                        classicMode(),
-                        advancedMode(),
-                      ],
-                    ),
-                  ),
-                  const Expanded(
-                    flex: 2,
-                    child: SizedBox(),
-                  ),
-                  Expanded(
-                    flex: 12,
-                    child: filterSelected == Filters.custom
-                        ? customDateSelector()
-                        : Container(),
-                  ),
-                  const Expanded(
-                    flex: 1,
-                    child: SizedBox(),
-                  ),
-                  Expanded(
-                    flex: 7,
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: SizedBox(
-                        height: double.infinity,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                              const Color.fromARGB(255, 79, 135, 231),
-                            ),
+                ),
+                const Expanded(
+                  flex: 1,
+                  child: SizedBox(),
+                ),
+                Expanded(
+                  flex: 70,
+                  child: classicMode(),
+                ),
+                const Expanded(
+                  flex: 2,
+                  child: SizedBox(),
+                ),
+                Expanded(
+                  flex: 12,
+                  child: filterSelected == Filters.custom
+                      ? customDateSelector()
+                      : Container(),
+                ),
+                const Expanded(
+                  flex: 1,
+                  child: SizedBox(),
+                ),
+                Expanded(
+                  flex: 6,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: SizedBox(
+                      height: double.infinity,
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                            const Color.fromARGB(255, 79, 135, 231),
                           ),
-                          onPressed: () {
-                            Navigator.pop(context, filterSelected);
-                          },
-                          child: const Text(
-                            "Apply",
-                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context, filterSelected);
+                        },
+                        child: const Text(
+                          "Apply",
                         ),
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -202,13 +181,8 @@ class _FiltersPageState extends State<FiltersPage> {
     });
   }
 
-  // Method that returns the advanced mode view.
-  Widget advancedMode() {
-    return const Text("Advanced Mode");
-  }
-
   // Method that generates the checkbox list with all the filters.
-  generateCheckBoxList() {
+  void generateCheckBoxList() {
     filterSelected = widget.currentFilter;
     checkboxList.clear();
     for (var key in Utils.filtersMap.keys) {
