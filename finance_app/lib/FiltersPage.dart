@@ -19,14 +19,17 @@ class _FiltersPageState extends State<FiltersPage> {
   ScrollController scrollController = ScrollController();
   TextEditingController dateStartController = TextEditingController();
   TextEditingController dateEndController = TextEditingController();
-  // Dates for the custom filter.
-  DateTime dateStart = DateTime.now();
-  DateTime dateEnd = DateTime.now();
 
   @override
   void initState() {
     super.initState();
     generateCheckBoxList();
+    dateStartController.text = Utils.getDateFormattedByLocale(
+        Utils.customFilterDateStart,
+        showHour: false);
+    dateEndController.text = Utils.getDateFormattedByLocale(
+        Utils.customFilterDateEnd,
+        showHour: false);
   }
 
   @override
@@ -68,6 +71,7 @@ class _FiltersPageState extends State<FiltersPage> {
                       "Select a filter",
                       style: TextStyle(
                         fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
@@ -254,19 +258,20 @@ class _FiltersPageState extends State<FiltersPage> {
             onTap: () async {
               DateTime? pickedDate = await showDatePicker(
                   context: context,
-                  initialDate: dateStart,
+                  initialDate: Utils.customFilterDateStart,
                   firstDate: DateTime(2000),
                   lastDate: DateTime(2101));
               // Check if the picked date is a valid date and save it.
               if (pickedDate != null) {
                 setState(() {
-                  dateStart = pickedDate;
-                  dateStartController.text = Utils.getDateFormattedByLocale(
-                      dateStart,
-                      showHour: false);
+                  Utils.customFilterDateStart = pickedDate;
+                  // Set the new start date.
+                  setDateControllerValue();
+
                   // If the start date occurs after the end, force the end date to be the start date.
-                  if (dateStart.isAfter(dateEnd)) {
-                    dateEnd = dateStart;
+                  if (Utils.customFilterDateStart
+                      .isAfter(Utils.customFilterDateEnd)) {
+                    Utils.customFilterDateEnd = Utils.customFilterDateStart;
                     dateEndController.text = dateStartController.text;
                   }
                 });
@@ -314,20 +319,21 @@ class _FiltersPageState extends State<FiltersPage> {
             onTap: () async {
               DateTime? pickedDate = await showDatePicker(
                   context: context,
-                  initialDate: dateEnd,
+                  initialDate: Utils.customFilterDateEnd,
                   firstDate: DateTime(2000),
                   lastDate: DateTime(2101));
               // Check if the picked date is a valid date and save it.
               if (pickedDate != null) {
                 setState(() {
                   // Clamp the date so the end cannot be before the start.
-                  dateEnd = pickedDate;
-                  dateEndController.text =
-                      Utils.getDateFormattedByLocale(dateEnd, showHour: false);
+                  Utils.customFilterDateEnd = pickedDate;
+                  // Set the new end date.
+                  setDateControllerValue();
 
                   // If the start date occurs after the end, force the end date to be the start date.
-                  if (dateEnd.isBefore(dateStart)) {
-                    dateStart = dateEnd;
+                  if (Utils.customFilterDateEnd
+                      .isBefore(Utils.customFilterDateStart)) {
+                    Utils.customFilterDateStart = Utils.customFilterDateEnd;
                     dateStartController.text = dateEndController.text;
                   }
                 });
@@ -337,6 +343,15 @@ class _FiltersPageState extends State<FiltersPage> {
         ),
       ],
     );
+  }
+
+  void setDateControllerValue() {
+    dateStartController.text = Utils.getDateFormattedByLocale(
+        Utils.customFilterDateStart,
+        showHour: false);
+    dateEndController.text = Utils.getDateFormattedByLocale(
+        Utils.customFilterDateEnd,
+        showHour: false);
   }
 }
 
