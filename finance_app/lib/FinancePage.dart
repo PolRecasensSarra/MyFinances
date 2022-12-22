@@ -1,3 +1,4 @@
+import 'package:finance_app/CategoriesPage.dart';
 import 'package:finance_app/Entry.dart';
 import 'package:finance_app/FiltersPage.dart';
 import 'package:finance_app/NewEntryPage.dart';
@@ -9,6 +10,9 @@ import 'Utils.dart';
 
 // Enum with the different view types.
 enum ViewTypes { all, income, expense }
+
+// Enum with the different popup menu options.
+enum PopUpMenuOptions { filters, categories, deleteAll }
 
 class FinancePage extends StatefulWidget {
   const FinancePage({super.key});
@@ -453,13 +457,19 @@ class _FinancePageState extends State<FinancePage> {
       itemBuilder: (context) {
         return [
           const PopupMenuItem(
-            value: 0,
+            value: PopUpMenuOptions.filters,
             child: Text(
               "Filters",
             ),
           ),
           const PopupMenuItem(
-            value: 1,
+            value: PopUpMenuOptions.categories,
+            child: Text(
+              "Categories",
+            ),
+          ),
+          const PopupMenuItem(
+            value: PopUpMenuOptions.deleteAll,
             child: Text(
               "Delete History",
             ),
@@ -467,29 +477,38 @@ class _FinancePageState extends State<FinancePage> {
         ];
       },
       onSelected: (value) {
-        // Filter option selected.
-        if (value == 0) {
-          Navigator.of(context)
-              .push(
-            MaterialPageRoute(
-              builder: (contextCallback) =>
-                  FiltersPage(currentFilter: filterSelected),
-            ),
-          )
-              .then((value) {
-            setState(() {
-              // Check that the value recieved is valid and is type Filters.
-              if (value != null && value is Filters) {
-                filterSelected = value;
-              }
-              // Update the entries when the entry page pops.
-              updateEntries();
+        switch (value) {
+          case PopUpMenuOptions.filters:
+            Navigator.of(context)
+                .push(
+              MaterialPageRoute(
+                builder: (contextCallback) =>
+                    FiltersPage(currentFilter: filterSelected),
+              ),
+            )
+                .then((value) {
+              setState(() {
+                // Check that the value recieved is valid and is type Filters.
+                if (value != null && value is Filters) {
+                  filterSelected = value;
+                }
+                // Update the entries when the entry page pops.
+                updateEntries();
+              });
             });
-          });
-        }
-        // Delete history record option selected.
-        else if (value == 1) {
-          showAlertDialog(context, false);
+            break;
+          case PopUpMenuOptions.categories:
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (contextCallback) => CategoriesPage(
+                  currentFilter: filterSelected,
+                ),
+              ),
+            );
+            break;
+          case PopUpMenuOptions.deleteAll:
+            showAlertDialog(context, false);
+            break;
         }
       },
     );
