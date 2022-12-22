@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'Entry.dart';
 
 // Enum of all possible filters.
-enum Filters { all, day, week, month, halfyear, year }
+enum Filters { all, day, week, month, halfyear, year, custom }
 
 class Utils {
   // Decimal precision.
@@ -17,8 +17,12 @@ class Utils {
     Filters.week: "Week",
     Filters.month: "Month",
     Filters.halfyear: "6 months",
-    Filters.year: "Year"
+    Filters.year: "Year",
+    Filters.custom: "Custom"
   };
+
+  static DateTime customFilterDateStart = DateTime.now();
+  static DateTime customFilterDateEnd = DateTime.now();
 
   // Method that given a date time, formats it to day of the week if the date time is inside the current week or the day-month otherwise.
   // @param dateTime String the stored date time.
@@ -81,6 +85,10 @@ class Utils {
       case Filters.year:
         returnValue = isSameYear(entryDateTime, currentDateTime);
         break;
+      case Filters.custom:
+        returnValue = isBetweenDates(
+            entryDateTime, customFilterDateStart, customFilterDateEnd);
+        break;
     }
     return returnValue;
   }
@@ -103,7 +111,7 @@ class Utils {
   // Method that returns a DateTime with a given date and time.
   static DateTime addCustomHourToDate(DateTime dateTime, TimeOfDay timeOfDay) {
     return DateTime(dateTime.year, dateTime.month, dateTime.day, timeOfDay.hour,
-        timeOfDay.minute);
+        timeOfDay.minute, 0, 0);
   }
 
   static MaterialColor createMaterialColor(Color color) {
@@ -132,11 +140,15 @@ class Utils {
   // @param endDate the end date to compare from.
   static bool isBetweenDates(
       DateTime givenDate, DateTime startDate, DateTime endDate) {
-    // TODO: will be used for the custom filter date.
-    // TODO: ensure that endDate starts at 00:00.
+    // Ensure that the start date and end date start at 00:00. Otherwise the calculation will be wrong.
+    startDate =
+        addCustomHourToDate(startDate, const TimeOfDay(hour: 0, minute: 0));
+    endDate = addCustomHourToDate(endDate, const TimeOfDay(hour: 0, minute: 0));
     // Add 1 day to the end date to make it inclusive, because the DateTime starts from 00:00.
     endDate = endDate.add(const Duration(days: 1));
-    return givenDate.isAfter(startDate) && givenDate.isBefore(endDate);
+    return (givenDate.isAtSameMomentAs(startDate) ||
+            givenDate.isAfter(startDate)) &&
+        givenDate.isBefore(endDate);
   }
 
   // Method that order a list of Entry by date.

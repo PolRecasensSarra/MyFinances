@@ -1,4 +1,5 @@
 import 'package:finance_app/Entry.dart';
+import 'package:finance_app/FiltersPage.dart';
 import 'package:finance_app/NewEntryPage.dart';
 import 'package:finance_app/InfoManager.dart';
 import 'package:flutter/material.dart';
@@ -56,12 +57,7 @@ class _FinancePageState extends State<FinancePage> {
         title: const Text("My Finances"),
         backgroundColor: const Color.fromARGB(255, 39, 41, 43),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.more_vert,
-            ),
-          ),
+          popUpMenuButton(),
         ],
       ),
       resizeToAvoidBottomInset: true,
@@ -70,8 +66,8 @@ class _FinancePageState extends State<FinancePage> {
         selectedLabelStyle: const TextStyle(
           fontWeight: FontWeight.bold,
         ),
-        selectedItemColor: const Color.fromARGB(255, 121, 170, 255),
-        unselectedItemColor: Colors.white,
+        selectedItemColor: const Color.fromARGB(255, 255, 255, 255),
+        unselectedItemColor: const Color.fromARGB(255, 194, 194, 194),
         backgroundColor: const Color.fromARGB(255, 39, 41, 43),
         items: const [
           BottomNavigationBarItem(
@@ -83,7 +79,7 @@ class _FinancePageState extends State<FinancePage> {
           BottomNavigationBarItem(
             label: "Show Incomes",
             icon: Icon(
-              Icons.paid,
+              Icons.euro_symbol_outlined,
             ),
           ),
           BottomNavigationBarItem(
@@ -96,16 +92,53 @@ class _FinancePageState extends State<FinancePage> {
         currentIndex: _selectedViewType.index,
         onTap: _onItemTapped,
       ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: const Color.fromARGB(255, 79, 135, 231),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          Navigator.of(context)
+              .push(
+            MaterialPageRoute(
+              builder: (contextCallback) => NewEntryPage(
+                infoManager: infoManager,
+              ),
+            ),
+          )
+              .then((_) {
+            setState(() {
+              // Update the entries when the entry page pops.
+              updateEntries();
+            });
+          });
+        },
+      ),
       body: SafeArea(
         child: Center(
           child: Padding(
             padding: const EdgeInsets.only(
-                left: 40.0, right: 40.0, bottom: 15.0, top: 20.0),
+                left: 40.0, right: 40.0, bottom: 15.0, top: 15.0),
             child: Column(
               children: [
+                const Expanded(
+                  flex: 5,
+                  child: Text(
+                    "Your balance",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const Expanded(
+                  flex: 2,
+                  child: SizedBox(),
+                ),
                 // Balance box.
                 Expanded(
-                  flex: 21,
+                  flex: 22,
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
@@ -139,41 +172,9 @@ class _FinancePageState extends State<FinancePage> {
                   flex: 3,
                   child: SizedBox(),
                 ),
-                Expanded(
-                  flex: 8,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: dropDownFilters(),
-                        ),
-                      ),
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: IconButton(
-                            onPressed: () {
-                              showAlertDialog(context, false);
-                            },
-                            icon: const Icon(
-                              Icons.delete_forever,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const Expanded(
-                  flex: 3,
-                  child: SizedBox(),
-                ),
                 // History box.
                 Expanded(
-                  flex: 55,
+                  flex: 62,
                   child: Container(
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(34, 146, 146, 146),
@@ -239,39 +240,24 @@ class _FinancePageState extends State<FinancePage> {
                   ),
                 ),
                 const Expanded(
-                  flex: 2,
+                  flex: 1,
                   child: SizedBox(),
                 ),
                 Expanded(
-                  flex: 8,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: const CircleBorder(),
-                      backgroundColor: const Color.fromARGB(255, 91, 151, 255),
-                    ),
-                    child: const Align(
-                      alignment: Alignment.center,
-                      child: Icon(
-                        Icons.add,
+                  flex: 4,
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Filter: ${Utils.filtersMap[filterSelected]!}",
+                      style: const TextStyle(
+                        fontSize: 12,
                       ),
                     ),
-                    onPressed: () {
-                      Navigator.of(context)
-                          .push(
-                        MaterialPageRoute(
-                          builder: (contextCallback) => NewEntryPage(
-                            infoManager: infoManager,
-                          ),
-                        ),
-                      )
-                          .then((_) {
-                        setState(() {
-                          // Update the entries when the entry page pops.
-                          updateEntries();
-                        });
-                      });
-                    },
                   ),
+                ),
+                const Expanded(
+                  flex: 1,
+                  child: SizedBox(),
                 ),
               ],
             ),
@@ -438,55 +424,7 @@ class _FinancePageState extends State<FinancePage> {
     entryListFiltered = List.from(tmpEntryList);
   }
 
-  // Custom Dropdown for the filters.
-  Widget dropDownFilters() {
-    return Container(
-      padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(34, 146, 146, 146),
-        border: Border.all(
-          color: const Color.fromARGB(45, 146, 146, 146),
-          width: 2.0,
-          style: BorderStyle.solid,
-        ),
-        borderRadius: BorderRadius.circular(5.0),
-      ),
-      child: DropdownButton<Filters>(
-        value: filterSelected,
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-        ),
-        icon: const Icon(
-          Icons.arrow_downward,
-          color: Colors.white,
-        ),
-        iconSize: 20,
-        elevation: 16,
-        dropdownColor: const Color.fromARGB(255, 45, 48, 51),
-        underline: Container(
-          height: 0,
-        ),
-        focusColor: const Color.fromARGB(255, 45, 48, 51),
-        items: Utils.filtersMap.keys.map((Filters filter) {
-          return DropdownMenuItem(
-            value: filter,
-            child: Text(
-              Utils.filtersMap[filter]!,
-            ),
-          );
-        }).toList(),
-        onChanged: (newValue) {
-          setState(() {
-            filterSelected = newValue!;
-            updateEntries();
-          });
-        },
-      ),
-    );
-  }
-
+  // Method that returns a placeholder text when there are no entries.
   Widget emptyBalanceListPlaceholder() {
     return Center(
       child: Column(
@@ -507,6 +445,53 @@ class _FinancePageState extends State<FinancePage> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget popUpMenuButton() {
+    return PopupMenuButton(
+      itemBuilder: (context) {
+        return [
+          const PopupMenuItem(
+            value: 0,
+            child: Text(
+              "Filters",
+            ),
+          ),
+          const PopupMenuItem(
+            value: 1,
+            child: Text(
+              "Delete History",
+            ),
+          ),
+        ];
+      },
+      onSelected: (value) {
+        // Filter option selected.
+        if (value == 0) {
+          Navigator.of(context)
+              .push(
+            MaterialPageRoute(
+              builder: (contextCallback) =>
+                  FiltersPage(currentFilter: filterSelected),
+            ),
+          )
+              .then((value) {
+            setState(() {
+              // Check that the value recieved is valid and is type Filters.
+              if (value != null && value is Filters) {
+                filterSelected = value;
+              }
+              // Update the entries when the entry page pops.
+              updateEntries();
+            });
+          });
+        }
+        // Delete history record option selected.
+        else if (value == 1) {
+          showAlertDialog(context, false);
+        }
+      },
     );
   }
 }
