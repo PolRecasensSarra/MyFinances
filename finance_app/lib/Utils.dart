@@ -6,6 +6,8 @@ import 'Entry.dart';
 
 // Enum of all possible filters.
 enum Filters { all, day, week, month, halfyear, year, custom }
+// Enum of all the categories.
+enum Categories {others, services, housing, transportation, entertainment, bizum, clothes, supers, transfers, mobile, health, wellness}
 
 class Utils {
   // Decimal precision.
@@ -212,4 +214,10 @@ int weekNumber(DateTime date) {
 
 extension FormatDouble on double {
   double toPrecision(int n) => double.parse(toStringAsFixed(n));
+}
+
+extension StringExtension on String {
+    String capitalize() {
+      return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
+    }
 }

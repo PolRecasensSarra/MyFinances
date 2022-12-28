@@ -502,6 +502,7 @@ class _FinancePageState extends State<FinancePage> {
               MaterialPageRoute(
                 builder: (contextCallback) => CategoriesPage(
                   currentFilter: filterSelected,
+                  entryListFiltered: entryListFiltered,
                 ),
               ),
             );

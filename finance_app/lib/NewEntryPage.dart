@@ -34,14 +34,6 @@ class _NewEntryPageState extends State<NewEntryPage> {
       appBar: AppBar(
         title: const Text("My Finances"),
         backgroundColor: const Color.fromARGB(255, 39, 41, 43),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.more_vert,
-            ),
-          ),
-        ],
       ),
       resizeToAvoidBottomInset: true,
       backgroundColor: const Color.fromARGB(255, 29, 31, 33),
@@ -400,7 +392,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
           : DateTime.now().toString();
 
       // Add a new income to the list. Change the value sign given the entry type.
-      widget.infoManager.addNewEntry(Entry(concept, entryValue, entryDate));
+      widget.infoManager.addNewEntry(Entry(concept, entryValue, entryDate, Categories.others.index));
       // Save the data.
       widget.infoManager.saveBalanceToJson();
 
