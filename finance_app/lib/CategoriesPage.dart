@@ -30,7 +30,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
     Categories.bizum: const Color.fromARGB(255, 83, 201, 255),
     Categories.clothes: const Color.fromARGB(255, 221, 176, 160),
     Categories.supers: const Color.fromARGB(255, 230, 65, 53),
-    Categories.transfers: Color.fromARGB(255, 22, 148, 135),
+    Categories.transfers: const Color.fromARGB(255, 22, 148, 135),
     Categories.mobile: const Color.fromARGB(255, 192, 92, 56),
     Categories.health: Colors.green,
     Categories.wellness: const Color.fromARGB(255, 8, 111, 20)
@@ -54,18 +54,30 @@ class _CategoriesPageState extends State<CategoriesPage> {
         child: Center(
           child: Padding(
             padding: const EdgeInsets.only(
-                left: 40.0, right: 40.0, bottom: 20.0, top: 40.0),
+                left: 40.0, right: 40.0, bottom: 25.0, top: 20.0),
             child: Column(
               children: [
-                Expanded(
-                  flex: 5,
-                  child: Container(
-                    color: Colors.pink,
-                    height: 20,
+                 Expanded(
+                  flex: 12,
+                  child: Column(
+                    children: [
+                     const Text(
+                        "Expenses",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                        ),
+                      ),
+                      Text(
+                        "${totalExpenses.toPrecision(Utils.decimalPrecission)} €",
+                        style: const TextStyle(
+                          fontSize: 30.0,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 const Expanded(
-                  flex: 5,
+                  flex: 2,
                   child: SizedBox(),
                 ),
                 Expanded(
@@ -123,11 +135,11 @@ class _CategoriesPageState extends State<CategoriesPage> {
                   ),
                 ),
                 const Expanded(
-                  flex: 5,
+                  flex: 2,
                   child: SizedBox(),
                 ),
                 Expanded(
-                  flex: 5,
+                  flex: 2,
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: Text(
@@ -145,7 +157,6 @@ class _CategoriesPageState extends State<CategoriesPage> {
       ),
     );
   }
-
 
   // Method that returns a percentage bar widget of a category.
   // @param category the category used.
