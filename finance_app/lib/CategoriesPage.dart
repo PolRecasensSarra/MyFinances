@@ -65,6 +65,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                         "Expenses",
                         style: TextStyle(
                           fontSize: 16.0,
+                          color: Color.fromARGB(255, 209, 209, 209),
                         ),
                       ),
                       Text(
