@@ -27,6 +27,8 @@ class _NewEntryPageState extends State<NewEntryPage> {
   double value = 0.0;
   String date = "";
   TimeOfDay timeOfDay = TimeOfDay.now();
+  // Selected category for the entry.
+  Categories selectedCategory = Categories.others;
 
   @override
   Widget build(BuildContext context) {
@@ -45,33 +47,125 @@ class _NewEntryPageState extends State<NewEntryPage> {
             child: Column(
               children: [
                 const Expanded(
-                  flex: 10,
-                  child: SizedBox(),
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: Text(
+                      "Add a new entry",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                      ),
+                    ),
+                  ),
                 ),
                 Expanded(
-                  flex: 80,
-                  child: Column(
+                  child: TextFormField(
+                    controller: nameTextCtrl,
+                    cursorColor: Colors.white,
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: const Color.fromARGB(255, 94, 94, 94),
+                      contentPadding:
+                          const EdgeInsets.all(8.0), //here your padding
+                      hintText: "Add expense or income concept*",
+                      suffixIcon:
+                          const Icon(Icons.text_snippet, color: Colors.white54),
+                      hintStyle: const TextStyle(
+                        fontSize: 12,
+                        color: Color.fromARGB(255, 163, 163, 163),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide: const BorderSide(color: Colors.white),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide: const BorderSide(
+                          color: Color.fromARGB(255, 146, 146, 146),
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide: const BorderSide(
+                          color: Color.fromARGB(255, 146, 146, 146),
+                        ),
+                      ),
+                    ),
+                    validator: (val) =>
+                        concept.isEmpty ? "Enter a new entry" : null,
+                    onChanged: (val) {
+                      setState(() {
+                        concept = val;
+                      });
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: TextFormField(
+                    controller: valueTextCtrl,
+                    cursorColor: Colors.white,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp('[0-9.,]')),
+                    ], // Only numbers can be entered
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: const Color.fromARGB(255, 94, 94, 94),
+                      contentPadding:
+                          const EdgeInsets.all(8.0), //here your padding
+                      hintText: "Add expense or income value*",
+                      suffixIcon:
+                          const Icon(Icons.euro_symbol, color: Colors.white54),
+                      alignLabelWithHint: true,
+                      hintStyle: const TextStyle(
+                        fontSize: 12,
+                        color: Color.fromARGB(255, 163, 163, 163),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide: const BorderSide(color: Colors.white),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide: const BorderSide(
+                          color: Color.fromARGB(255, 146, 146, 146),
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 146, 146, 146)),
+                      ),
+                    ),
+                    validator: (val) =>
+                        value == 0.0 ? "Enter a new entry" : null,
+                    onChanged: (val) {
+                      setState(() {
+                        final tmpValue = val.isEmpty
+                            ? 0.0
+                            : double.tryParse(val.replaceAll(",", "."));
+                        if (tmpValue != null) {
+                          value = tmpValue;
+                        }
+                      });
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: Row(
                     children: [
-                      const Expanded(
-                        child: Align(
-                          alignment: Alignment.topCenter,
-                          child: Text(
-                            "Add a new entry",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 24,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const Expanded(
-                        child: SizedBox(),
-                      ),
                       Expanded(
-                        child: TextFormField(
-                          controller: nameTextCtrl,
+                        flex: 45,
+                        child: TextField(
                           cursorColor: Colors.white,
+                          controller: dateController,
                           style: const TextStyle(
                             color: Colors.white,
                           ),
@@ -80,62 +174,11 @@ class _NewEntryPageState extends State<NewEntryPage> {
                             fillColor: const Color.fromARGB(255, 94, 94, 94),
                             contentPadding:
                                 const EdgeInsets.all(8.0), //here your padding
-                            hintText: "Add expense or income concept*",
-                            suffixIcon: const Icon(Icons.text_snippet,
-                                color: Colors.white54),
-                            hintStyle: const TextStyle(
-                              fontSize: 12,
-                              color: Color.fromARGB(255, 163, 163, 163),
+                            hintText: "Enter Date",
+                            suffixIcon: const Icon(
+                              Icons.calendar_month,
+                              color: Colors.white54,
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: const BorderSide(color: Colors.white),
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: const BorderSide(
-                                color: Color.fromARGB(255, 146, 146, 146),
-                              ),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: const BorderSide(
-                                color: Color.fromARGB(255, 146, 146, 146),
-                              ),
-                            ),
-                          ),
-                          validator: (val) =>
-                              concept.isEmpty ? "Enter a new entry" : null,
-                          onChanged: (val) {
-                            setState(() {
-                              concept = val;
-                            });
-                          },
-                        ),
-                      ),
-                      const Expanded(
-                        child: SizedBox(),
-                      ),
-                      Expanded(
-                        child: TextFormField(
-                          controller: valueTextCtrl,
-                          cursorColor: Colors.white,
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                                RegExp('[0-9.,]')),
-                          ], // Only numbers can be entered
-                          style: const TextStyle(
-                            color: Colors.white,
-                          ),
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: const Color.fromARGB(255, 94, 94, 94),
-                            contentPadding:
-                                const EdgeInsets.all(8.0), //here your padding
-                            hintText: "Add expense or income value*",
-                            suffixIcon: const Icon(Icons.euro_symbol,
-                                color: Colors.white54),
                             alignLabelWithHint: true,
                             hintStyle: const TextStyle(
                               fontSize: 12,
@@ -157,211 +200,171 @@ class _NewEntryPageState extends State<NewEntryPage> {
                                   color: Color.fromARGB(255, 146, 146, 146)),
                             ),
                           ),
-                          validator: (val) =>
-                              value == 0.0 ? "Enter a new entry" : null,
-                          onChanged: (val) {
-                            setState(() {
-                              final tmpValue = val.isEmpty
-                                  ? 0.0
-                                  : double.tryParse(val.replaceAll(",", "."));
-                              if (tmpValue != null) {
-                                value = tmpValue;
-                              }
-                            });
+                          onTap: () async {
+                            DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2101));
+                            // Check if the picked date is a valid date and save it.
+                            if (pickedDate != null) {
+                              setState(() {
+                                date = pickedDate.toString();
+                                dateController.text =
+                                    Utils.getDateFormattedByLocale(pickedDate,
+                                        showHour: false);
+                              });
+                            }
                           },
                         ),
                       ),
                       const Expanded(
+                        flex: 5,
                         child: SizedBox(),
                       ),
                       Expanded(
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 45,
-                              child: TextField(
-                                cursorColor: Colors.white,
-                                controller: dateController,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                ),
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor:
-                                      const Color.fromARGB(255, 94, 94, 94),
-                                  contentPadding: const EdgeInsets.all(
-                                      8.0), //here your padding
-                                  hintText: "Enter Date",
-                                  suffixIcon: const Icon(
-                                    Icons.calendar_month,
-                                    color: Colors.white54,
-                                  ),
-                                  alignLabelWithHint: true,
-                                  hintStyle: const TextStyle(
-                                    fontSize: 12,
-                                    color: Color.fromARGB(255, 163, 163, 163),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                    borderSide:
-                                        const BorderSide(color: Colors.white),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                    borderSide: const BorderSide(
-                                      color: Color.fromARGB(255, 146, 146, 146),
-                                    ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                    borderSide: const BorderSide(
-                                        color:
-                                            Color.fromARGB(255, 146, 146, 146)),
-                                  ),
-                                ),
-                                onTap: () async {
-                                  DateTime? pickedDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(2000),
-                                      lastDate: DateTime(2101));
-                                  // Check if the picked date is a valid date and save it.
-                                  if (pickedDate != null) {
-                                    setState(() {
-                                      date = pickedDate.toString();
-                                      dateController.text =
-                                          Utils.getDateFormattedByLocale(
-                                              pickedDate,
-                                              showHour: false);
-                                    });
-                                  }
-                                },
-                              ),
-                            ),
-                            const Expanded(
-                              flex: 5,
-                              child: SizedBox(),
-                            ),
-                            Expanded(
-                              flex: 45,
-                              child: TextField(
-                                cursorColor: Colors.white,
-                                controller: timeController,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                ),
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor:
-                                      const Color.fromARGB(255, 94, 94, 94),
-                                  contentPadding: const EdgeInsets.all(8.0),
-                                  hintText: "Enter Time",
-                                  suffixIcon: const Icon(
-                                    Icons.access_time,
-                                    color: Colors.white54,
-                                  ),
-                                  alignLabelWithHint: true,
-                                  hintStyle: const TextStyle(
-                                    fontSize: 12,
-                                    color: Color.fromARGB(255, 163, 163, 163),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                    borderSide:
-                                        const BorderSide(color: Colors.white),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                    borderSide: const BorderSide(
-                                      color: Color.fromARGB(255, 146, 146, 146),
-                                    ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                    borderSide: const BorderSide(
-                                        color:
-                                            Color.fromARGB(255, 146, 146, 146)),
-                                  ),
-                                ),
-                                onTap: () async {
-                                  TimeOfDay? pickedTime = await showTimePicker(
-                                      context: context,
-                                      initialTime: TimeOfDay.now());
-                                  // Check if the picked date is a valid date and save it.
-                                  if (pickedTime != null) {
-                                    setState(() {
-                                      timeOfDay = pickedTime;
-                                      timeController.text =
-                                          Utils.timeOfDayToString(pickedTime);
-                                    });
-                                  }
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const Expanded(
-                        child: SizedBox(),
-                      ),
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
-                                    const Color.fromARGB(255, 94, 128, 95),
-                                  ),
-                                ),
-                                child: const Text(
-                                  "Add income",
-                                ),
-                                onPressed: () {
-                                  updateBalance(EntryTpe.income);
-                                },
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 10.0,
-                            ),
-                            Expanded(
-                              child: ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
-                                    const Color.fromARGB(255, 146, 101, 101),
-                                  ),
-                                ),
-                                child: const Text(
-                                  "Add expense",
-                                ),
-                                onPressed: () {
-                                  updateBalance(EntryTpe.expense);
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const Expanded(
-                        child: SizedBox(),
-                      ),
-                      Expanded(
-                        child: Text(
-                          error,
-                          textAlign: TextAlign.center,
+                        flex: 45,
+                        child: TextField(
+                          cursorColor: Colors.white,
+                          controller: timeController,
                           style: const TextStyle(
-                            color: Colors.red,
-                            fontSize: 14,
+                            color: Colors.white,
                           ),
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: const Color.fromARGB(255, 94, 94, 94),
+                            contentPadding: const EdgeInsets.all(8.0),
+                            hintText: "Enter Time",
+                            suffixIcon: const Icon(
+                              Icons.access_time,
+                              color: Colors.white54,
+                            ),
+                            alignLabelWithHint: true,
+                            hintStyle: const TextStyle(
+                              fontSize: 12,
+                              color: Color.fromARGB(255, 163, 163, 163),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: const BorderSide(color: Colors.white),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: const BorderSide(
+                                color: Color.fromARGB(255, 146, 146, 146),
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: const BorderSide(
+                                  color: Color.fromARGB(255, 146, 146, 146)),
+                            ),
+                          ),
+                          onTap: () async {
+                            TimeOfDay? pickedTime = await showTimePicker(
+                                context: context, initialTime: TimeOfDay.now());
+                            // Check if the picked date is a valid date and save it.
+                            if (pickedTime != null) {
+                              setState(() {
+                                timeOfDay = pickedTime;
+                                timeController.text =
+                                    Utils.timeOfDayToString(pickedTime);
+                              });
+                            }
+                          },
                         ),
                       ),
                     ],
                   ),
                 ),
-                const Expanded(
-                  flex: 10,
-                  child: SizedBox(),
+                Expanded(
+                  child: IntrinsicWidth(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 15.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 94, 94, 94),
+                          border: Border.all(
+                            color: const Color.fromARGB(45, 146, 146, 146),
+                            width: 2.0,
+                            style: BorderStyle.solid,
+                          ),
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Center(
+                          child: DropdownButton<Categories>(
+                            value: selectedCategory,
+                            underline: Container(
+                              height: 0,
+                            ),
+                            onChanged: (Categories? value) {
+                              setState(() {
+                                selectedCategory = value!;
+                              });
+                            },
+                            items: Categories.values.map((Categories category) {
+                              return DropdownMenuItem(
+                                value: category,
+                                child: Text(
+                                  category.name,
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                              const Color.fromARGB(255, 94, 128, 95),
+                            ),
+                          ),
+                          child: const Text(
+                            "Add income",
+                          ),
+                          onPressed: () {
+                            updateBalance(EntryTpe.income);
+                          },
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10.0,
+                      ),
+                      Expanded(
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                              const Color.fromARGB(255, 146, 101, 101),
+                            ),
+                          ),
+                          child: const Text(
+                            "Add expense",
+                          ),
+                          onPressed: () {
+                            updateBalance(EntryTpe.expense);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    error,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontSize: 14,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -392,7 +395,8 @@ class _NewEntryPageState extends State<NewEntryPage> {
           : DateTime.now().toString();
 
       // Add a new income to the list. Change the value sign given the entry type.
-      widget.infoManager.addNewEntry(Entry(concept, entryValue, entryDate, Categories.others.index));
+      widget.infoManager.addNewEntry(
+          Entry(concept, entryValue, entryDate, selectedCategory.index));
       // Save the data.
       widget.infoManager.saveBalanceToJson();
 

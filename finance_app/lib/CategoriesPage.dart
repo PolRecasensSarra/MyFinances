@@ -57,15 +57,15 @@ class _CategoriesPageState extends State<CategoriesPage> {
                 left: 40.0, right: 40.0, bottom: 25.0, top: 20.0),
             child: Column(
               children: [
-                 Expanded(
+                Expanded(
                   flex: 12,
                   child: Column(
                     children: [
-                     const Text(
+                      const Text(
                         "Expenses",
                         style: TextStyle(
                           fontSize: 16.0,
-                          color: Color.fromARGB(255, 209, 209, 209),
+                          color: Color.fromARGB(255, 199, 199, 199),
                         ),
                       ),
                       Text(
