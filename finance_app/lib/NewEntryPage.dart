@@ -44,10 +44,11 @@ class _NewEntryPageState extends State<NewEntryPage> {
           child: Padding(
             padding: const EdgeInsets.only(
                 left: 40.0, right: 40.0, bottom: 20.0, top: 20.0),
-            child: Column(
-              children: [
-                const Expanded(
-                  child: Align(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Align(
                     alignment: Alignment.topCenter,
                     child: Text(
                       "Add a new entry",
@@ -58,9 +59,10 @@ class _NewEntryPageState extends State<NewEntryPage> {
                       ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: TextFormField(
+                  const SizedBox(
+                    height: 35.0,
+                  ),
+                  TextFormField(
                     controller: nameTextCtrl,
                     cursorColor: Colors.white,
                     style: const TextStyle(
@@ -103,9 +105,10 @@ class _NewEntryPageState extends State<NewEntryPage> {
                       });
                     },
                   ),
-                ),
-                Expanded(
-                  child: TextFormField(
+                  const SizedBox(
+                    height: 25.0,
+                  ),
+                  TextFormField(
                     controller: valueTextCtrl,
                     cursorColor: Colors.white,
                     keyboardType: TextInputType.number,
@@ -157,9 +160,10 @@ class _NewEntryPageState extends State<NewEntryPage> {
                       });
                     },
                   ),
-                ),
-                Expanded(
-                  child: Row(
+                  const SizedBox(
+                    height: 25.0,
+                  ),
+                  Row(
                     children: [
                       Expanded(
                         flex: 45,
@@ -276,49 +280,68 @@ class _NewEntryPageState extends State<NewEntryPage> {
                       ),
                     ],
                   ),
-                ),
-                Expanded(
-                  child: IntrinsicWidth(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 15.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 94, 94, 94),
-                          border: Border.all(
-                            color: const Color.fromARGB(45, 146, 146, 146),
-                            width: 2.0,
-                            style: BorderStyle.solid,
-                          ),
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Center(
-                          child: DropdownButton<Categories>(
-                            value: selectedCategory,
-                            underline: Container(
-                              height: 0,
+                  const SizedBox(
+                    height: 25.0,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        flex: 55,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 94, 94, 94),
+                            border: Border.all(
+                              color: const Color.fromARGB(45, 146, 146, 146),
+                              width: 2.0,
+                              style: BorderStyle.solid,
                             ),
-                            onChanged: (Categories? value) {
-                              setState(() {
-                                selectedCategory = value!;
-                              });
-                            },
-                            items: Categories.values.map((Categories category) {
-                              return DropdownMenuItem(
-                                value: category,
-                                child: Text(
-                                  category.name,
-                                ),
-                              );
-                            }).toList(),
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Center(
+                            child: DropdownButton<Categories>(
+                              value: selectedCategory,
+                              underline: Container(
+                                height: 0,
+                              ),
+                              onChanged: (Categories? value) {
+                                setState(() {
+                                  selectedCategory = value!;
+                                });
+                              },
+                              items:
+                                  Categories.values.map((Categories category) {
+                                return DropdownMenuItem(
+                                  value: category,
+                                  child: Text(
+                                    category.name,
+                                  ),
+                                );
+                              }).toList(),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                      const Expanded(
+                        flex: 45,
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 15.0),
+                          child: Text(
+                            "Category",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 206, 206, 206),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                Expanded(
-                  child: Row(
+                  const SizedBox(
+                    height: 25.0,
+                  ),
+                  Row(
                     children: [
                       Expanded(
                         child: ElevatedButton(
@@ -355,9 +378,10 @@ class _NewEntryPageState extends State<NewEntryPage> {
                       ),
                     ],
                   ),
-                ),
-                Expanded(
-                  child: Text(
+                  const SizedBox(
+                    height: 15.0,
+                  ),
+                  Text(
                     error,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
@@ -365,8 +389,8 @@ class _NewEntryPageState extends State<NewEntryPage> {
                       fontSize: 14,
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
