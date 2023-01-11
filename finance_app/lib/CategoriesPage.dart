@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pie_chart/pie_chart.dart';
 import 'Entry.dart';
 import 'Utils.dart';
 
@@ -21,24 +22,27 @@ class _CategoriesPageState extends State<CategoriesPage> {
   // Total amount of expenses(money). Will be a absolute value.
   double totalExpenses = 0.0;
   // Color for each category.
-  Map<Categories, Color> categoryColors = {
-    Categories.others: Colors.orange,
-    Categories.services: const Color.fromARGB(255, 229, 89, 187),
-    Categories.housing: const Color.fromARGB(255, 35, 91, 186),
-    Categories.transportation: Colors.yellow,
-    Categories.entertainment: const Color.fromARGB(255, 131, 69, 142),
-    Categories.bizum: const Color.fromARGB(255, 83, 201, 255),
-    Categories.clothes: const Color.fromARGB(255, 221, 176, 160),
-    Categories.supers: const Color.fromARGB(255, 230, 65, 53),
-    Categories.transfers: const Color.fromARGB(255, 22, 148, 135),
-    Categories.mobile: const Color.fromARGB(255, 192, 92, 56),
-    Categories.health: Colors.green,
-    Categories.wellness: const Color.fromARGB(255, 8, 111, 20)
-  };
+  List<Color> categoryColors = [
+    Colors.orange, // Others
+    const Color.fromARGB(255, 229, 89, 187), // Services
+    const Color.fromARGB(255, 35, 91, 186), // Housing
+    Colors.yellow, // Transportation
+    const Color.fromARGB(255, 131, 69, 142), // Entertainment
+    const Color.fromARGB(255, 83, 201, 255), // Bizum
+    const Color.fromARGB(255, 221, 176, 160), // Clothes
+    const Color.fromARGB(255, 230, 65, 53), // Supers
+    const Color.fromARGB(255, 22, 148, 135), // Transfers
+    const Color.fromARGB(255, 192, 92, 56), // Mobile
+    Colors.green, // Health
+    const Color.fromARGB(255, 8, 111, 20) // Wellness
+  ];
+  // Map with every category associated to its expense.
+  Map<String, double> categoryData = {};
 
   @override
   void initState() {
     setTotalExpenses();
+    initializeCategoryData();
     super.initState();
   }
 
@@ -58,89 +62,59 @@ class _CategoriesPageState extends State<CategoriesPage> {
             child: Column(
               children: [
                 Expanded(
-                  flex: 12,
-                  child: Column(
+                  flex: 25,
+                  child: Row(
                     children: [
-                      const Text(
-                        "Expenses",
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          color: Color.fromARGB(255, 199, 199, 199),
+                      Expanded(
+                        flex: 49,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Spend analytics",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              "${totalExpenses.toPrecision(Utils.decimalPrecission)} €",
+                              textAlign: TextAlign.left,
+                              style: const TextStyle(
+                                fontSize: 30.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      Text(
-                        "${totalExpenses.toPrecision(Utils.decimalPrecission)} €",
-                        style: const TextStyle(
-                          fontSize: 30.0,
-                        ),
+                      const Expanded(
+                        flex: 2,
+                        child: SizedBox(),
+                      ),
+                      Expanded(
+                        flex: 49,
+                        child: categoriesPieChart(),
                       ),
                     ],
                   ),
                 ),
                 const Expanded(
-                  flex: 2,
+                  flex: 5,
                   child: SizedBox(),
                 ),
                 Expanded(
-                  flex: 70,
-                  child: Scrollbar(
-                    thumbVisibility: true,
-                    controller: scrollController,
-                    child: ListView.builder(
-                        padding: const EdgeInsets.only(
-                          right: 15.0,
-                        ),
-                        shrinkWrap: true,
-                        controller: scrollController,
-                        itemCount: Categories.values.length,
-                        itemBuilder: (context, index) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "${Categories.values[index].name.capitalize()} - ",
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Text(
-                                        "${(getExpensePercentage(Categories.values[index]) * 100).toPrecision(Utils.decimalPrecission)} %",
-                                      ),
-                                    ],
-                                  ),
-                                  Text(
-                                    "${getExpenseByCategory(Categories.values[index]).toPrecision(Utils.decimalPrecission)} €",
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 5.0,
-                              ),
-                              getPercentageBar(Categories.values[index]),
-                              const SizedBox(
-                                height: 25.0,
-                              ),
-                            ],
-                          );
-                        }),
-                  ),
+                  flex: 63,
+                  child: categoriesBasicView(),
                 ),
                 const Expanded(
                   flex: 2,
                   child: SizedBox(),
                 ),
                 Expanded(
-                  flex: 2,
+                  flex: 5,
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: Text(
@@ -159,25 +133,100 @@ class _CategoriesPageState extends State<CategoriesPage> {
     );
   }
 
+  // Method that returns the basic view.
+  Scrollbar categoriesBasicView() {
+    return Scrollbar(
+      thumbVisibility: true,
+      controller: scrollController,
+      child: ListView.builder(
+          padding: const EdgeInsets.only(
+            right: 15.0,
+          ),
+          shrinkWrap: true,
+          controller: scrollController,
+          itemCount: categoryData.length,
+          itemBuilder: (context, index) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          "${categoryData.keys.elementAt(index).capitalize()} - ",
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          "${(getExpensePercentage(categoryData.values.elementAt(index)) * 100).toPrecision(Utils.decimalPrecission)} %",
+                        ),
+                      ],
+                    ),
+                    Text(
+                      "${categoryData.values.elementAt(index).toPrecision(Utils.decimalPrecission)} €",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 5.0,
+                ),
+                getPercentageBar(index),
+                const SizedBox(
+                  height: 25.0,
+                ),
+              ],
+            );
+          }),
+    );
+  }
+
+  // Method that returns a PieChart of the different category expenses.
+  Widget categoriesPieChart() {
+    return PieChart(
+      dataMap: categoryData,
+      animationDuration: const Duration(milliseconds: 800),
+      chartType: ChartType.ring,
+      chartLegendSpacing: 16,
+      colorList: categoryColors,
+      legendOptions: const LegendOptions(
+        showLegends: false,
+      ),
+      chartValuesOptions: const ChartValuesOptions(
+        showChartValues: false,
+      ),
+    );
+  }
+
   // Method that returns a percentage bar widget of a category.
+  // @param categoryIndex int the index of the category in the data map.
   // @param category the category used.
-  Widget getPercentageBar(Categories category) {
-    int percA = (getExpensePercentage(category) * 100.0).toInt();
+  Widget getPercentageBar(int categoryIndex) {
+    int percA =
+        (getExpensePercentage(categoryData.values.elementAt(categoryIndex)) *
+                100.0)
+            .toInt();
     int percB = 100 - percA;
     return Row(
       children: [
         Expanded(
           flex: percA,
           child: Container(
-            height: 15,
-            color: categoryColors[category],
+            height: 8,
+            color: categoryColors[categoryIndex],
           ),
         ),
         Expanded(
           flex: percB,
           child: Container(
-            height: 15,
-            color: Colors.grey,
+            height: 8,
+            color: const Color.fromARGB(255, 122, 122, 122),
           ),
         ),
       ],
@@ -198,11 +247,10 @@ class _CategoriesPageState extends State<CategoriesPage> {
   }
 
   // Method that calculates the percentage of expense from a given category with the total expenses.
+  // @param expense double the value from which to calculate the percentage.
   // @result double the percentage of the expenses(from 0 to 1).
-  double getExpensePercentage(Categories category) {
-    return totalExpenses > 0.0
-        ? getExpenseByCategory(category) / totalExpenses
-        : 0.0;
+  double getExpensePercentage(double expense) {
+    return totalExpenses > 0.0 ? expense / totalExpenses : 0.0;
   }
 
   // Method that calculates the total expense given the entries.
@@ -210,6 +258,17 @@ class _CategoriesPageState extends State<CategoriesPage> {
     for (Entry entry in widget.entryListFiltered) {
       if (entry.value < 0.0) {
         totalExpenses += entry.value.abs();
+      }
+    }
+  }
+
+  // Method that given all the categories, creates a map of every category and its expense.
+  void initializeCategoryData() {
+    for (var category in Categories.values) {
+      // If the map data doesn't have the category, add it.
+      if (!categoryData.containsKey(category.name)) {
+        categoryData[category.name.capitalize()] =
+            getExpenseByCategory(category).toPrecision(Utils.decimalPrecission);
       }
     }
   }
