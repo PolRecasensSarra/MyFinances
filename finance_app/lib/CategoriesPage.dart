@@ -206,31 +206,27 @@ class _CategoriesPageState extends State<CategoriesPage> {
 
   // Method that returns a percentage bar widget of a category.
   // @param categoryIndex int the index of the category in the data map.
-  // @param category the category used.
   Widget getPercentageBar(int categoryIndex) {
-    int percA =
-        (getExpensePercentage(categoryData.values.elementAt(categoryIndex)) *
-                100.0)
-            .toInt();
-    int percB = 100 - percA;
-    return Row(
-      children: [
-        Expanded(
-          flex: percA,
-          child: Container(
-            height: 8,
-            color: categoryColors[categoryIndex],
-          ),
+    double percentage =
+        getExpensePercentage(categoryData.values.elementAt(categoryIndex));
+    return Stack(children: [
+      Container(
+        width: MediaQuery.of(context).size.width,
+        height: 8,
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 122, 122, 122),
+          borderRadius: BorderRadius.circular(10.0),
         ),
-        Expanded(
-          flex: percB,
-          child: Container(
-            height: 8,
-            color: const Color.fromARGB(255, 122, 122, 122),
-          ),
+      ),
+      Container(
+        width: MediaQuery.of(context).size.width * percentage,
+        height: 8,
+        decoration: BoxDecoration(
+          color: categoryColors[categoryIndex],
+          borderRadius: BorderRadius.circular(10.0),
         ),
-      ],
-    );
+      ),
+    ]);
   }
 
   // Method that returns the total expenses from a specific category.
