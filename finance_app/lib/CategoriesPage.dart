@@ -271,5 +271,9 @@ class _CategoriesPageState extends State<CategoriesPage> {
             getExpenseByCategory(category).toPrecision(Utils.decimalPrecission);
       }
     }
+
+    // Sort the category map by value from higher to lower.
+    categoryData = Map.fromEntries(categoryData.entries.toList()
+      ..sort((e1, e2) => e2.value.compareTo(e1.value)));
   }
 }
