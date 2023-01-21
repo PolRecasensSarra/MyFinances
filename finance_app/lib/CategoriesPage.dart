@@ -22,22 +22,22 @@ class _CategoriesPageState extends State<CategoriesPage> {
   // Total amount of expenses(money). Will be a absolute value.
   double totalExpenses = 0.0;
   // Color for each category.
-  List<Color> categoryColors = [
-    Colors.orange, // Others
-    const Color.fromARGB(255, 229, 89, 187), // Services
-    const Color.fromARGB(255, 35, 91, 186), // Housing
-    Colors.yellow, // Transportation
-    const Color.fromARGB(255, 131, 69, 142), // Entertainment
-    const Color.fromARGB(255, 83, 201, 255), // Bizum
-    const Color.fromARGB(255, 221, 176, 160), // Clothes
-    const Color.fromARGB(255, 230, 65, 53), // Supers
-    const Color.fromARGB(255, 22, 148, 135), // Transfers
-    const Color.fromARGB(255, 192, 92, 56), // Mobile
-    Colors.green, // Health
-    const Color.fromARGB(255, 8, 111, 20) // Wellness
-  ];
+  Map<Categories, Color> categoryColors = {
+    Categories.others: const Color.fromARGB(255, 255, 102, 102),
+    Categories.services: const Color.fromARGB(255, 102, 255, 102),
+    Categories.housing: const Color.fromARGB(255, 102, 102, 255),
+    Categories.transportation: const Color.fromARGB(255, 255, 255, 102),
+    Categories.entertainment: const Color.fromARGB(255, 255, 102, 255),
+    Categories.bizum: const Color.fromARGB(255, 102, 255, 255),
+    Categories.clothes: const Color.fromARGB(255, 241, 136, 94),
+    Categories.supers: const Color.fromARGB(255, 179, 179, 102),
+    Categories.transfers: const Color.fromARGB(255, 102, 179, 179),
+    Categories.mobile: const Color.fromARGB(255, 179, 102, 102),
+    Categories.health: const Color.fromARGB(255, 102, 179, 102),
+    Categories.wellness: const Color.fromARGB(255, 119, 74, 150)
+  };
   // Map with every category associated to its expense.
-  Map<String, double> categoryData = {};
+  Map<Categories, double> categoryData = {};
 
   @override
   void initState() {
@@ -155,7 +155,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                     Row(
                       children: [
                         Text(
-                          "${categoryData.keys.elementAt(index).capitalize()} - ",
+                          "${categoryData.keys.elementAt(index).name.capitalize()} - ",
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -177,7 +177,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                 const SizedBox(
                   height: 5.0,
                 ),
-                getPercentageBar(index),
+                getPercentageBar(categoryData.keys.elementAt(index)),
                 const SizedBox(
                   height: 25.0,
                 ),
@@ -190,11 +190,11 @@ class _CategoriesPageState extends State<CategoriesPage> {
   // Method that returns a PieChart of the different category expenses.
   Widget categoriesPieChart() {
     return PieChart(
-      dataMap: categoryData,
+      dataMap: categoryData.map((key, value) => MapEntry(key.name, value)),
       animationDuration: const Duration(milliseconds: 800),
       chartType: ChartType.ring,
       chartLegendSpacing: 16,
-      colorList: categoryColors,
+      colorList: categoryColors.values.toList(),
       legendOptions: const LegendOptions(
         showLegends: false,
       ),
@@ -206,9 +206,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
 
   // Method that returns a percentage bar widget of a category.
   // @param categoryIndex int the index of the category in the data map.
-  Widget getPercentageBar(int categoryIndex) {
-    double percentage =
-        getExpensePercentage(categoryData.values.elementAt(categoryIndex));
+  Widget getPercentageBar(Categories category) {
+    double percentage = getExpensePercentage(categoryData[category]!);
     return Stack(children: [
       Container(
         width: MediaQuery.of(context).size.width,
@@ -222,7 +221,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
         width: MediaQuery.of(context).size.width * percentage,
         height: 8,
         decoration: BoxDecoration(
-          color: categoryColors[categoryIndex],
+          color: categoryColors[category],
           borderRadius: BorderRadius.circular(10.0),
         ),
       ),
@@ -263,7 +262,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
     for (var category in Categories.values) {
       // If the map data doesn't have the category, add it.
       if (!categoryData.containsKey(category.name)) {
-        categoryData[category.name.capitalize()] =
+        categoryData[category] =
             getExpenseByCategory(category).toPrecision(Utils.decimalPrecission);
       }
     }
@@ -271,5 +270,16 @@ class _CategoriesPageState extends State<CategoriesPage> {
     // Sort the category map by value from higher to lower.
     categoryData = Map.fromEntries(categoryData.entries.toList()
       ..sort((e1, e2) => e2.value.compareTo(e1.value)));
+    // Sort the category/color so the map has the same order in the keys as the categoryData map.
+    categoryColors = getCategoryColorsSorted();
+  }
+
+  // Method that sorts the category colors map using the same order of keys as the category data map.
+  Map<Categories, Color> getCategoryColorsSorted() {
+    Map<Categories, Color> sortedMap = {};
+    categoryData.forEach((key, value) {
+      sortedMap[key] = categoryColors[key]!;
+    });
+    return sortedMap;
   }
 }
