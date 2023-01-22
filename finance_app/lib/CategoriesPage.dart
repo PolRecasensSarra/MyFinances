@@ -79,6 +79,9 @@ class _CategoriesPageState extends State<CategoriesPage> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
+                            const SizedBox(
+                              height: 10.0,
+                            ),
                             Text(
                               "${totalExpenses.toPrecision(Utils.decimalPrecission)} €",
                               textAlign: TextAlign.left,
@@ -134,56 +137,65 @@ class _CategoriesPageState extends State<CategoriesPage> {
   }
 
   // Method that returns the basic view.
-  Scrollbar categoriesBasicView() {
-    return Scrollbar(
-      thumbVisibility: true,
-      controller: scrollController,
-      child: ListView.builder(
-          padding: const EdgeInsets.only(
-            right: 15.0,
-          ),
-          shrinkWrap: true,
-          controller: scrollController,
-          itemCount: categoryData.length,
-          itemBuilder: (context, index) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          "${categoryData.keys.elementAt(index).name.capitalize()} - ",
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+  Widget categoriesBasicView() {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(32, 116, 116, 116),
+        border: Border.all(
+          color: const Color.fromARGB(45, 146, 146, 146),
+          width: 2.0,
+          style: BorderStyle.solid,
+        ),
+        borderRadius: BorderRadius.circular(5.0),
+      ),
+      padding:
+          const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 5.0, top: 8.0),
+      child: Scrollbar(
+        controller: scrollController,
+        child: ListView.builder(
+            shrinkWrap: true,
+            controller: scrollController,
+            itemCount: categoryData.length,
+            itemBuilder: (context, index) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            "${categoryData.keys.elementAt(index).name.capitalize()} - ",
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        Text(
-                          "${(getExpensePercentage(categoryData.values.elementAt(index)) * 100).toPrecision(Utils.decimalPrecission)} %",
-                        ),
-                      ],
-                    ),
-                    Text(
-                      "${categoryData.values.elementAt(index).toPrecision(Utils.decimalPrecission)} €",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
+                          Text(
+                            "${(getExpensePercentage(categoryData.values.elementAt(index)) * 100).toPrecision(Utils.decimalPrecission)} %",
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 5.0,
-                ),
-                getPercentageBar(categoryData.keys.elementAt(index)),
-                const SizedBox(
-                  height: 25.0,
-                ),
-              ],
-            );
-          }),
+                      Text(
+                        "${categoryData.values.elementAt(index).toPrecision(Utils.decimalPrecission)} €",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 5.0,
+                  ),
+                  getPercentageBar(categoryData.keys.elementAt(index)),
+                  const SizedBox(
+                    height: 25.0,
+                  ),
+                ],
+              );
+            }),
+      ),
     );
   }
 
