@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'Entry.dart';
 import 'Utils.dart';
@@ -50,8 +53,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Categories",
+        title: const LocaleText(
+          "categories",
         ),
       ),
       body: SafeArea(

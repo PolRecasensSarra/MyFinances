@@ -6,8 +6,25 @@ import 'Entry.dart';
 
 // Enum of all possible filters.
 enum Filters { all, day, week, month, halfyear, year, custom }
+
 // Enum of all the categories.
-enum Categories {others, services, housing, transportation, entertainment, bizum, clothes, supers, transfers, mobile, health, wellness}
+enum Categories {
+  others,
+  services,
+  housing,
+  transportation,
+  entertainment,
+  bizum,
+  clothes,
+  supers,
+  transfers,
+  mobile,
+  health,
+  wellness
+}
+
+// Enum with the supported locales.
+enum Languages { en, es }
 
 class Utils {
   // Decimal precision.
@@ -124,7 +141,7 @@ class Utils {
     for (int i = 1; i < 10; i++) {
       strengths.add(0.1 * i);
     }
-    strengths.forEach((strength) {
+    for (var strength in strengths) {
       final double ds = 0.5 - strength;
       swatch[(strength * 1000).round()] = Color.fromRGBO(
         r + ((ds < 0 ? r : (255 - r)) * ds).round(),
@@ -132,7 +149,7 @@ class Utils {
         b + ((ds < 0 ? b : (255 - b)) * ds).round(),
         1,
       );
-    });
+    }
     return MaterialColor(color.value, swatch);
   }
 
@@ -217,7 +234,7 @@ extension FormatDouble on double {
 }
 
 extension StringExtension on String {
-    String capitalize() {
-      return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
-    }
+  String capitalize() {
+    return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
+  }
 }
