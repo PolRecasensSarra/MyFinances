@@ -22,9 +22,11 @@ class CategoriesPage extends StatefulWidget {
 
 class _CategoriesPageState extends State<CategoriesPage> {
   ScrollController scrollController = ScrollController();
-  // Total amount of expenses(money). Will be a absolute value.
+
+  /// Total amount of expenses(money). Will be a absolute value.
   double totalExpenses = 0.0;
-  // Color for each category.
+
+  /// Color for each category.
   Map<Categories, Color> categoryColors = {
     Categories.others: const Color.fromARGB(255, 255, 102, 102),
     Categories.services: const Color.fromARGB(255, 102, 255, 102),
@@ -39,7 +41,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
     Categories.health: const Color.fromARGB(255, 102, 179, 102),
     Categories.wellness: const Color.fromARGB(255, 119, 74, 150)
   };
-  // Map with every category associated to its expense.
+
+  /// Map with every category associated to its expense.
   Map<Categories, double> categoryData = {};
 
   @override
@@ -74,8 +77,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              "Spend analytics",
+                            const LocaleText(
+                              "spend_analytics",
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 fontSize: 16.0,
@@ -121,14 +124,28 @@ class _CategoriesPageState extends State<CategoriesPage> {
                 ),
                 Expanded(
                   flex: 5,
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      "Filter: ${Utils.filtersMap[widget.currentFilter]!}",
-                      style: const TextStyle(
-                        fontSize: 12,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      const LocaleText(
+                        "Filter",
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
                       ),
-                    ),
+                      const Text(
+                        ": ",
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
+                      ),
+                      LocaleText(
+                        Utils.filtersMap[widget.currentFilter]!,
+                        style: const TextStyle(
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -139,70 +156,68 @@ class _CategoriesPageState extends State<CategoriesPage> {
     );
   }
 
-  // Method that returns the basic view.
+  /// Method that returns the basic view.
   Widget categoriesBasicView() {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(32, 116, 116, 116),
-        border: Border.all(
-          color: const Color.fromARGB(45, 146, 146, 146),
-          width: 2.0,
-          style: BorderStyle.solid,
+    return Material(
+      elevation: 5.0,
+      child: Container(
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(32, 116, 116, 116),
+          borderRadius: BorderRadius.circular(5.0),
         ),
-        borderRadius: BorderRadius.circular(5.0),
-      ),
-      padding:
-          const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 5.0, top: 8.0),
-      child: Scrollbar(
-        controller: scrollController,
-        child: ListView.builder(
-            shrinkWrap: true,
-            controller: scrollController,
-            itemCount: categoryData.length,
-            itemBuilder: (context, index) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            "${categoryData.keys.elementAt(index).name.capitalize()} - ",
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+        padding: const EdgeInsets.only(
+            left: 15.0, right: 15.0, bottom: 8.0, top: 15.0),
+        child: Scrollbar(
+          controller: scrollController,
+          child: ListView.builder(
+              shrinkWrap: true,
+              controller: scrollController,
+              itemCount: categoryData.length,
+              itemBuilder: (context, index) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            LocaleText(
+                              categoryData.keys.elementAt(index).name,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                          Text(
-                            "${(getExpensePercentage(categoryData.values.elementAt(index)) * 100).toPrecision(Utils.decimalPrecission)} %",
-                          ),
-                        ],
-                      ),
-                      Text(
-                        "${categoryData.values.elementAt(index).toPrecision(Utils.decimalPrecission)} €",
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
+                            Text(
+                              " - ${(getExpensePercentage(categoryData.values.elementAt(index)) * 100).toPrecision(Utils.decimalPrecission)} %",
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 5.0,
-                  ),
-                  getPercentageBar(categoryData.keys.elementAt(index)),
-                  const SizedBox(
-                    height: 25.0,
-                  ),
-                ],
-              );
-            }),
+                        Text(
+                          "${categoryData.values.elementAt(index).toPrecision(Utils.decimalPrecission)} €",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 5.0,
+                    ),
+                    getPercentageBar(categoryData.keys.elementAt(index)),
+                    const SizedBox(
+                      height: 25.0,
+                    ),
+                  ],
+                );
+              }),
+        ),
       ),
     );
   }
 
-  // Method that returns a PieChart of the different category expenses.
+  /// Method that returns a PieChart of the different category expenses.
   Widget categoriesPieChart() {
     return PieChart(
       dataMap: categoryData.map((key, value) => MapEntry(key.name, value)),
@@ -219,7 +234,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
     );
   }
 
-  // Method that returns a percentage bar widget of a category.
+  /// Method that returns a percentage bar widget of a category.
   // @param categoryIndex int the index of the category in the data map.
   Widget getPercentageBar(Categories category) {
     double percentage = getExpensePercentage(categoryData[category]!);
@@ -243,7 +258,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
     ]);
   }
 
-  // Method that returns the total expenses from a specific category.
+  /// Method that returns the total expenses from a specific category.
   // @param category the category with which to calculate the expenses.
   // @return double the expenses for the given category.
   double getExpenseByCategory(Categories category) {
@@ -256,14 +271,14 @@ class _CategoriesPageState extends State<CategoriesPage> {
     return result;
   }
 
-  // Method that calculates the percentage of expense from a given category with the total expenses.
+  /// Method that calculates the percentage of expense from a given category with the total expenses.
   // @param expense double the value from which to calculate the percentage.
   // @result double the percentage of the expenses(from 0 to 1).
   double getExpensePercentage(double expense) {
     return totalExpenses > 0.0 ? expense / totalExpenses : 0.0;
   }
 
-  // Method that calculates the total expense given the entries.
+  /// Method that calculates the total expense given the entries.
   void setTotalExpenses() {
     for (Entry entry in widget.entryListFiltered) {
       if (entry.value < 0.0) {
@@ -272,7 +287,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
     }
   }
 
-  // Method that given all the categories, creates a map of every category and its expense.
+  /// Method that given all the categories, creates a map of every category and its expense.
   void initializeCategoryData() {
     for (var category in Categories.values) {
       // If the map data doesn't have the category, add it.
@@ -289,7 +304,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
     categoryColors = getCategoryColorsSorted();
   }
 
-  // Method that sorts the category colors map using the same order of keys as the category data map.
+  /// Method that sorts the category colors map using the same order of keys as the category data map.
   Map<Categories, Color> getCategoryColorsSorted() {
     Map<Categories, Color> sortedMap = {};
     categoryData.forEach((key, value) {

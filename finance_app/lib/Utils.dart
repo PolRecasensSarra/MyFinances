@@ -31,13 +31,13 @@ class Utils {
   static int decimalPrecission = 2;
   // Map with all the possible filters.
   static Map<Filters, String> filtersMap = {
-    Filters.all: "All",
-    Filters.day: "Day",
-    Filters.week: "Week",
-    Filters.month: "Month",
-    Filters.halfyear: "6 months",
-    Filters.year: "Year",
-    Filters.custom: "Custom"
+    Filters.all: "filter_all",
+    Filters.day: "filter_day",
+    Filters.week: "filter_week",
+    Filters.month: "filter_month",
+    Filters.halfyear: "filter_half_year",
+    Filters.year: "filter_year",
+    Filters.custom: "filter_custom"
   };
 
   static DateTime customFilterDateStart = DateTime.now();

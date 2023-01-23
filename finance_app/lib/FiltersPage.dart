@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 
 import 'Utils.dart';
 
@@ -36,8 +37,8 @@ class _FiltersPageState extends State<FiltersPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Filters",
+        title: const LocaleText(
+          "filters",
         ),
       ),
       body: SafeArea(
@@ -49,8 +50,8 @@ class _FiltersPageState extends State<FiltersPage> {
               children: [
                 const Expanded(
                   flex: 8,
-                  child: Text(
-                    "Select a filter to apply",
+                  child: LocaleText(
+                    "select_filter_apply",
                     style: TextStyle(
                       fontSize: 20,
                     ),
@@ -93,8 +94,8 @@ class _FiltersPageState extends State<FiltersPage> {
                         onPressed: () {
                           Navigator.pop(context, filterSelected);
                         },
-                        child: const Text(
-                          "Apply",
+                        child: const LocaleText(
+                          "apply",
                         ),
                       ),
                     ),
@@ -134,7 +135,7 @@ class _FiltersPageState extends State<FiltersPage> {
               color: const Color.fromARGB(255, 78, 78, 78),
               child: CheckboxListTile(
                 value: checkboxList[index].checked,
-                title: Text(
+                title: LocaleText(
                   Utils.filtersMap[checkboxList[index].filter]!,
                 ),
                 activeColor: const Color.fromARGB(255, 79, 135, 231),

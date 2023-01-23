@@ -1,9 +1,11 @@
 import 'package:finance_app/CategoriesPage.dart';
 import 'package:finance_app/Entry.dart';
 import 'package:finance_app/FiltersPage.dart';
+import 'package:finance_app/LanguagesPage.dart';
 import 'package:finance_app/NewEntryPage.dart';
 import 'package:finance_app/InfoManager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'Utils.dart';
@@ -12,7 +14,7 @@ import 'Utils.dart';
 enum ViewTypes { all, income, expense }
 
 // Enum with the different popup menu options.
-enum PopUpMenuOptions { filters, categories, deleteAll }
+enum PopUpMenuOptions { filters, categories, languages, deleteAll }
 
 class FinancePage extends StatefulWidget {
   const FinancePage({super.key});
@@ -58,7 +60,7 @@ class _FinancePageState extends State<FinancePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("My Finances"),
+        title: const LocaleText("my_finances"),
         backgroundColor: const Color.fromARGB(255, 39, 41, 43),
         actions: [
           popUpMenuButton(),
@@ -73,22 +75,22 @@ class _FinancePageState extends State<FinancePage> {
         selectedItemColor: const Color.fromARGB(255, 255, 255, 255),
         unselectedItemColor: const Color.fromARGB(255, 194, 194, 194),
         backgroundColor: const Color.fromARGB(255, 39, 41, 43),
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            label: "Show All",
-            icon: Icon(
+            label: Locales.string(context, "show_all"),
+            icon: const Icon(
               Icons.savings,
             ),
           ),
           BottomNavigationBarItem(
-            label: "Show Incomes",
-            icon: Icon(
+            label: Locales.string(context, "show_incomes"),
+            icon: const Icon(
               Icons.euro_symbol_outlined,
             ),
           ),
           BottomNavigationBarItem(
-            label: "Show Expenses",
-            icon: Icon(
+            label: Locales.string(context, "show_expenses"),
+            icon: const Icon(
               Icons.payments,
             ),
           ),
@@ -128,8 +130,8 @@ class _FinancePageState extends State<FinancePage> {
               children: [
                 const Expanded(
                   flex: 5,
-                  child: Text(
-                    "Your balance",
+                  child: LocaleText(
+                    "my_balance",
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -249,14 +251,28 @@ class _FinancePageState extends State<FinancePage> {
                 ),
                 Expanded(
                   flex: 4,
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Filter: ${Utils.filtersMap[filterSelected]!}",
-                      style: const TextStyle(
-                        fontSize: 12,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const LocaleText(
+                        "Filter",
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
                       ),
-                    ),
+                      const Text(
+                        ": ",
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
+                      ),
+                      LocaleText(
+                        Utils.filtersMap[filterSelected]!,
+                        style: const TextStyle(
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 const Expanded(
@@ -458,20 +474,26 @@ class _FinancePageState extends State<FinancePage> {
         return [
           const PopupMenuItem(
             value: PopUpMenuOptions.filters,
-            child: Text(
-              "Filters",
+            child: LocaleText(
+              "filters",
             ),
           ),
           const PopupMenuItem(
             value: PopUpMenuOptions.categories,
-            child: Text(
-              "Categories",
+            child: LocaleText(
+              "categories",
+            ),
+          ),
+          const PopupMenuItem(
+            value: PopUpMenuOptions.languages,
+            child: LocaleText(
+              "languages",
             ),
           ),
           const PopupMenuItem(
             value: PopUpMenuOptions.deleteAll,
-            child: Text(
-              "Delete History",
+            child: LocaleText(
+              "delete_history",
             ),
           ),
         ];
@@ -504,6 +526,13 @@ class _FinancePageState extends State<FinancePage> {
                   currentFilter: filterSelected,
                   entryListFiltered: entryListFiltered,
                 ),
+              ),
+            );
+            break;
+          case PopUpMenuOptions.languages:
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (contextCallback) => const LanguagesPage(),
               ),
             );
             break;
