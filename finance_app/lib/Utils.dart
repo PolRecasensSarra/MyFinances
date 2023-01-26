@@ -24,7 +24,7 @@ enum Categories {
 }
 
 // Enum with the supported locales.
-enum Languages { en, es }
+enum Languages { ca, en, es }
 
 class Utils {
   // Decimal precision.

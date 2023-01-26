@@ -325,9 +325,7 @@ class _FinancePageState extends State<FinancePage> {
           Colors.blueAccent,
         ),
       ),
-      child: const Text(
-        "Cancel",
-      ),
+      child: const LocaleText("cancel"),
       onPressed: () {
         Navigator.pop(context);
       },
@@ -338,9 +336,7 @@ class _FinancePageState extends State<FinancePage> {
           const Color.fromARGB(255, 175, 69, 69),
         ),
       ),
-      child: const Text(
-        "Continue",
-      ),
+      child: const LocaleText("continue"),
       onPressed: () {
         if (partialDelete) {
           deleteEntry(entry);
@@ -353,12 +349,15 @@ class _FinancePageState extends State<FinancePage> {
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: Text(
-        partialDelete ? "Delete entry" : "Delete all history record",
+        Locales.string(context,
+            partialDelete ? "delete_entry_popup" : "delete_history_popup"),
       ),
       content: Text(
-        partialDelete
-            ? "Are you sure that you want to delete this entry? This action can't be undone."
-            : "Are you sure that you want to delete all the entry history record? This action can't be undone.",
+        Locales.string(
+            context,
+            partialDelete
+                ? "delete_entry_popup_text"
+                : "delete_history_popup_text"),
       ),
       actions: [
         cancelButton,

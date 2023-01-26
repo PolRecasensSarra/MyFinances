@@ -3,6 +3,7 @@
     "languages" : "Idiomas",
     "es" : "Español",
     "en" : "English",
+    "ca" : "Català",
     "select_language" : "Seleccione un idioma",
     "filter" : "Filtro",
     "filters" : "Filtros",
@@ -22,6 +23,8 @@
     "filter_half_year" : "6 meses",
     "filter_year" : "Año",
     "filter_custom" : "Personalizado",
+    "enter_start_date" : "Fecha de Inicio",
+    "enter_end_date" : "Fecha de Fin",
 
     "spend_analytics" : "Análisis de gastos",
     "others" : "Otros",
@@ -33,7 +36,25 @@
     "clothes" : "Ropa y accesorios",
     "supers" : "Supermercados",
     "transfers" : "Transferencias",
-    "mobile" : "Móbil",
+    "mobile" : "Móvil",
     "health" : "Salud",
-    "wellness" : "Bienestar"
+    "wellness" : "Bienestar",
+
+    "delete_entry_popup" : "Borrar la entrada",
+    "delete_history_popup" : "Borrar todo el historial",
+    "delete_entry_popup_text" : "Estás seguro que quieres eliminar esta entrada? Esta acción no puede deshacerse.",
+    "delete_history_popup_text" : "Estás seguro que quieres eliminar todo el historial de entradas? Esta acción no puede deshacerse.",
+    
+    "cancel" : "Cancelar",
+    "continue" : "Continuar",
+
+    "add_new_entry" : "Añadir una nueva entrada",
+    "new_entry_expense_concept" : "Añade el concepto*",
+    "new_entry_expense_value" : "Añade el importe*",
+    "new_entry_enter_date" : "Fecha",
+    "new_entry_enter_time" : "Hora",
+    "new_entry_category" : "Categoría",
+    "new_entry_add_income" : "Añadir ingreso",
+    "new_entry_add_expense" : "Añadir gasto",
+    "new_entry_error_text" : "El concepto e importe no pueden estar vacíos."
 }

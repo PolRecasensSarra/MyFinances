@@ -54,6 +54,7 @@ class _FiltersPageState extends State<FiltersPage> {
                     "select_filter_apply",
                     style: TextStyle(
                       fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
@@ -206,26 +207,26 @@ class _FiltersPageState extends State<FiltersPage> {
             style: const TextStyle(
               color: Colors.white,
             ),
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               filled: true,
-              fillColor: Color.fromARGB(255, 94, 94, 94),
-              contentPadding: EdgeInsets.symmetric(
+              fillColor: const Color.fromARGB(255, 94, 94, 94),
+              contentPadding: const EdgeInsets.symmetric(
                   vertical: 8.0, horizontal: 20.0), //here your padding
-              hintText: "Enter Start Date",
+              hintText: Locales.string(context, "enter_start_date"),
               alignLabelWithHint: true,
-              hintStyle: TextStyle(
+              hintStyle: const TextStyle(
                   fontSize: 14,
                   color: Color.fromARGB(255, 163, 163, 163),
                   fontStyle: FontStyle.italic),
-              focusedBorder: OutlineInputBorder(
+              focusedBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.white),
               ),
-              border: OutlineInputBorder(
+              border: const OutlineInputBorder(
                 borderSide: BorderSide(
                   color: Color.fromARGB(255, 146, 146, 146),
                 ),
               ),
-              enabledBorder: OutlineInputBorder(
+              enabledBorder: const OutlineInputBorder(
                 borderSide:
                     BorderSide(color: Color.fromARGB(255, 146, 146, 146)),
               ),
@@ -267,21 +268,21 @@ class _FiltersPageState extends State<FiltersPage> {
             style: const TextStyle(
               color: Colors.white,
             ),
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               filled: true,
-              fillColor: Color.fromARGB(255, 94, 94, 94),
-              contentPadding: EdgeInsets.symmetric(
+              fillColor: const Color.fromARGB(255, 94, 94, 94),
+              contentPadding: const EdgeInsets.symmetric(
                   vertical: 8.0, horizontal: 20.0), //here your padding
-              hintText: "Enter End Date",
+              hintText: Locales.string(context, "enter_end_date"),
               alignLabelWithHint: true,
-              hintStyle: TextStyle(
+              hintStyle: const TextStyle(
                   fontSize: 14,
                   color: Color.fromARGB(255, 163, 163, 163),
                   fontStyle: FontStyle.italic),
-              focusedBorder: OutlineInputBorder(
+              focusedBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.white),
               ),
-              border: OutlineInputBorder(
+              border: const OutlineInputBorder(
                 borderSide: BorderSide(
                   color: Color.fromARGB(255, 146, 146, 146),
                 ),

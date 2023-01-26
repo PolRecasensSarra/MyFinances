@@ -1,6 +1,7 @@
 import 'package:finance_app/InfoManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 
 import 'Entry.dart';
 import 'Utils.dart';
@@ -34,7 +35,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("My Finances"),
+        title: const LocaleText("my_finances"),
         backgroundColor: const Color.fromARGB(255, 39, 41, 43),
       ),
       resizeToAvoidBottomInset: true,
@@ -50,8 +51,8 @@ class _NewEntryPageState extends State<NewEntryPage> {
                 children: [
                   const Align(
                     alignment: Alignment.topCenter,
-                    child: Text(
-                      "Add a new entry",
+                    child: LocaleText(
+                      "add_new_entry",
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -73,7 +74,8 @@ class _NewEntryPageState extends State<NewEntryPage> {
                       fillColor: const Color.fromARGB(255, 94, 94, 94),
                       contentPadding:
                           const EdgeInsets.all(8.0), //here your padding
-                      hintText: "Add expense or income concept*",
+                      hintText:
+                          Locales.string(context, "new_entry_expense_concept"),
                       suffixIcon:
                           const Icon(Icons.text_snippet, color: Colors.white54),
                       hintStyle: const TextStyle(
@@ -123,7 +125,8 @@ class _NewEntryPageState extends State<NewEntryPage> {
                       fillColor: const Color.fromARGB(255, 94, 94, 94),
                       contentPadding:
                           const EdgeInsets.all(8.0), //here your padding
-                      hintText: "Add expense or income value*",
+                      hintText:
+                          Locales.string(context, "new_entry_expense_value"),
                       suffixIcon:
                           const Icon(Icons.euro_symbol, color: Colors.white54),
                       alignLabelWithHint: true,
@@ -178,7 +181,8 @@ class _NewEntryPageState extends State<NewEntryPage> {
                             fillColor: const Color.fromARGB(255, 94, 94, 94),
                             contentPadding:
                                 const EdgeInsets.all(8.0), //here your padding
-                            hintText: "Enter Date",
+                            hintText:
+                                Locales.string(context, "new_entry_enter_date"),
                             suffixIcon: const Icon(
                               Icons.calendar_month,
                               color: Colors.white54,
@@ -238,7 +242,8 @@ class _NewEntryPageState extends State<NewEntryPage> {
                             filled: true,
                             fillColor: const Color.fromARGB(255, 94, 94, 94),
                             contentPadding: const EdgeInsets.all(8.0),
-                            hintText: "Enter Time",
+                            hintText:
+                                Locales.string(context, "new_entry_enter_time"),
                             suffixIcon: const Icon(
                               Icons.access_time,
                               color: Colors.white54,
@@ -300,25 +305,28 @@ class _NewEntryPageState extends State<NewEntryPage> {
                           ),
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
                           child: Center(
-                            child: DropdownButton<Categories>(
-                              value: selectedCategory,
-                              underline: Container(
-                                height: 0,
+                            child: FittedBox(
+                              fit: BoxFit.fitWidth,
+                              child: DropdownButton<Categories>(
+                                value: selectedCategory,
+                                underline: Container(
+                                  height: 0,
+                                ),
+                                onChanged: (Categories? value) {
+                                  setState(() {
+                                    selectedCategory = value!;
+                                  });
+                                },
+                                items: Categories.values
+                                    .map((Categories category) {
+                                  return DropdownMenuItem(
+                                    value: category,
+                                    child: LocaleText(
+                                      category.name,
+                                    ),
+                                  );
+                                }).toList(),
                               ),
-                              onChanged: (Categories? value) {
-                                setState(() {
-                                  selectedCategory = value!;
-                                });
-                              },
-                              items:
-                                  Categories.values.map((Categories category) {
-                                return DropdownMenuItem(
-                                  value: category,
-                                  child: Text(
-                                    category.name,
-                                  ),
-                                );
-                              }).toList(),
                             ),
                           ),
                         ),
@@ -327,8 +335,8 @@ class _NewEntryPageState extends State<NewEntryPage> {
                         flex: 45,
                         child: Padding(
                           padding: EdgeInsets.only(left: 15.0),
-                          child: Text(
-                            "Category",
+                          child: LocaleText(
+                            "new_entry_category",
                             textAlign: TextAlign.left,
                             style: TextStyle(
                               color: Color.fromARGB(255, 206, 206, 206),
@@ -350,8 +358,8 @@ class _NewEntryPageState extends State<NewEntryPage> {
                               const Color.fromARGB(255, 94, 128, 95),
                             ),
                           ),
-                          child: const Text(
-                            "Add income",
+                          child: const LocaleText(
+                            "new_entry_add_income",
                           ),
                           onPressed: () {
                             updateBalance(EntryTpe.income);
@@ -368,8 +376,8 @@ class _NewEntryPageState extends State<NewEntryPage> {
                               const Color.fromARGB(255, 146, 101, 101),
                             ),
                           ),
-                          child: const Text(
-                            "Add expense",
+                          child: const LocaleText(
+                            "new_entry_add_expense",
                           ),
                           onPressed: () {
                             updateBalance(EntryTpe.expense);
@@ -381,14 +389,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                   const SizedBox(
                     height: 15.0,
                   ),
-                  Text(
-                    error,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: Colors.red,
-                      fontSize: 14,
-                    ),
-                  ),
+                  getErrorLabel(),
                 ],
               ),
             ),
@@ -396,6 +397,30 @@ class _NewEntryPageState extends State<NewEntryPage> {
         ),
       ),
     );
+  }
+
+  Widget getErrorLabel() {
+    Widget result = const Text("");
+    if (error.isEmpty) {
+      result = Text(
+        error,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          color: Colors.red,
+          fontSize: 14,
+        ),
+      );
+    } else {
+      result = LocaleText(
+        error,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          color: Colors.red,
+          fontSize: 14,
+        ),
+      );
+    }
+    return result;
   }
 
   // Method that updates the current balance.
@@ -434,7 +459,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
       date = "";
       validEntry = true;
     } else {
-      error = "Concept and value cannot be null.";
+      error = "new_entry_error_text";
     }
     // Force update the state.
     setState(() {});
