@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:intl/intl.dart';
 
 import 'Entry.dart';
@@ -31,13 +32,13 @@ class Utils {
   static int decimalPrecission = 2;
   // Map with all the possible filters.
   static Map<Filters, String> filtersMap = {
-    Filters.all: "filter_all",
-    Filters.day: "filter_day",
-    Filters.week: "filter_week",
-    Filters.month: "filter_month",
-    Filters.halfyear: "filter_half_year",
-    Filters.year: "filter_year",
-    Filters.custom: "filter_custom"
+    Filters.all: "tr_filter_all",
+    Filters.day: "tr_filter_day",
+    Filters.week: "tr_filter_week",
+    Filters.month: "tr_filter_month",
+    Filters.halfyear: "tr_filter_half_year",
+    Filters.year: "tr_filter_year",
+    Filters.custom: "tr_filter_custom"
   };
 
   static DateTime customFilterDateStart = DateTime.now();
@@ -45,7 +46,7 @@ class Utils {
 
   // Method that given a date time, formats it to day of the week if the date time is inside the current week or the day-month otherwise.
   // @param dateTime String the stored date time.
-  static String getFormattedDateTime(String dateTime) {
+  static String getFormattedDateTime(String dateTime, BuildContext context) {
     // Convert the saved date string to DateTime.
     DateTime givenDate = DateTime.parse(dateTime);
     // Get the current DateTime and get the difference with the given date.
@@ -55,8 +56,9 @@ class Utils {
     // Otherwise show the date.
     return isSameWeek(givenDate, now)
         ? (isSameDay(givenDate, now)
-            ? "Today"
-            : DateFormat.EEEE().format(givenDate))
+            ? Locales.string(context, "tr_today")
+            : DateFormat.EEEE(Locales.selectedLocale.languageCode)
+                .format(givenDate))
         : getDateFormattedByLocale(givenDate);
   }
 

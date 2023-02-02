@@ -60,7 +60,7 @@ class _FinancePageState extends State<FinancePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const LocaleText("my_finances"),
+        title: const LocaleText("tr_my_finances"),
         backgroundColor: const Color.fromARGB(255, 39, 41, 43),
         actions: [
           popUpMenuButton(),
@@ -77,19 +77,19 @@ class _FinancePageState extends State<FinancePage> {
         backgroundColor: const Color.fromARGB(255, 39, 41, 43),
         items: [
           BottomNavigationBarItem(
-            label: Locales.string(context, "show_all"),
+            label: Locales.string(context, "tr_show_all"),
             icon: const Icon(
               Icons.savings,
             ),
           ),
           BottomNavigationBarItem(
-            label: Locales.string(context, "show_incomes"),
+            label: Locales.string(context, "tr_show_incomes"),
             icon: const Icon(
               Icons.euro_symbol_outlined,
             ),
           ),
           BottomNavigationBarItem(
-            label: Locales.string(context, "show_expenses"),
+            label: Locales.string(context, "tr_show_expenses"),
             icon: const Icon(
               Icons.payments,
             ),
@@ -131,7 +131,7 @@ class _FinancePageState extends State<FinancePage> {
                 const Expanded(
                   flex: 5,
                   child: LocaleText(
-                    "my_balance",
+                    "tr_my_balance",
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -213,7 +213,9 @@ class _FinancePageState extends State<FinancePage> {
                                     ),
                                     subtitle: Text(
                                       Utils.getFormattedDateTime(
-                                          entryListFiltered[index].date),
+                                              entryListFiltered[index].date,
+                                              context)
+                                          .capitalize(),
                                       style: const TextStyle(
                                         color:
                                             Color.fromARGB(255, 196, 196, 196),
@@ -255,7 +257,7 @@ class _FinancePageState extends State<FinancePage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       const LocaleText(
-                        "Filter",
+                        "tr_filter",
                         style: TextStyle(
                           fontSize: 12,
                         ),
@@ -325,7 +327,7 @@ class _FinancePageState extends State<FinancePage> {
           Colors.blueAccent,
         ),
       ),
-      child: const LocaleText("cancel"),
+      child: const LocaleText("tr_cancel"),
       onPressed: () {
         Navigator.pop(context);
       },
@@ -336,7 +338,7 @@ class _FinancePageState extends State<FinancePage> {
           const Color.fromARGB(255, 175, 69, 69),
         ),
       ),
-      child: const LocaleText("continue"),
+      child: const LocaleText("tr_continue"),
       onPressed: () {
         if (partialDelete) {
           deleteEntry(entry);
@@ -349,15 +351,18 @@ class _FinancePageState extends State<FinancePage> {
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: Text(
-        Locales.string(context,
-            partialDelete ? "delete_entry_popup" : "delete_history_popup"),
+        Locales.string(
+            context,
+            partialDelete
+                ? "tr_delete_entry_popup"
+                : "tr_delete_history_popup"),
       ),
       content: Text(
         Locales.string(
             context,
             partialDelete
-                ? "delete_entry_popup_text"
-                : "delete_history_popup_text"),
+                ? "tr_delete_entry_popup_text"
+                : "tr_delete_history_popup_text"),
       ),
       actions: [
         cancelButton,
@@ -449,15 +454,15 @@ class _FinancePageState extends State<FinancePage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: const [
-          Text(
-            "Wow, it's really calm in here!",
+          LocaleText(
+            "tr_empty_balance_placeholder",
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
           ),
-          Text(
-            "Add a new entry to the balance.",
+          LocaleText(
+            "tr_add_new_entry_placeholder",
             style: TextStyle(
               color: Colors.white,
             ),
@@ -474,25 +479,25 @@ class _FinancePageState extends State<FinancePage> {
           const PopupMenuItem(
             value: PopUpMenuOptions.filters,
             child: LocaleText(
-              "filters",
+              "tr_filters",
             ),
           ),
           const PopupMenuItem(
             value: PopUpMenuOptions.categories,
             child: LocaleText(
-              "categories",
+              "tr_categories",
             ),
           ),
           const PopupMenuItem(
             value: PopUpMenuOptions.languages,
             child: LocaleText(
-              "languages",
+              "tr_languages",
             ),
           ),
           const PopupMenuItem(
             value: PopUpMenuOptions.deleteAll,
             child: LocaleText(
-              "delete_history",
+              "tr_delete_history",
             ),
           ),
         ];

@@ -15,7 +15,7 @@ class _LanguagesPageState extends State<LanguagesPage> {
     return Scaffold(
       appBar: AppBar(
         title: const LocaleText(
-          "languages",
+          "tr_languages",
         ),
       ),
       body: SafeArea(
@@ -27,7 +27,7 @@ class _LanguagesPageState extends State<LanguagesPage> {
               const Align(
                 alignment: Alignment.centerLeft,
                 child: LocaleText(
-                  "select_language",
+                  "tr_select_language",
                   style: TextStyle(
                     fontSize: 16.0,
                   ),

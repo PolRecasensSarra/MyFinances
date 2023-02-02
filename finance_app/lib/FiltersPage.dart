@@ -38,7 +38,7 @@ class _FiltersPageState extends State<FiltersPage> {
     return Scaffold(
       appBar: AppBar(
         title: const LocaleText(
-          "filters",
+          "tr_filters",
         ),
       ),
       body: SafeArea(
@@ -51,7 +51,7 @@ class _FiltersPageState extends State<FiltersPage> {
                 const Expanded(
                   flex: 8,
                   child: LocaleText(
-                    "select_filter_apply",
+                    "tr_select_filter_apply",
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -96,7 +96,7 @@ class _FiltersPageState extends State<FiltersPage> {
                           Navigator.pop(context, filterSelected);
                         },
                         child: const LocaleText(
-                          "apply",
+                          "tr_apply",
                         ),
                       ),
                     ),
@@ -212,7 +212,7 @@ class _FiltersPageState extends State<FiltersPage> {
               fillColor: const Color.fromARGB(255, 94, 94, 94),
               contentPadding: const EdgeInsets.symmetric(
                   vertical: 8.0, horizontal: 20.0), //here your padding
-              hintText: Locales.string(context, "enter_start_date"),
+              hintText: Locales.string(context, "tr_enter_start_date"),
               alignLabelWithHint: true,
               hintStyle: const TextStyle(
                   fontSize: 14,
@@ -273,7 +273,7 @@ class _FiltersPageState extends State<FiltersPage> {
               fillColor: const Color.fromARGB(255, 94, 94, 94),
               contentPadding: const EdgeInsets.symmetric(
                   vertical: 8.0, horizontal: 20.0), //here your padding
-              hintText: Locales.string(context, "enter_end_date"),
+              hintText: Locales.string(context, "tr_enter_end_date"),
               alignLabelWithHint: true,
               hintStyle: const TextStyle(
                   fontSize: 14,
@@ -287,9 +287,10 @@ class _FiltersPageState extends State<FiltersPage> {
                   color: Color.fromARGB(255, 146, 146, 146),
                 ),
               ),
-              enabledBorder: OutlineInputBorder(
-                borderSide:
-                    BorderSide(color: Color.fromARGB(255, 146, 146, 146)),
+              enabledBorder: const OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color.fromARGB(255, 146, 146, 146),
+                ),
               ),
             ),
             onTap: () async {

@@ -57,7 +57,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
     return Scaffold(
       appBar: AppBar(
         title: const LocaleText(
-          "categories",
+          "tr_categories",
         ),
       ),
       body: SafeArea(
@@ -78,7 +78,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const LocaleText(
-                              "spend_analytics",
+                              "tr_spend_analytics",
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 fontSize: 16.0,
@@ -128,7 +128,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       const LocaleText(
-                        "Filter",
+                        "tr_filter",
                         style: TextStyle(
                           fontSize: 12,
                         ),

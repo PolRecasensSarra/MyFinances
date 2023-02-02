@@ -35,7 +35,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const LocaleText("my_finances"),
+        title: const LocaleText("tr_my_finances"),
         backgroundColor: const Color.fromARGB(255, 39, 41, 43),
       ),
       resizeToAvoidBottomInset: true,
@@ -52,7 +52,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                   const Align(
                     alignment: Alignment.topCenter,
                     child: LocaleText(
-                      "add_new_entry",
+                      "tr_add_new_entry",
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -74,8 +74,8 @@ class _NewEntryPageState extends State<NewEntryPage> {
                       fillColor: const Color.fromARGB(255, 94, 94, 94),
                       contentPadding:
                           const EdgeInsets.all(8.0), //here your padding
-                      hintText:
-                          Locales.string(context, "new_entry_expense_concept"),
+                      hintText: Locales.string(
+                          context, "tr_new_entry_expense_concept"),
                       suffixIcon:
                           const Icon(Icons.text_snippet, color: Colors.white54),
                       hintStyle: const TextStyle(
@@ -126,7 +126,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                       contentPadding:
                           const EdgeInsets.all(8.0), //here your padding
                       hintText:
-                          Locales.string(context, "new_entry_expense_value"),
+                          Locales.string(context, "tr_new_entry_expense_value"),
                       suffixIcon:
                           const Icon(Icons.euro_symbol, color: Colors.white54),
                       alignLabelWithHint: true,
@@ -181,8 +181,8 @@ class _NewEntryPageState extends State<NewEntryPage> {
                             fillColor: const Color.fromARGB(255, 94, 94, 94),
                             contentPadding:
                                 const EdgeInsets.all(8.0), //here your padding
-                            hintText:
-                                Locales.string(context, "new_entry_enter_date"),
+                            hintText: Locales.string(
+                                context, "tr_new_entry_enter_date"),
                             suffixIcon: const Icon(
                               Icons.calendar_month,
                               color: Colors.white54,
@@ -242,8 +242,8 @@ class _NewEntryPageState extends State<NewEntryPage> {
                             filled: true,
                             fillColor: const Color.fromARGB(255, 94, 94, 94),
                             contentPadding: const EdgeInsets.all(8.0),
-                            hintText:
-                                Locales.string(context, "new_entry_enter_time"),
+                            hintText: Locales.string(
+                                context, "tr_new_entry_enter_time"),
                             suffixIcon: const Icon(
                               Icons.access_time,
                               color: Colors.white54,
@@ -336,7 +336,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                         child: Padding(
                           padding: EdgeInsets.only(left: 15.0),
                           child: LocaleText(
-                            "new_entry_category",
+                            "tr_new_entry_category",
                             textAlign: TextAlign.left,
                             style: TextStyle(
                               color: Color.fromARGB(255, 206, 206, 206),
@@ -359,7 +359,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                             ),
                           ),
                           child: const LocaleText(
-                            "new_entry_add_income",
+                            "tr_new_entry_add_income",
                           ),
                           onPressed: () {
                             updateBalance(EntryTpe.income);
@@ -377,7 +377,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                             ),
                           ),
                           child: const LocaleText(
-                            "new_entry_add_expense",
+                            "tr_new_entry_add_expense",
                           ),
                           onPressed: () {
                             updateBalance(EntryTpe.expense);
@@ -459,7 +459,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
       date = "";
       validEntry = true;
     } else {
-      error = "new_entry_error_text";
+      error = "tr_new_entry_error_text";
     }
     // Force update the state.
     setState(() {});
