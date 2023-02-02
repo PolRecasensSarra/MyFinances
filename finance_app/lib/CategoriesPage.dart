@@ -22,6 +22,7 @@ class CategoriesPage extends StatefulWidget {
 
 class _CategoriesPageState extends State<CategoriesPage> {
   ScrollController scrollController = ScrollController();
+  ScrollController entriesScrollController = ScrollController();
 
   /// Total amount of expenses(money). Will be a absolute value.
   double totalExpenses = 0.0;
@@ -77,12 +78,15 @@ class _CategoriesPageState extends State<CategoriesPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const LocaleText(
-                              "tr_spend_analytics",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
+                            const FittedBox(
+                              fit: BoxFit.fitWidth,
+                              child: LocaleText(
+                                "tr_spend_analytics",
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                             const SizedBox(
@@ -177,30 +181,39 @@ class _CategoriesPageState extends State<CategoriesPage> {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            LocaleText(
-                              categoryData.keys.elementAt(index).name,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
+                    // Detect the input from the category to open a popup with the entries by that category.
+                    GestureDetector(
+                      onTap: () {
+                        openCategoryPopup(categoryData.entries.toList()[index]);
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          FittedBox(
+                            fit: BoxFit.fitWidth,
+                            child: Row(
+                              children: [
+                                LocaleText(
+                                  categoryData.keys.elementAt(index).name,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  " - ${(getExpensePercentage(categoryData.values.elementAt(index)) * 100).toPrecision(Utils.decimalPrecission)} %",
+                                ),
+                              ],
                             ),
-                            Text(
-                              " - ${(getExpensePercentage(categoryData.values.elementAt(index)) * 100).toPrecision(Utils.decimalPrecission)} %",
-                            ),
-                          ],
-                        ),
-                        Text(
-                          "${categoryData.values.elementAt(index).toPrecision(Utils.decimalPrecission)} €",
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
                           ),
-                        ),
-                      ],
+                          Text(
+                            "${categoryData.values.elementAt(index).toPrecision(Utils.decimalPrecission)} €",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     const SizedBox(
                       height: 5.0,
@@ -271,6 +284,17 @@ class _CategoriesPageState extends State<CategoriesPage> {
     return result;
   }
 
+  /// Method that given a list of entries, returns the entries that are from the given category.
+  List<Entry> getEntriesByCategory(Categories category) {
+    List<Entry> result = [];
+    for (Entry entry in widget.entryListFiltered) {
+      if (entry.category == category.index) {
+        result.add(entry);
+      }
+    }
+    return result;
+  }
+
   /// Method that calculates the percentage of expense from a given category with the total expenses.
   // @param expense double the value from which to calculate the percentage.
   // @result double the percentage of the expenses(from 0 to 1).
@@ -311,5 +335,99 @@ class _CategoriesPageState extends State<CategoriesPage> {
       sortedMap[key] = categoryColors[key]!;
     });
     return sortedMap;
+  }
+
+  // Method that opens a popup with a list of entries of the given category.
+  // @param entry MapEntry<Categories, double> The category/double entry among all the categories.
+  dynamic openCategoryPopup(MapEntry<Categories, double> entry) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              LocaleText(
+                entry.key.name,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text(
+                "${entry.value.toPrecision(Utils.decimalPrecission)} €",
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          scrollable: true,
+          content: getCategoryEntriesList(entry.key),
+        );
+      },
+    );
+  }
+
+  // Method that return the list of entries of the given category.
+  Widget getCategoryEntriesList(Categories category) {
+    List<Entry> categoryEntryList =
+        Utils.customSortByDate(getEntriesByCategory(category));
+    return categoryEntryList.isEmpty
+        ? const Center(
+            child: LocaleText(
+              "tr_empty_balance_placeholder",
+            ),
+          )
+        : Container(
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(34, 146, 146, 146),
+              border: Border.all(
+                color: const Color.fromARGB(45, 146, 146, 146),
+                width: 2.0,
+                style: BorderStyle.solid,
+              ),
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+            width: MediaQuery.of(context).size.width * 0.5,
+            height: MediaQuery.of(context).size.height * 0.6,
+            child: ListView.builder(
+              shrinkWrap: true,
+              controller: entriesScrollController,
+              itemCount: categoryEntryList.length,
+              itemBuilder: (context, index) {
+                return Card(
+                  color: Utils.getColorByEntryValue(
+                      categoryEntryList[index].value),
+                  child: ListTile(
+                    title: Text(
+                      categoryEntryList[index].concept,
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    subtitle: Text(
+                      Utils.getFormattedDateTime(
+                              categoryEntryList[index].date, context)
+                          .capitalize(),
+                      style: const TextStyle(
+                        color: Color.fromARGB(255, 196, 196, 196),
+                        fontSize: 10.0,
+                      ),
+                    ),
+                    trailing: Text(
+                      "${categoryEntryList[index].value.toPrecision(Utils.decimalPrecission)} €",
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    focusColor: Utils.getColorByEntryValue(
+                        categoryEntryList[index].value),
+                    hoverColor: Utils.getColorByEntryValue(
+                        categoryEntryList[index].value),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
   }
 }
