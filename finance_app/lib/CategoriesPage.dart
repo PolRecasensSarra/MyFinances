@@ -384,8 +384,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
               ),
               borderRadius: BorderRadius.circular(5.0),
             ),
-            width: MediaQuery.of(context).size.width * 0.5,
-            height: MediaQuery.of(context).size.height * 0.6,
+            width: MediaQuery.of(context).size.width * 1.0,
+            height: MediaQuery.of(context).size.height * 0.5,
             child: ListView.builder(
               shrinkWrap: true,
               controller: entriesScrollController,
