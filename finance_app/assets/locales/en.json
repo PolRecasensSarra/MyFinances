@@ -43,6 +43,7 @@
     "mobile" : "Mobile",
     "health" : "Health",
     "wellness" : "Wellness",
+    "restaurant" : "Restaurants",
 
     "tr_delete_entry_popup" : "Delete entry",
     "tr_delete_history_popup" : "Delete all history record",

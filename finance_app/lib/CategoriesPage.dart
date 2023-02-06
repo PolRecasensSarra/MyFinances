@@ -40,7 +40,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
     Categories.transfers: const Color.fromARGB(255, 102, 179, 179),
     Categories.mobile: const Color.fromARGB(255, 179, 102, 102),
     Categories.health: const Color.fromARGB(255, 102, 179, 102),
-    Categories.wellness: const Color.fromARGB(255, 119, 74, 150)
+    Categories.wellness: const Color.fromARGB(255, 119, 74, 150),
+    Categories.restaurant: const Color.fromARGB(255, 150, 74, 74)
   };
 
   /// Map with every category associated to its expense.
@@ -385,7 +386,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
               borderRadius: BorderRadius.circular(5.0),
             ),
             width: MediaQuery.of(context).size.width * 1.0,
-            height: MediaQuery.of(context).size.height * 0.5,
+            height: MediaQuery.of(context).size.height * 0.4,
             child: ListView.builder(
               shrinkWrap: true,
               controller: entriesScrollController,

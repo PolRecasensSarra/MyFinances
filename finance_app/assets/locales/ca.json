@@ -42,6 +42,7 @@
     "mobile" : "Mòbil",
     "health" : "Salut",
     "wellness" : "Benestar",
+    "restaurant" : "Restaurants",
 
     "tr_delete_entry_popup" : "Borrar l'entrada",
     "tr_delete_history_popup" : "Borrar tot l'historial",

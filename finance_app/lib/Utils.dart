@@ -18,6 +18,7 @@ enum Categories {
   bizum,
   clothes,
   supers,
+  restaurant,
   transfers,
   mobile,
   health,
