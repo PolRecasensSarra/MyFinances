@@ -2,15 +2,13 @@ import 'package:finance_app/InfoManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_locales/flutter_locales.dart';
-
 import 'Entry.dart';
 import 'Utils.dart';
 
 enum EntryTpe { income, expense }
 
 class NewEntryPage extends StatefulWidget {
-  final InfoManager infoManager;
-  const NewEntryPage({super.key, required this.infoManager});
+  const NewEntryPage({super.key});
 
   @override
   State<NewEntryPage> createState() => _NewEntryPageState();
@@ -444,10 +442,10 @@ class _NewEntryPageState extends State<NewEntryPage> {
           : DateTime.now().toString();
 
       // Add a new income to the list. Change the value sign given the entry type.
-      widget.infoManager.addNewEntry(
+      InfoManager.get.addNewEntry(
           Entry(concept, entryValue, entryDate, selectedCategory.index));
       // Save the data.
-      widget.infoManager.saveBalanceToJson();
+      InfoManager.get.saveBalanceToJson();
 
       // Clear the input field texts.
       nameTextCtrl.clear();
@@ -465,6 +463,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
     setState(() {});
     // Pop this screen if the entry was correctly added.
     if (validEntry) {
+      InfoManager.get.updateEntries(ViewTypes.all);
       Navigator.pop(context);
     }
   }

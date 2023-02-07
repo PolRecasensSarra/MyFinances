@@ -2,8 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:intl/intl.dart';
-
 import 'Entry.dart';
+import 'InfoManager.dart';
 
 // Enum of all possible filters.
 enum Filters { all, day, week, month, halfyear, year, custom }
@@ -28,6 +28,9 @@ enum Categories {
 // Enum with the supported locales.
 enum Languages { ca, en, es }
 
+// Enum with the different view types.
+enum ViewTypes { all, income, expense }
+
 class Utils {
   // Decimal precision.
   static int decimalPrecission = 2;
@@ -41,9 +44,6 @@ class Utils {
     Filters.year: "tr_filter_year",
     Filters.custom: "tr_filter_custom"
   };
-
-  static DateTime customFilterDateStart = DateTime.now();
-  static DateTime customFilterDateEnd = DateTime.now();
 
   // Method that given a date time, formats it to day of the week if the date time is inside the current week or the day-month otherwise.
   // @param dateTime String the stored date time.
@@ -109,7 +109,9 @@ class Utils {
         break;
       case Filters.custom:
         returnValue = isBetweenDates(
-            entryDateTime, customFilterDateStart, customFilterDateEnd);
+            entryDateTime,
+            InfoManager.get.customFilterDateStart,
+            InfoManager.get.customFilterDateEnd);
         break;
     }
     return returnValue;

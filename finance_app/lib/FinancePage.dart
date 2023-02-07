@@ -7,11 +7,7 @@ import 'package:finance_app/InfoManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:intl/date_symbol_data_local.dart';
-
 import 'Utils.dart';
-
-// Enum with the different view types.
-enum ViewTypes { all, income, expense }
 
 // Enum with the different popup menu options.
 enum PopUpMenuOptions { filters, categories, languages, deleteAll }
@@ -25,16 +21,8 @@ class FinancePage extends StatefulWidget {
 
 class _FinancePageState extends State<FinancePage> {
   ScrollController scrollController = ScrollController();
-
   // Enum variable that indicates the view type.
   ViewTypes _selectedViewType = ViewTypes.all;
-  // Local entry list modified by the view selected type.
-  List<Entry> entryListFiltered = [];
-  // Selected filter.
-  Filters filterSelected = Filters.month;
-
-  // Info Manager instance.
-  InfoManager infoManager = InfoManager();
 
   @override
   void initState() {
@@ -50,9 +38,9 @@ class _FinancePageState extends State<FinancePage> {
 
   // Async method to parse all the info.
   void parseBalanceFromJson() async {
-    await infoManager.parseBalanceFromJson();
+    await InfoManager.get.parseBalanceFromJson();
     // Force update view type.
-    updateEntries();
+    InfoManager.get.updateEntries(_selectedViewType);
     setState(() {});
   }
 
@@ -108,15 +96,13 @@ class _FinancePageState extends State<FinancePage> {
           Navigator.of(context)
               .push(
             MaterialPageRoute(
-              builder: (contextCallback) => NewEntryPage(
-                infoManager: infoManager,
-              ),
+              builder: (contextCallback) => const NewEntryPage(),
             ),
           )
               .then((_) {
             setState(() {
               // Update the entries when the entry page pops.
-              updateEntries();
+              InfoManager.get.updateEntries(_selectedViewType);
             });
           });
         },
@@ -191,7 +177,7 @@ class _FinancePageState extends State<FinancePage> {
                       ),
                       borderRadius: BorderRadius.circular(5.0),
                     ),
-                    child: entryListFiltered.isEmpty
+                    child: InfoManager.get.entryListFiltered.isEmpty
                         ? emptyBalanceListPlaceholder()
                         : Scrollbar(
                             thumbVisibility: true,
@@ -199,21 +185,26 @@ class _FinancePageState extends State<FinancePage> {
                             child: ListView.builder(
                               shrinkWrap: true,
                               controller: scrollController,
-                              itemCount: entryListFiltered.length,
+                              itemCount:
+                                  InfoManager.get.entryListFiltered.length,
                               itemBuilder: (context, index) {
                                 return Card(
-                                  color: Utils.getColorByEntryValue(
-                                      entryListFiltered[index].value),
+                                  color: Utils.getColorByEntryValue(InfoManager
+                                      .get.entryListFiltered[index].value),
                                   child: ListTile(
                                     title: Text(
-                                      entryListFiltered[index].concept,
+                                      InfoManager
+                                          .get.entryListFiltered[index].concept,
                                       style: const TextStyle(
                                         color: Colors.white,
                                       ),
                                     ),
                                     subtitle: Text(
                                       Utils.getFormattedDateTime(
-                                              entryListFiltered[index].date,
+                                              InfoManager
+                                                  .get
+                                                  .entryListFiltered[index]
+                                                  .date,
                                               context)
                                           .capitalize(),
                                       style: const TextStyle(
@@ -223,22 +214,25 @@ class _FinancePageState extends State<FinancePage> {
                                       ),
                                     ),
                                     trailing: Text(
-                                      "${entryListFiltered[index].value.toPrecision(Utils.decimalPrecission)} €",
+                                      "${InfoManager.get.entryListFiltered[index].value.toPrecision(Utils.decimalPrecission)} €",
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                     focusColor: Utils.getColorByEntryValue(
-                                        entryListFiltered[index].value),
+                                        InfoManager.get.entryListFiltered[index]
+                                            .value),
                                     hoverColor: Utils.getColorByEntryValue(
-                                        entryListFiltered[index].value),
+                                        InfoManager.get.entryListFiltered[index]
+                                            .value),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5.0),
                                     ),
                                     onLongPress: () {
                                       showAlertDialog(context, true,
-                                          entry: entryListFiltered[index]);
+                                          entry: InfoManager
+                                              .get.entryListFiltered[index]);
                                     },
                                   ),
                                 );
@@ -269,7 +263,7 @@ class _FinancePageState extends State<FinancePage> {
                         ),
                       ),
                       LocaleText(
-                        Utils.filtersMap[filterSelected]!,
+                        Utils.filtersMap[InfoManager.get.filterSelected]!,
                         style: const TextStyle(
                           fontSize: 12,
                         ),
@@ -293,7 +287,7 @@ class _FinancePageState extends State<FinancePage> {
   double getBalance() {
     double balance = 0.0;
     // Iterate the expenses and incomes and add it to the balance.
-    for (var entry in entryListFiltered) {
+    for (var entry in InfoManager.get.entryListFiltered) {
       balance += entry.value;
     }
     return balance;
@@ -375,20 +369,20 @@ class _FinancePageState extends State<FinancePage> {
   // Method that deletes all the entry history from the save data file.
   void deleteAllHistory() {
     // Clear the entire list.
-    infoManager.deleteAllHistory();
+    InfoManager.get.deleteAllHistory();
     // Force update state.
     setState(() {
-      updateEntries();
+      InfoManager.get.updateEntries(_selectedViewType);
     });
   }
 
   // Method to delete an entry.
   void deleteEntry(Entry? entry) {
     // Remove the entry.
-    infoManager.deleteEntry(entry);
+    InfoManager.get.deleteEntry(entry);
     // Force update state.
     setState(() {
-      updateEntries();
+      InfoManager.get.updateEntries(_selectedViewType);
     });
   }
 
@@ -398,54 +392,8 @@ class _FinancePageState extends State<FinancePage> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedViewType = ViewTypes.values[index];
-      updateEntries();
+      InfoManager.get.updateEntries(_selectedViewType);
     });
-  }
-
-  // Method that updates the entry list depending on all the filters.
-  void updateEntries() {
-    updateEntriesByViewType();
-    updateEntriesByFilter();
-    entryListFiltered = Utils.customSortByDate(entryListFiltered);
-  }
-
-  // Method that updates the entry list given a view type.
-  void updateEntriesByViewType() {
-    // Clear the list.
-    entryListFiltered.clear();
-    // Get the entries given the view type.
-    switch (_selectedViewType) {
-      case ViewTypes.all:
-        entryListFiltered = List.from(infoManager.entryList);
-        break;
-      case ViewTypes.income:
-        // For every entry, check if its value is positive and add it to the list.
-        for (Entry entry in List.from(infoManager.entryList)) {
-          if (entry.value >= 0.0) {
-            entryListFiltered.add(entry);
-          }
-        }
-        break;
-      case ViewTypes.expense:
-        // For every entry, check if its value is negative and add it to the list.
-        for (Entry entry in List.from(infoManager.entryList)) {
-          if (entry.value < 0.0) {
-            entryListFiltered.add(entry);
-          }
-        }
-        break;
-    }
-  }
-
-  // Method that updates the entry list given a filter.
-  void updateEntriesByFilter() {
-    List<Entry> tmpEntryList = [];
-    for (Entry entry in entryListFiltered) {
-      if (Utils.filterEntryByDate(entry.date, filterSelected)) {
-        tmpEntryList.add(entry);
-      }
-    }
-    entryListFiltered = List.from(tmpEntryList);
   }
 
   // Method that returns a placeholder text when there are no entries.
@@ -508,28 +456,20 @@ class _FinancePageState extends State<FinancePage> {
             Navigator.of(context)
                 .push(
               MaterialPageRoute(
-                builder: (contextCallback) =>
-                    FiltersPage(currentFilter: filterSelected),
+                builder: (contextCallback) => const FiltersPage(),
               ),
             )
                 .then((value) {
               setState(() {
-                // Check that the value recieved is valid and is type Filters.
-                if (value != null && value is Filters) {
-                  filterSelected = value;
-                }
                 // Update the entries when the entry page pops.
-                updateEntries();
+                InfoManager.get.updateEntries(_selectedViewType);
               });
             });
             break;
           case PopUpMenuOptions.categories:
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (contextCallback) => CategoriesPage(
-                  currentFilter: filterSelected,
-                  entryListFiltered: entryListFiltered,
-                ),
+                builder: (contextCallback) => const CategoriesPage(),
               ),
             );
             break;

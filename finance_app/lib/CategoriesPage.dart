@@ -1,20 +1,12 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'Entry.dart';
+import 'InfoManager.dart';
 import 'Utils.dart';
 
 class CategoriesPage extends StatefulWidget {
-  // Filter selected.
-  final Filters currentFilter;
-  // List of all entries filtered by the current filter.
-  final List<Entry> entryListFiltered;
-  const CategoriesPage(
-      {super.key,
-      required this.currentFilter,
-      required this.entryListFiltered});
+  const CategoriesPage({super.key});
 
   @override
   State<CategoriesPage> createState() => _CategoriesPageState();
@@ -145,7 +137,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                         ),
                       ),
                       LocaleText(
-                        Utils.filtersMap[widget.currentFilter]!,
+                        Utils.filtersMap[InfoManager.get.filterSelected]!,
                         style: const TextStyle(
                           fontSize: 12,
                         ),
@@ -277,7 +269,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
   // @return double the expenses for the given category.
   double getExpenseByCategory(Categories category) {
     double result = 0.0;
-    for (Entry entry in widget.entryListFiltered) {
+    for (Entry entry in InfoManager.get.entryListFiltered) {
       if (entry.category == category.index && entry.value < 0.0) {
         result += entry.value.abs();
       }
@@ -285,11 +277,11 @@ class _CategoriesPageState extends State<CategoriesPage> {
     return result;
   }
 
-  /// Method that given a list of entries, returns the entries that are from the given category.
-  List<Entry> getEntriesByCategory(Categories category) {
+  /// Method that given a list of entries, returns the entries that are from the given category and are expenses.
+  List<Entry> getExpensesEntriesByCategory(Categories category) {
     List<Entry> result = [];
-    for (Entry entry in widget.entryListFiltered) {
-      if (entry.category == category.index) {
+    for (Entry entry in InfoManager.get.entryListFiltered) {
+      if (entry.category == category.index && entry.value < 0.0) {
         result.add(entry);
       }
     }
@@ -305,7 +297,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
 
   /// Method that calculates the total expense given the entries.
   void setTotalExpenses() {
-    for (Entry entry in widget.entryListFiltered) {
+    for (Entry entry in InfoManager.get.entryListFiltered) {
       if (entry.value < 0.0) {
         totalExpenses += entry.value.abs();
       }
@@ -367,8 +359,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
 
   // Method that return the list of entries of the given category.
   Widget getCategoryEntriesList(Categories category) {
-    List<Entry> categoryEntryList =
-        Utils.customSortByDate(getEntriesByCategory(category));
+    List<Entry> categoryEntryList = getExpensesEntriesByCategory(category);
     return categoryEntryList.isEmpty
         ? const Center(
             child: LocaleText(

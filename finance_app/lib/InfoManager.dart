@@ -1,13 +1,25 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:path_provider/path_provider.dart';
-
 import 'Entry.dart';
+import 'Utils.dart';
 
+// Class that manages all the information.
 class InfoManager {
+  static final InfoManager get = InfoManager();
+  // ------- VARIABLES -------
+
   // List with all the incomes and expenses.
   List<Entry> entryList = [];
+  // Local entry list modified by the view selected type.
+  List<Entry> entryListFiltered = [];
+  // Selected filter.
+  Filters filterSelected = Filters.month;
+  // Custom DateTime for the custom filter.
+  DateTime customFilterDateStart = DateTime.now();
+  DateTime customFilterDateEnd = DateTime.now();
+
+  // ------- METHODS -------
 
   // Method that reads from the savedata file.
   Future<void> parseBalanceFromJson() async {
@@ -68,5 +80,53 @@ class InfoManager {
         ? await getExternalStorageDirectory()
         : await getApplicationDocumentsDirectory();
     return File("${directory!.path}/savedata.save");
+  }
+
+  // Method that updates the entry list depending on all the filters.
+  // @param selectedViewType ViewTypes the current visualization mode.
+  void updateEntries(ViewTypes selectedViewType) {
+    updateEntriesByViewType(selectedViewType);
+    updateEntriesByFilter();
+    entryListFiltered = Utils.customSortByDate(entryListFiltered);
+  }
+
+  // Method that updates the entry list given a view type.
+  // @param selectedViewType ViewTypes the current visualization mode.
+  void updateEntriesByViewType(ViewTypes selectedViewType) {
+    // Clear the list.
+    entryListFiltered.clear();
+    // Get the entries given the view type.
+    switch (selectedViewType) {
+      case ViewTypes.all:
+        entryListFiltered = List.from(entryList);
+        break;
+      case ViewTypes.income:
+        // For every entry, check if its value is positive and add it to the list.
+        for (Entry entry in List.from(entryList)) {
+          if (entry.value >= 0.0) {
+            entryListFiltered.add(entry);
+          }
+        }
+        break;
+      case ViewTypes.expense:
+        // For every entry, check if its value is negative and add it to the list.
+        for (Entry entry in List.from(entryList)) {
+          if (entry.value < 0.0) {
+            entryListFiltered.add(entry);
+          }
+        }
+        break;
+    }
+  }
+
+  // Method that updates the entry list given a filter.
+  void updateEntriesByFilter() {
+    List<Entry> tmpEntryList = [];
+    for (Entry entry in entryListFiltered) {
+      if (Utils.filterEntryByDate(entry.date, filterSelected)) {
+        tmpEntryList.add(entry);
+      }
+    }
+    entryListFiltered = List.from(tmpEntryList);
   }
 }

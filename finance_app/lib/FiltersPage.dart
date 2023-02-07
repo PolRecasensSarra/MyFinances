@@ -1,12 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
-
+import 'InfoManager.dart';
 import 'Utils.dart';
 
 class FiltersPage extends StatefulWidget {
-  final Filters currentFilter;
-  const FiltersPage({super.key, required this.currentFilter});
+  const FiltersPage({super.key});
 
   @override
   State<FiltersPage> createState() => _FiltersPageState();
@@ -25,12 +24,7 @@ class _FiltersPageState extends State<FiltersPage> {
   void initState() {
     super.initState();
     generateCheckBoxList();
-    dateStartController.text = Utils.getDateFormattedByLocale(
-        Utils.customFilterDateStart,
-        showHour: false);
-    dateEndController.text = Utils.getDateFormattedByLocale(
-        Utils.customFilterDateEnd,
-        showHour: false);
+    setDateControllerValue();
   }
 
   @override
@@ -93,7 +87,10 @@ class _FiltersPageState extends State<FiltersPage> {
                           ),
                         ),
                         onPressed: () {
-                          Navigator.pop(context, filterSelected);
+                          // Set the selecter filter when apply is pressed.
+                          InfoManager.get.filterSelected = filterSelected;
+                          // Pop this page.
+                          Navigator.pop(context);
                         },
                         child: const LocaleText(
                           "tr_apply",
@@ -185,7 +182,7 @@ class _FiltersPageState extends State<FiltersPage> {
 
   // Method that generates the checkbox list with all the filters.
   void generateCheckBoxList() {
-    filterSelected = widget.currentFilter;
+    filterSelected = InfoManager.get.filterSelected;
     checkboxList.clear();
     for (var key in Utils.filtersMap.keys) {
       // Don't add the custom filter because it is not selectable.
@@ -234,20 +231,21 @@ class _FiltersPageState extends State<FiltersPage> {
             onTap: () async {
               DateTime? pickedDate = await showDatePicker(
                   context: context,
-                  initialDate: Utils.customFilterDateStart,
+                  initialDate: InfoManager.get.customFilterDateStart,
                   firstDate: DateTime(2000),
                   lastDate: DateTime(2101));
               // Check if the picked date is a valid date and save it.
               if (pickedDate != null) {
                 setState(() {
-                  Utils.customFilterDateStart = pickedDate;
+                  InfoManager.get.customFilterDateStart = pickedDate;
                   // Set the new start date.
                   setDateControllerValue();
 
                   // If the start date occurs after the end, force the end date to be the start date.
-                  if (Utils.customFilterDateStart
-                      .isAfter(Utils.customFilterDateEnd)) {
-                    Utils.customFilterDateEnd = Utils.customFilterDateStart;
+                  if (InfoManager.get.customFilterDateStart
+                      .isAfter(InfoManager.get.customFilterDateEnd)) {
+                    InfoManager.get.customFilterDateEnd =
+                        InfoManager.get.customFilterDateStart;
                     dateEndController.text = dateStartController.text;
                   }
                 });
@@ -296,21 +294,22 @@ class _FiltersPageState extends State<FiltersPage> {
             onTap: () async {
               DateTime? pickedDate = await showDatePicker(
                   context: context,
-                  initialDate: Utils.customFilterDateEnd,
+                  initialDate: InfoManager.get.customFilterDateEnd,
                   firstDate: DateTime(2000),
                   lastDate: DateTime(2101));
               // Check if the picked date is a valid date and save it.
               if (pickedDate != null) {
                 setState(() {
                   // Clamp the date so the end cannot be before the start.
-                  Utils.customFilterDateEnd = pickedDate;
+                  InfoManager.get.customFilterDateEnd = pickedDate;
                   // Set the new end date.
                   setDateControllerValue();
 
                   // If the start date occurs after the end, force the end date to be the start date.
-                  if (Utils.customFilterDateEnd
-                      .isBefore(Utils.customFilterDateStart)) {
-                    Utils.customFilterDateStart = Utils.customFilterDateEnd;
+                  if (InfoManager.get.customFilterDateEnd
+                      .isBefore(InfoManager.get.customFilterDateStart)) {
+                    InfoManager.get.customFilterDateStart =
+                        InfoManager.get.customFilterDateEnd;
                     dateStartController.text = dateEndController.text;
                   }
                 });
@@ -322,12 +321,13 @@ class _FiltersPageState extends State<FiltersPage> {
     );
   }
 
+  // Sets the date controller text with the saved date value by the info manager.
   void setDateControllerValue() {
     dateStartController.text = Utils.getDateFormattedByLocale(
-        Utils.customFilterDateStart,
+        InfoManager.get.customFilterDateStart,
         showHour: false);
     dateEndController.text = Utils.getDateFormattedByLocale(
-        Utils.customFilterDateEnd,
+        InfoManager.get.customFilterDateEnd,
         showHour: false);
   }
 }
