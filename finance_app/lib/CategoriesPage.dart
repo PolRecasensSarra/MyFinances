@@ -384,8 +384,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
               itemCount: categoryEntryList.length,
               itemBuilder: (context, index) {
                 return Card(
-                  color: Utils.getColorByEntryValue(
-                      categoryEntryList[index].value),
+                  color: const Color.fromARGB(255, 95, 95, 95),
                   child: ListTile(
                     title: Text(
                       categoryEntryList[index].concept,
@@ -409,10 +408,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    focusColor: Utils.getColorByEntryValue(
-                        categoryEntryList[index].value),
-                    hoverColor: Utils.getColorByEntryValue(
-                        categoryEntryList[index].value),
+                    focusColor: const Color.fromARGB(255, 95, 95, 95),
+                    hoverColor: const Color.fromARGB(255, 95, 95, 95),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
