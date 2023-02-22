@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
+import 'CustomDrawer.dart';
+import 'FinancePage.dart';
 import 'InfoManager.dart';
 import 'Utils.dart';
 
@@ -29,77 +31,86 @@ class _FiltersPageState extends State<FiltersPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const LocaleText(
-          "tr_filters",
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        drawer: customDrawer(context),
+        appBar: AppBar(
+          title: const LocaleText(
+            "tr_filters",
+          ),
         ),
-      ),
-      body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.only(
-                left: 40.0, right: 40.0, bottom: 20.0, top: 20.0),
-            child: Column(
-              children: [
-                const Expanded(
-                  flex: 8,
-                  child: LocaleText(
-                    "tr_select_filter_apply",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+        body: SafeArea(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  left: 40.0, right: 40.0, bottom: 20.0, top: 20.0),
+              child: Column(
+                children: [
+                  const Expanded(
+                    flex: 8,
+                    child: LocaleText(
+                      "tr_select_filter_apply",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-                const Expanded(
-                  flex: 1,
-                  child: SizedBox(),
-                ),
-                Expanded(
-                  flex: 70,
-                  child: classicMode(),
-                ),
-                const Expanded(
-                  flex: 2,
-                  child: SizedBox(),
-                ),
-                Expanded(
-                  flex: 12,
-                  child: filterSelected == Filters.custom
-                      ? customDateSelector()
-                      : Container(),
-                ),
-                const Expanded(
-                  flex: 1,
-                  child: SizedBox(),
-                ),
-                Expanded(
-                  flex: 6,
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: SizedBox(
-                      height: double.infinity,
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                            const Color.fromARGB(255, 79, 135, 231),
+                  const Expanded(
+                    flex: 1,
+                    child: SizedBox(),
+                  ),
+                  Expanded(
+                    flex: 70,
+                    child: classicMode(),
+                  ),
+                  const Expanded(
+                    flex: 2,
+                    child: SizedBox(),
+                  ),
+                  Expanded(
+                    flex: 12,
+                    child: filterSelected == Filters.custom
+                        ? customDateSelector()
+                        : Container(),
+                  ),
+                  const Expanded(
+                    flex: 1,
+                    child: SizedBox(),
+                  ),
+                  Expanded(
+                    flex: 6,
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: SizedBox(
+                        height: double.infinity,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                              const Color.fromARGB(255, 79, 135, 231),
+                            ),
                           ),
-                        ),
-                        onPressed: () {
-                          // Set the selecter filter when apply is pressed.
-                          InfoManager.get.filterSelected = filterSelected;
-                          // Pop this page.
-                          Navigator.pop(context);
-                        },
-                        child: const LocaleText(
-                          "tr_apply",
+                          onPressed: () {
+                            // Set the selecter filter when apply is pressed.
+                            InfoManager.get.filterSelected = filterSelected;
+                            // Force navigate to the home page.
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (contextCallback) =>
+                                    const FinancePage(),
+                              ),
+                            );
+                          },
+                          child: const LocaleText(
+                            "tr_apply",
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

@@ -1,3 +1,4 @@
+import 'package:finance_app/CustomDrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:pie_chart/pie_chart.dart';
@@ -48,104 +49,108 @@ class _CategoriesPageState extends State<CategoriesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const LocaleText(
-          "tr_categories",
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        drawer: customDrawer(context),
+        appBar: AppBar(
+          title: const LocaleText(
+            "tr_categories",
+          ),
         ),
-      ),
-      body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.only(
-                left: 40.0, right: 40.0, bottom: 25.0, top: 20.0),
-            child: Column(
-              children: [
-                Expanded(
-                  flex: 25,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 49,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const FittedBox(
-                              fit: BoxFit.fitWidth,
-                              child: LocaleText(
-                                "tr_spend_analytics",
+        body: SafeArea(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  left: 40.0, right: 40.0, bottom: 25.0, top: 20.0),
+              child: Column(
+                children: [
+                  Expanded(
+                    flex: 25,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 49,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const FittedBox(
+                                fit: BoxFit.fitWidth,
+                                child: LocaleText(
+                                  "tr_spend_analytics",
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 10.0,
+                              ),
+                              Text(
+                                "${totalExpenses.toPrecision(Utils.decimalPrecission)} €",
                                 textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  fontSize: 16.0,
+                                style: const TextStyle(
+                                  fontSize: 30.0,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            ),
-                            const SizedBox(
-                              height: 10.0,
-                            ),
-                            Text(
-                              "${totalExpenses.toPrecision(Utils.decimalPrecission)} €",
-                              textAlign: TextAlign.left,
-                              style: const TextStyle(
-                                fontSize: 30.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      const Expanded(
-                        flex: 2,
-                        child: SizedBox(),
-                      ),
-                      Expanded(
-                        flex: 49,
-                        child: categoriesPieChart(),
-                      ),
-                    ],
+                        const Expanded(
+                          flex: 2,
+                          child: SizedBox(),
+                        ),
+                        Expanded(
+                          flex: 49,
+                          child: categoriesPieChart(),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                const Expanded(
-                  flex: 5,
-                  child: SizedBox(),
-                ),
-                Expanded(
-                  flex: 63,
-                  child: categoriesBasicView(),
-                ),
-                const Expanded(
-                  flex: 2,
-                  child: SizedBox(),
-                ),
-                Expanded(
-                  flex: 5,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      const LocaleText(
-                        "tr_filter",
-                        style: TextStyle(
-                          fontSize: 12,
-                        ),
-                      ),
-                      const Text(
-                        ": ",
-                        style: TextStyle(
-                          fontSize: 12,
-                        ),
-                      ),
-                      LocaleText(
-                        Utils.filtersMap[InfoManager.get.filterSelected]!,
-                        style: const TextStyle(
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
+                  const Expanded(
+                    flex: 5,
+                    child: SizedBox(),
                   ),
-                ),
-              ],
+                  Expanded(
+                    flex: 63,
+                    child: categoriesBasicView(),
+                  ),
+                  const Expanded(
+                    flex: 2,
+                    child: SizedBox(),
+                  ),
+                  Expanded(
+                    flex: 5,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        const LocaleText(
+                          "tr_filter",
+                          style: TextStyle(
+                            fontSize: 12,
+                          ),
+                        ),
+                        const Text(
+                          ": ",
+                          style: TextStyle(
+                            fontSize: 12,
+                          ),
+                        ),
+                        LocaleText(
+                          Utils.filtersMap[InfoManager.get.filterSelected]!,
+                          style: const TextStyle(
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -368,7 +373,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
           )
         : Container(
             decoration: BoxDecoration(
-              color: const Color.fromARGB(34, 146, 146, 146),
+              color: const Color.fromARGB(26, 146, 146, 146),
               border: Border.all(
                 color: const Color.fromARGB(45, 146, 146, 146),
                 width: 2.0,
@@ -384,6 +389,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
               itemCount: categoryEntryList.length,
               itemBuilder: (context, index) {
                 return Card(
+                  elevation: 2.0,
                   color: const Color.fromARGB(255, 95, 95, 95),
                   child: ListTile(
                     title: Text(

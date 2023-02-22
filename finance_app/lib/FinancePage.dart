@@ -1,4 +1,5 @@
 import 'package:finance_app/CategoriesPage.dart';
+import 'package:finance_app/CustomDrawer.dart';
 import 'package:finance_app/Entry.dart';
 import 'package:finance_app/FiltersPage.dart';
 import 'package:finance_app/LanguagesPage.dart';
@@ -46,236 +47,242 @@ class _FinancePageState extends State<FinancePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const LocaleText("tr_my_finances"),
-        backgroundColor: const Color.fromARGB(255, 39, 41, 43),
-        actions: [
-          popUpMenuButton(),
-        ],
-      ),
-      resizeToAvoidBottomInset: true,
-      backgroundColor: const Color.fromARGB(255, 29, 31, 33),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedLabelStyle: const TextStyle(
-          fontWeight: FontWeight.bold,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        drawer: customDrawer(context),
+        appBar: AppBar(
+          title: const LocaleText("tr_my_finances"),
+          backgroundColor: const Color.fromARGB(255, 39, 41, 43),
+          actions: [
+            popUpMenuButton(),
+          ],
         ),
-        selectedItemColor: const Color.fromARGB(255, 255, 255, 255),
-        unselectedItemColor: const Color.fromARGB(255, 194, 194, 194),
-        backgroundColor: const Color.fromARGB(255, 39, 41, 43),
-        items: [
-          BottomNavigationBarItem(
-            label: Locales.string(context, "tr_show_all"),
-            icon: const Icon(
-              Icons.savings,
-            ),
+        resizeToAvoidBottomInset: true,
+        backgroundColor: const Color.fromARGB(255, 29, 31, 33),
+        bottomNavigationBar: BottomNavigationBar(
+          selectedLabelStyle: const TextStyle(
+            fontWeight: FontWeight.bold,
           ),
-          BottomNavigationBarItem(
-            label: Locales.string(context, "tr_show_incomes"),
-            icon: const Icon(
-              Icons.euro_symbol_outlined,
+          selectedItemColor: const Color.fromARGB(255, 255, 255, 255),
+          unselectedItemColor: const Color.fromARGB(255, 194, 194, 194),
+          backgroundColor: const Color.fromARGB(255, 39, 41, 43),
+          items: [
+            BottomNavigationBarItem(
+              label: Locales.string(context, "tr_show_all"),
+              icon: const Icon(
+                Icons.savings,
+              ),
             ),
-          ),
-          BottomNavigationBarItem(
-            label: Locales.string(context, "tr_show_expenses"),
-            icon: const Icon(
-              Icons.payments,
+            BottomNavigationBarItem(
+              label: Locales.string(context, "tr_show_incomes"),
+              icon: const Icon(
+                Icons.euro_symbol_outlined,
+              ),
             ),
-          ),
-        ],
-        currentIndex: _selectedViewType.index,
-        onTap: _onItemTapped,
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color.fromARGB(255, 79, 135, 231),
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
+            BottomNavigationBarItem(
+              label: Locales.string(context, "tr_show_expenses"),
+              icon: const Icon(
+                Icons.payments,
+              ),
+            ),
+          ],
+          currentIndex: _selectedViewType.index,
+          onTap: _onItemTapped,
         ),
-        onPressed: () {
-          Navigator.of(context)
-              .push(
-            MaterialPageRoute(
-              builder: (contextCallback) => const NewEntryPage(),
-            ),
-          )
-              .then((_) {
-            setState(() {
-              // Update the entries when the entry page pops.
-              InfoManager.get.updateEntries(_selectedViewType);
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: const Color.fromARGB(255, 79, 135, 231),
+          child: const Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.of(context)
+                .push(
+              MaterialPageRoute(
+                builder: (contextCallback) => const NewEntryPage(),
+              ),
+            )
+                .then((_) {
+              setState(() {
+                // Update the entries when the entry page pops.
+                InfoManager.get.updateEntries(_selectedViewType);
+              });
             });
-          });
-        },
-      ),
-      body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.only(
-                left: 40.0, right: 40.0, bottom: 15.0, top: 15.0),
-            child: Column(
-              children: [
-                const Expanded(
-                  flex: 5,
-                  child: LocaleText(
-                    "tr_my_balance",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                const Expanded(
-                  flex: 2,
-                  child: SizedBox(),
-                ),
-                // Balance box.
-                Expanded(
-                  flex: 22,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      gradient: const LinearGradient(
-                        colors: [
-                          Colors.blueAccent,
-                          Color.fromARGB(255, 164, 93, 230)
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        tileMode: TileMode.mirror,
+          },
+        ),
+        body: SafeArea(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  left: 40.0, right: 40.0, bottom: 15.0, top: 15.0),
+              child: Column(
+                children: [
+                  const Expanded(
+                    flex: 5,
+                    child: LocaleText(
+                      "tr_my_balance",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 10.0),
-                      child: Center(
-                        child: Text(
-                          getFormattedBalance(),
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 30.0,
-                            color: Colors.white,
-                          ),
+                  ),
+                  const Expanded(
+                    flex: 2,
+                    child: SizedBox(),
+                  ),
+                  // Balance box.
+                  Expanded(
+                    flex: 22,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        gradient: const LinearGradient(
+                          colors: [
+                            Colors.blueAccent,
+                            Color.fromARGB(255, 164, 93, 230)
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          tileMode: TileMode.mirror,
                         ),
                       ),
-                    ),
-                  ),
-                ),
-                const Expanded(
-                  flex: 3,
-                  child: SizedBox(),
-                ),
-                // History box.
-                Expanded(
-                  flex: 62,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(34, 146, 146, 146),
-                      border: Border.all(
-                        color: const Color.fromARGB(45, 146, 146, 146),
-                        width: 2.0,
-                        style: BorderStyle.solid,
-                      ),
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    child: InfoManager.get.entryListFiltered.isEmpty
-                        ? emptyBalanceListPlaceholder()
-                        : Scrollbar(
-                            thumbVisibility: true,
-                            controller: scrollController,
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              controller: scrollController,
-                              itemCount:
-                                  InfoManager.get.entryListFiltered.length,
-                              itemBuilder: (context, index) {
-                                return Card(
-                                  color: Utils.getColorByEntryValue(InfoManager
-                                      .get.entryListFiltered[index].value),
-                                  child: ListTile(
-                                    title: Text(
-                                      InfoManager
-                                          .get.entryListFiltered[index].concept,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    subtitle: Text(
-                                      Utils.getFormattedDateTime(
-                                              InfoManager
-                                                  .get
-                                                  .entryListFiltered[index]
-                                                  .date,
-                                              context)
-                                          .capitalize(),
-                                      style: const TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 196, 196, 196),
-                                        fontSize: 10.0,
-                                      ),
-                                    ),
-                                    trailing: Text(
-                                      "${InfoManager.get.entryListFiltered[index].value.toPrecision(Utils.decimalPrecission)} €",
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    focusColor: Utils.getColorByEntryValue(
-                                        InfoManager.get.entryListFiltered[index]
-                                            .value),
-                                    hoverColor: Utils.getColorByEntryValue(
-                                        InfoManager.get.entryListFiltered[index]
-                                            .value),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                    ),
-                                    onLongPress: () {
-                                      showAlertDialog(context, true,
-                                          entry: InfoManager
-                                              .get.entryListFiltered[index]);
-                                    },
-                                  ),
-                                );
-                              },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 10.0),
+                        child: Center(
+                          child: Text(
+                            getFormattedBalance(),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 30.0,
+                              color: Colors.white,
                             ),
                           ),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-                const Expanded(
-                  flex: 1,
-                  child: SizedBox(),
-                ),
-                Expanded(
-                  flex: 4,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const LocaleText(
-                        "tr_filter",
-                        style: TextStyle(
-                          fontSize: 12,
-                        ),
-                      ),
-                      const Text(
-                        ": ",
-                        style: TextStyle(
-                          fontSize: 12,
-                        ),
-                      ),
-                      LocaleText(
-                        Utils.filtersMap[InfoManager.get.filterSelected]!,
-                        style: const TextStyle(
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
+                  const Expanded(
+                    flex: 3,
+                    child: SizedBox(),
                   ),
-                ),
-                const Expanded(
-                  flex: 1,
-                  child: SizedBox(),
-                ),
-              ],
+                  // History box.
+                  Expanded(
+                    flex: 62,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(34, 146, 146, 146),
+                        border: Border.all(
+                          color: const Color.fromARGB(45, 146, 146, 146),
+                          width: 2.0,
+                          style: BorderStyle.solid,
+                        ),
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      child: InfoManager.get.entryListFiltered.isEmpty
+                          ? emptyBalanceListPlaceholder()
+                          : Scrollbar(
+                              thumbVisibility: true,
+                              controller: scrollController,
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                controller: scrollController,
+                                itemCount:
+                                    InfoManager.get.entryListFiltered.length,
+                                itemBuilder: (context, index) {
+                                  return Card(
+                                    color: Utils.getColorByEntryValue(
+                                        InfoManager.get.entryListFiltered[index]
+                                            .value),
+                                    child: ListTile(
+                                      title: Text(
+                                        InfoManager.get.entryListFiltered[index]
+                                            .concept,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      subtitle: Text(
+                                        Utils.getFormattedDateTime(
+                                                InfoManager
+                                                    .get
+                                                    .entryListFiltered[index]
+                                                    .date,
+                                                context)
+                                            .capitalize(),
+                                        style: const TextStyle(
+                                          color: Color.fromARGB(
+                                              255, 196, 196, 196),
+                                          fontSize: 10.0,
+                                        ),
+                                      ),
+                                      trailing: Text(
+                                        "${InfoManager.get.entryListFiltered[index].value.toPrecision(Utils.decimalPrecission)} €",
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      focusColor: Utils.getColorByEntryValue(
+                                          InfoManager.get
+                                              .entryListFiltered[index].value),
+                                      hoverColor: Utils.getColorByEntryValue(
+                                          InfoManager.get
+                                              .entryListFiltered[index].value),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(5.0),
+                                      ),
+                                      onLongPress: () {
+                                        showAlertDialog(context, true,
+                                            entry: InfoManager
+                                                .get.entryListFiltered[index]);
+                                      },
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                    ),
+                  ),
+                  const Expanded(
+                    flex: 1,
+                    child: SizedBox(),
+                  ),
+                  Expanded(
+                    flex: 4,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const LocaleText(
+                          "tr_filter",
+                          style: TextStyle(
+                            fontSize: 12,
+                          ),
+                        ),
+                        const Text(
+                          ": ",
+                          style: TextStyle(
+                            fontSize: 12,
+                          ),
+                        ),
+                        LocaleText(
+                          Utils.filtersMap[InfoManager.get.filterSelected]!,
+                          style: const TextStyle(
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Expanded(
+                    flex: 1,
+                    child: SizedBox(),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

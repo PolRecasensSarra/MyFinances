@@ -16,6 +16,8 @@
     "tr_show_expenses" : "Expenses",
     "tr_empty_balance_placeholder" : "Wow, it's really calm in here!",
     "tr_add_new_entry_placeholder" : "Add a new entry to the balance.",
+    "tr_home" : "Home",
+    "tr_about" : "About",
 
     "tr_select_filter_apply" : "Select a filter to apply",
     "tr_apply" : "Apply",
