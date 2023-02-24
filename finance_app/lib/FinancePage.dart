@@ -1,6 +1,5 @@
 import 'package:finance_app/CategoriesPage.dart';
 import 'package:finance_app/CustomDrawer.dart';
-import 'package:finance_app/Entry.dart';
 import 'package:finance_app/FiltersPage.dart';
 import 'package:finance_app/LanguagesPage.dart';
 import 'package:finance_app/NewEntryPage.dart';
@@ -8,6 +7,7 @@ import 'package:finance_app/InfoManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'CustomWidgets.dart';
 import 'Utils.dart';
 
 // Enum with the different popup menu options.
@@ -236,7 +236,7 @@ class _FinancePageState extends State<FinancePage> {
                                             BorderRadius.circular(5.0),
                                       ),
                                       onLongPress: () {
-                                        showAlertDialog(context, true,
+                                        showDeleteHistoryDialog(context, true,
                                             entry: InfoManager
                                                 .get.entryListFiltered[index]);
                                       },
@@ -306,91 +306,6 @@ class _FinancePageState extends State<FinancePage> {
     String formattedBalance =
         "${balance.toPrecision(Utils.decimalPrecission)} €";
     return formattedBalance;
-  }
-
-  // Method that shows an alert dialog in order to delete the record history.
-  showAlertDialog(BuildContext context, bool partialDelete, {Entry? entry}) {
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alertDialog(partialDelete, entry: entry);
-      },
-    );
-  }
-
-  // Method that returns an alert dialog depending on if we want to delete an entry or the entire history.
-  Widget alertDialog(bool partialDelete, {Entry? entry}) {
-    // set up the buttons
-    Widget cancelButton = ElevatedButton(
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(
-          Colors.blueAccent,
-        ),
-      ),
-      child: const LocaleText("tr_cancel"),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    );
-    Widget continueButton = ElevatedButton(
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(
-          const Color.fromARGB(255, 175, 69, 69),
-        ),
-      ),
-      child: const LocaleText("tr_continue"),
-      onPressed: () {
-        if (partialDelete) {
-          deleteEntry(entry);
-        } else {
-          deleteAllHistory();
-        }
-        Navigator.pop(context);
-      },
-    );
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text(
-        Locales.string(
-            context,
-            partialDelete
-                ? "tr_delete_entry_popup"
-                : "tr_delete_history_popup"),
-      ),
-      content: Text(
-        Locales.string(
-            context,
-            partialDelete
-                ? "tr_delete_entry_popup_text"
-                : "tr_delete_history_popup_text"),
-      ),
-      actions: [
-        cancelButton,
-        continueButton,
-      ],
-    );
-    return alert;
-  }
-
-  // Method that deletes all the entry history from the save data file.
-  void deleteAllHistory() {
-    // Clear the entire list.
-    InfoManager.get.deleteAllHistory();
-    // Force update state.
-    setState(() {
-      InfoManager.get.updateEntries(_selectedViewType);
-    });
-  }
-
-  // Method to delete an entry.
-  void deleteEntry(Entry? entry) {
-    // Remove the entry.
-    InfoManager.get.deleteEntry(entry);
-    // Force update state.
-    setState(() {
-      InfoManager.get.updateEntries(_selectedViewType);
-    });
   }
 
   // ------ FILTERS ------
@@ -488,7 +403,7 @@ class _FinancePageState extends State<FinancePage> {
             );
             break;
           case PopUpMenuOptions.deleteAll:
-            showAlertDialog(context, false);
+            showDeleteHistoryDialog(context, false);
             break;
         }
       },

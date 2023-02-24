@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 
 import 'CategoriesPage.dart';
+import 'CustomWidgets.dart';
 import 'FiltersPage.dart';
 import 'LanguagesPage.dart';
 
-// Custom Drawer widget.
+/// Custom Drawer widget.
 Widget customDrawer(BuildContext context) {
   return Drawer(
     child: ListView(children: [
@@ -20,7 +21,7 @@ Widget customDrawer(BuildContext context) {
         onTap: () {
           // Check that the selected page is not the current page.
           if (const FinancePage().toString() != context.widget.toString()) {
-            // Navigate to the filters page.
+            // Navigate to the home page.
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (contextCallback) => const FinancePage(),
@@ -97,9 +98,10 @@ Widget customDrawer(BuildContext context) {
         leading: const Icon(Icons.delete),
         title: const LocaleText("tr_delete_history"),
         onTap: () {
+          // Close the drawer.
+          Navigator.of(context).pop();
           // Show ther alert dialogue.
-          // TODO: fer que el alert dialogue sigui una classe apart i es pugui instanciar des de qualsevol pàgina.
-          //showAlertDialog(context, false);
+          showDeleteHistoryDialog(context, false);
         },
       ),
       const Divider(
