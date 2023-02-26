@@ -18,6 +18,8 @@
     "tr_add_new_entry_placeholder" : "Add a new entry to the balance.",
     "tr_home" : "Home",
     "tr_about" : "About",
+    "tr_help" : "Help",
+    "tr_settings" : "Settings",
 
     "tr_select_filter_apply" : "Select a filter to apply",
     "tr_apply" : "Apply",

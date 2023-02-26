@@ -1,5 +1,5 @@
-import 'package:finance_app/CustomDrawer.dart';
-import 'package:finance_app/Utils.dart';
+import 'package:finance_app/Utilities/CustomDrawer.dart';
+import 'package:finance_app/Utilities/Utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 

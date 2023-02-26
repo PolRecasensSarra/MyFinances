@@ -1,9 +1,9 @@
-import 'package:finance_app/InfoManager.dart';
+import 'package:finance_app/Utilities/InfoManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_locales/flutter_locales.dart';
-import 'Entry.dart';
-import 'Utils.dart';
+import '../Utilities/Entry.dart';
+import '../Utilities/Utils.dart';
 
 enum EntryTpe { income, expense }
 

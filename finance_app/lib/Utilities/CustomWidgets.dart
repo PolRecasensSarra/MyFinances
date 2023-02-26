@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'Entry.dart';
-import 'FinancePage.dart';
+import '../Pages/FinancePage.dart';
 import 'InfoManager.dart';
 
 /// Method that shows an alert dialog in order to delete the record history.

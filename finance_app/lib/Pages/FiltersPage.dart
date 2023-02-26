@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
-import 'CustomDrawer.dart';
+import '../Utilities/CustomDrawer.dart';
 import 'FinancePage.dart';
-import 'InfoManager.dart';
-import 'Utils.dart';
+import '../Utilities/InfoManager.dart';
+import '../Utilities/Utils.dart';
 
 class FiltersPage extends StatefulWidget {
   const FiltersPage({super.key});

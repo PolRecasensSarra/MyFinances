@@ -17,6 +17,8 @@
     "tr_add_new_entry_placeholder" : "Afegeix una nova entrada.",
     "tr_home" : "Inici",
     "tr_about" : "Informació",
+    "tr_help" : "Ajuda",
+    "tr_settings" : "Configuració",
 
     "tr_select_filter_apply" : "Seleccioni un filtre",
     "tr_apply" : "Aplicar",

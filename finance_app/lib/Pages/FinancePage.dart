@@ -1,14 +1,11 @@
-import 'package:finance_app/CategoriesPage.dart';
-import 'package:finance_app/CustomDrawer.dart';
-import 'package:finance_app/FiltersPage.dart';
-import 'package:finance_app/LanguagesPage.dart';
-import 'package:finance_app/NewEntryPage.dart';
-import 'package:finance_app/InfoManager.dart';
+import 'package:finance_app/Utilities/CustomDrawer.dart';
+import 'package:finance_app/Pages/NewEntryPage.dart';
+import 'package:finance_app/Utilities/InfoManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'CustomWidgets.dart';
-import 'Utils.dart';
+import '../Utilities/CustomWidgets.dart';
+import '../Utilities/Utils.dart';
 
 // Enum with the different popup menu options.
 enum PopUpMenuOptions { filters, categories, languages, deleteAll }
@@ -54,9 +51,6 @@ class _FinancePageState extends State<FinancePage> {
         appBar: AppBar(
           title: const LocaleText("tr_my_finances"),
           backgroundColor: const Color.fromARGB(255, 39, 41, 43),
-          actions: [
-            popUpMenuButton(),
-          ],
         ),
         resizeToAvoidBottomInset: true,
         backgroundColor: const Color.fromARGB(255, 29, 31, 33),
@@ -339,74 +333,6 @@ class _FinancePageState extends State<FinancePage> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget popUpMenuButton() {
-    return PopupMenuButton(
-      itemBuilder: (context) {
-        return [
-          const PopupMenuItem(
-            value: PopUpMenuOptions.filters,
-            child: LocaleText(
-              "tr_filters",
-            ),
-          ),
-          const PopupMenuItem(
-            value: PopUpMenuOptions.categories,
-            child: LocaleText(
-              "tr_categories",
-            ),
-          ),
-          const PopupMenuItem(
-            value: PopUpMenuOptions.languages,
-            child: LocaleText(
-              "tr_languages",
-            ),
-          ),
-          const PopupMenuItem(
-            value: PopUpMenuOptions.deleteAll,
-            child: LocaleText(
-              "tr_delete_history",
-            ),
-          ),
-        ];
-      },
-      onSelected: (value) {
-        switch (value) {
-          case PopUpMenuOptions.filters:
-            Navigator.of(context)
-                .push(
-              MaterialPageRoute(
-                builder: (contextCallback) => const FiltersPage(),
-              ),
-            )
-                .then((value) {
-              setState(() {
-                // Update the entries when the entry page pops.
-                InfoManager.get.updateEntries(_selectedViewType);
-              });
-            });
-            break;
-          case PopUpMenuOptions.categories:
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (contextCallback) => const CategoriesPage(),
-              ),
-            );
-            break;
-          case PopUpMenuOptions.languages:
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (contextCallback) => const LanguagesPage(),
-              ),
-            );
-            break;
-          case PopUpMenuOptions.deleteAll:
-            showDeleteHistoryDialog(context, false);
-            break;
-        }
-      },
     );
   }
 }

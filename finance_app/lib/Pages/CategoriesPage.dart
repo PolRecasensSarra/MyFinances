@@ -1,10 +1,10 @@
-import 'package:finance_app/CustomDrawer.dart';
+import 'package:finance_app/Utilities/CustomDrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:pie_chart/pie_chart.dart';
-import 'Entry.dart';
-import 'InfoManager.dart';
-import 'Utils.dart';
+import '../Utilities/Entry.dart';
+import '../Utilities/InfoManager.dart';
+import '../Utilities/Utils.dart';
 
 class CategoriesPage extends StatefulWidget {
   const CategoriesPage({super.key});
