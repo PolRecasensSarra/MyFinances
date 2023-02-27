@@ -216,7 +216,7 @@ Widget customDrawer(BuildContext context) {
             onTap: () {
               // Close the drawer.
               Navigator.pop(context);
-              // TODO: obrir un panel amb la info.
+              showAboutDialogCustom(context);
             },
           ),
         ),

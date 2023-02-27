@@ -40,6 +40,7 @@ dependencies:
   intl: ^0.17.0
   pie_chart: ^5.3.2
   flutter_locales: ^2.0.2
+  package_info_plus: ^3.0.3
 
 dev_dependencies:
   flutter_test:
@@ -68,7 +69,7 @@ flutter:
     - assets/locales/ca.json
     - assets/locales/en.json
     - assets/locales/es.json
-  #   - images/a_dot_ham.jpeg
+    - assets/images/logo48.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'Entry.dart';
 import '../Pages/FinancePage.dart';
 import 'InfoManager.dart';
+import 'Utils.dart';
 
 /// Method that shows an alert dialog in order to delete the record history.
 ///
@@ -15,13 +17,14 @@ showDeleteHistoryDialog(BuildContext context, bool partialDelete,
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return alertDialog(context, partialDelete, entry: entry);
+      return alertHistoryDialog(context, partialDelete, entry: entry);
     },
   );
 }
 
 // Method that returns an alert dialog depending on if we want to delete an entry or the entire history.
-Widget alertDialog(BuildContext context, bool partialDelete, {Entry? entry}) {
+Widget alertHistoryDialog(BuildContext context, bool partialDelete,
+    {Entry? entry}) {
   // set up the buttons
   Widget cancelButton = ElevatedButton(
     style: ButtonStyle(
@@ -76,4 +79,18 @@ Widget alertDialog(BuildContext context, bool partialDelete, {Entry? entry}) {
     ],
   );
   return alert;
+}
+
+// ABOUT WIDGETS
+
+/// Custom widget that shows an About Dialog.
+Future<void> showAboutDialogCustom(BuildContext context) async {
+  PackageInfo packageInfo = await PackageInfo.fromPlatform();
+  showAboutDialog(
+    context: context,
+    applicationIcon: Image.asset("assets/images/logo48.png"),
+    applicationVersion: packageInfo.version,
+    applicationName: packageInfo.appName.replaceAll("_", " "),
+    applicationLegalese: 'MIT License',
+  );
 }
