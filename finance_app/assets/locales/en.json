@@ -65,5 +65,12 @@
     "tr_new_entry_category" : "Category",
     "tr_new_entry_add_income" : "Add income",
     "tr_new_entry_add_expense" : "Add expense",
-    "tr_new_entry_error_text" : "Concept and value cannot be null."
+    "tr_new_entry_error_text" : "Concept and value cannot be null.",
+
+    "tr_help_title00" : "How to use MyFinances",
+    "tr_help_text00" : "The home screen shows the balance in a period of time defined by the selected filter.\nThe selected filter is displayed at the bottom of the balance box.\nThe main container shows all entries, both expenses and income, showing colored income is green and expenses are red.\nAt the bottom there are 3 buttons. One to see both expenses and income, one to see only income and the last one to see only expenses.\n\n\nThe filter page allows you to change the period that is displayed on the home screen. For the changes to be applied, you must click 'Apply' to save the changes.\n\n\nThe categories page breaks down the expenses by different categories, showing each percentage and value.",
+    "tr_help_title01" : "How to add a new entry",
+    "tr_help_text01" : "To add a new entry it is necessary to be on the home page and click on the button at the bottom right with the '+' symbol.\nOn the new screen you will find the different fields to fill out. Those that have the '*' are the obligatory fields.\nTo add an expense or income it will be necessary to click their button respectively at the bottom.",
+    "tr_help_title02" : "How to delete an entry",
+    "tr_help_text02" : "To delete an entry it is necessary to press and hold one of the entries on the home page. After a second, a pop-up window will appear to allow you to delete the entry. The delete action cannot be undone.\n\nTo delete all the entries it is necessary to go to the side menu where the option is located. This action cannot be undone."
 }

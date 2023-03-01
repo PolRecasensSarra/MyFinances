@@ -21,14 +21,65 @@ class _HelpPageState extends State<HelpPage> {
             "tr_help",
           ),
         ),
-        body: const SafeArea(
+        body: SafeArea(
           child: Padding(
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
                 left: 40.0, right: 40.0, bottom: 25.0, top: 25.0),
             child: Align(
-              alignment: Alignment.topCenter,
-              child: LocaleText(
-                "tr_help_text",
+              alignment: Alignment.topLeft,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: const [
+                    LocaleText(
+                      "tr_help_title00",
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.start,
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    LocaleText(
+                      "tr_help_text00",
+                    ),
+                    SizedBox(
+                      height: 30.0,
+                    ),
+                    LocaleText(
+                      "tr_help_title01",
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.start,
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    LocaleText(
+                      "tr_help_text01",
+                    ),
+                    SizedBox(
+                      height: 30.0,
+                    ),
+                    LocaleText(
+                      "tr_help_title02",
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.start,
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    LocaleText(
+                      "tr_help_text02",
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

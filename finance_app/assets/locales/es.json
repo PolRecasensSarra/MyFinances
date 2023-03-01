@@ -64,5 +64,12 @@
     "tr_new_entry_category" : "Categoría",
     "tr_new_entry_add_income" : "Añadir ingreso",
     "tr_new_entry_add_expense" : "Añadir gasto",
-    "tr_new_entry_error_text" : "El concepto e importe no pueden estar vacíos."
+    "tr_new_entry_error_text" : "El concepto e importe no pueden estar vacíos.",
+
+    "tr_help_title00" : "Como utilizar MyFinances",
+    "tr_help_text00" : "La pantalla de inicio muestra el balance en un período de tiempo definido por el filtro seleccionado.\nEl filtro seleccionado se muestra en la parte inferior del recuadro del balance.\nEl contenedor principal muestra todas las entradas, tanto gastos como ingresos, mostrando de color verde los ingresos y los gastos de rojo.\nEn la parte inferior hay 3 botones. Uno para ver tanto gastos como ingresos, uno para ver sólo los ingresos y el último para ver sólo los gastos.\n\n\nLa página de filtros permite cambiar el período que se visualiza en la pantalla de inicio. Para que los cambios se apliquen debe clicar 'Aplicar' para guardar los cambios.\n\n\nLa página de categorías desglosa por diferentes categorías los gastos, mostrando en porcentaje y valor cada uno.",
+    "tr_help_title01" : "Como añadir una nueva entrada",
+    "tr_help_text01" : "Para añadir una nueva entrada es necesario estar en la página de inicio y clicar el botón que se encuentra en la parte inferior derecha con el símbolo '+'.\nEn la nueva pantalla se encuentran los diferentes campos a llenar. Aquellos que tienen el '*' son los campos obligatorios.\nPara añadir un gasto o ingreso hará falta clicar su botón respectivamente que hay en la parte inferior.",
+    "tr_help_title02" : "Como eliminar una entrada",
+    "tr_help_text02" : "Para eliminar una entrada es necesario mantener pulsada una de las entradas de la página de inicio. Al cabo de un segundo aparecerá una ventana emergente para poder eliminar la entrada. La acción de eliminar no se puede deshacer.\n\nPara eliminar todas las entradas es necesario ir al menú lateral donde se encuentra la opción. Esta acción no puede deshacerse."
 }

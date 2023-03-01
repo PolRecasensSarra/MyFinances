@@ -64,5 +64,13 @@
     "tr_new_entry_category" : "Categoria",
     "tr_new_entry_add_income" : "Afegir ingrés",
     "tr_new_entry_add_expense" : "Afegir despesa",
-    "tr_new_entry_error_text" : "El concepte i l'import no poden estar buits."
+    "tr_new_entry_error_text" : "El concepte i l'import no poden estar buits.",
+
+    "tr_help_title00" : "Com utilitzar MyFinances",
+    "tr_help_text00" : "La pantalla d'inici mostra el balanç en un període de temps definit pel filtre seleccionat.\nEl filtre seleccionat es mostra a la part inferior del recuadre del balanç.\nEl contenidor principal mostra totes les entrades, tant despeses com ingressos, mostrant de color verd els ingressos i les despeses de vermell.\nA la part inferior hi ha 3 botons. Un per veure tant despeses com ingressos, un per veure només els ingressos i l'últim per veure només les despeses.\n\n\nLa pàgina de filtres permet canviar el període que es visualitza a la pantalla d'inici. Per tal que els canvis s'apliquin s'ha de clicar 'Aplicar' per guardar els canvis.\n\n\nLa pàgina de categories desglossa per diferents categories les despeses, mostrant en percentatge i valor cada una.",
+    "tr_help_title01" : "Com afegir una nova entrada",
+    "tr_help_text01" : "Per afegir una nova entrada cal estar a la pàgina d'inici i clicar el botó que es troba a la part inferior dreta amb el símbol '+'.\nA la nova pantalla s'hi troben els diferents camps a omplir. Aquells que tenen el '*' són els camps obligatoris.\nPer afegir una despesa o ingrés caldrà clicar el seu botó respectivament que hi ha a la part inferior.",
+    "tr_help_title02" : "Com eliminar una entrada",
+    "tr_help_text02" : "Per eliminar una entrada cal mantenir premuda una de les entrades de la pàgina d'inici. Al cap d'un segon apareixerà una finestra emergent per poder eliminar l'entrada. L'acció d'eliminar no es pot desfer.\n\nPer eliminar totes les entrades cal anar al menú lateral on es troba la opció. Aquesta acció no pot desfer-se."
+
 }
