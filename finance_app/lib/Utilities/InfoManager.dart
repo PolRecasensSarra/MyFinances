@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'Entry.dart';
 import 'Utils.dart';
@@ -18,6 +19,7 @@ class InfoManager {
   // Custom DateTime for the custom filter.
   DateTime customFilterDateStart = DateTime.now();
   DateTime customFilterDateEnd = DateTime.now();
+  // TODO: crear la classe Settings igual que Entry.
 
   // ------- METHODS -------
 
@@ -53,6 +55,34 @@ class InfoManager {
     await dataFile.writeAsString(encodedData);
   }
 
+  // Method that reads the settings from the savedata file.
+  Future<void> parseSettingsFromJson() async {
+    // Get the save data file.
+    File dataFile = await getSaveDataFile();
+    Map<String, dynamic> jsonDataEntries;
+    Map<String, dynamic> settings;
+    // If the file exists, read it as a String.
+    if (await dataFile.exists()) {
+      String content = await dataFile.readAsString();
+      jsonDataEntries = jsonDecode(content);
+      // Decode the settings. {"settings":{}}
+      settings = jsonDecode(jsonDataEntries["settings"]);
+      // TODO: initialize the settings class.
+    }
+  }
+
+  // Method that writes the settings to the save data file.
+  void saveSettingsToJson() async {
+    // Get the data file.
+    File dataFile = await getSaveDataFile();
+    // Encode the entry list as a json string.
+    // TODO: encodar aquí el Mapa dels settings.
+    String encodedData = jsonEncode(null);
+    encodedData = jsonEncode({"settings": encodedData});
+    // Save the data. If the file does not exist, it will be created.
+    await dataFile.writeAsString(encodedData);
+  }
+
   // Method that deletes all the entry history from the save data file.
   void deleteAllHistory() {
     // Clear the entire list.
@@ -67,6 +97,10 @@ class InfoManager {
     entryList.remove(entry);
     // Force save the list again.
     saveBalanceToJson();
+  }
+
+  void resetSettingsConfiguration() {
+    // TODO: resetejar els settings i saveSettingsToJson().
   }
 
   // Method to add a new entry to the list.

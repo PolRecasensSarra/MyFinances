@@ -41,6 +41,7 @@ dependencies:
   pie_chart: ^5.3.2
   flutter_locales: ^2.0.2
   package_info_plus: ^3.0.3
+  currency_picker: ^2.0.14
 
 dev_dependencies:
   flutter_test:
