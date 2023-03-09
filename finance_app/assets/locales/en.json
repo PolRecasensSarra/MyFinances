@@ -72,5 +72,7 @@
     "tr_help_title01" : "How to add a new entry",
     "tr_help_text01" : "To add a new entry it is necessary to be on the home page and click on the button at the bottom right with the '+' symbol.\nOn the new screen you will find the different fields to fill out. Those that have the '*' are the obligatory fields.\nTo add an expense or income it will be necessary to click their button respectively at the bottom.",
     "tr_help_title02" : "How to delete an entry",
-    "tr_help_text02" : "To delete an entry it is necessary to press and hold one of the entries on the home page. After a second, a pop-up window will appear to allow you to delete the entry. The delete action cannot be undone.\n\nTo delete all the entries it is necessary to go to the side menu where the option is located. This action cannot be undone."
+    "tr_help_text02" : "To delete an entry it is necessary to press and hold one of the entries on the home page. After a second, a pop-up window will appear to allow you to delete the entry. The delete action cannot be undone.\n\nTo delete all the entries it is necessary to go to the side menu where the option is located. This action cannot be undone.",
+
+    "tr_select_currency" : "Select a currency"
 }

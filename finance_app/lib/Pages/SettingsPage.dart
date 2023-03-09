@@ -33,36 +33,44 @@ class _SettingsPageState extends State<SettingsPage> {
                   alignment: Alignment.centerLeft,
                   child: LocaleText(
                     "tr_select_currency",
-                    style: TextStyle(
-                      fontSize: 16.0,
-                    ),
+                    style:
+                        TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                   ),
                 ),
                 const SizedBox(
-                  height: 25.0,
+                  height: 20.0,
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    showCurrencyPicker(
-                      context: context,
-                      showFlag: false,
-                      showSearchField: true,
-                      showCurrencyName: true,
-                      showCurrencyCode: true,
-                      theme: CurrencyPickerThemeData(
-                        bottomSheetHeight:
-                            MediaQuery.of(context).size.height * 0.65,
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      showCurrencyPicker(
+                        context: context,
+                        showFlag: false,
+                        showSearchField: true,
+                        showCurrencyName: true,
+                        showCurrencyCode: true,
+                        theme: CurrencyPickerThemeData(
+                          bottomSheetHeight:
+                              MediaQuery.of(context).size.height * 0.65,
+                        ),
+                        onSelect: (Currency currency) {
+                          InfoManager.get.customSettings.currencySymbol =
+                              currency.symbol;
+                          InfoManager.get.saveSettingsToJson();
+                          print('Select currency: ${currency.symbol}');
+                          setState(() {});
+                        },
+                        favorite: ['EUR'],
+                      );
+                    },
+                    child: Text(
+                      "Current: ${InfoManager.get.getCurrencySymbol()}",
+                      style: TextStyle(
+                        fontSize: 16.0,
                       ),
-                      onSelect: (Currency currency) {
-                        InfoManager.get.customSettings.currencySymbol =
-                            currency.symbol;
-                        InfoManager.get.saveSettingsToJson();
-                        print('Select currency: ${currency.symbol}');
-                      },
-                      favorite: ['EUR'],
-                    );
-                  },
-                  child: const LocaleText("tr_select_currency"),
+                    ),
+                  ),
                 ),
               ],
             ),

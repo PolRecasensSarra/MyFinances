@@ -71,5 +71,7 @@
     "tr_help_title01" : "Como añadir una nueva entrada",
     "tr_help_text01" : "Para añadir una nueva entrada es necesario estar en la página de inicio y clicar el botón que se encuentra en la parte inferior derecha con el símbolo '+'.\nEn la nueva pantalla se encuentran los diferentes campos a llenar. Aquellos que tienen el '*' son los campos obligatorios.\nPara añadir un gasto o ingreso hará falta clicar su botón respectivamente que hay en la parte inferior.",
     "tr_help_title02" : "Como eliminar una entrada",
-    "tr_help_text02" : "Para eliminar una entrada es necesario mantener pulsada una de las entradas de la página de inicio. Al cabo de un segundo aparecerá una ventana emergente para poder eliminar la entrada. La acción de eliminar no se puede deshacer.\n\nPara eliminar todas las entradas es necesario ir al menú lateral donde se encuentra la opción. Esta acción no puede deshacerse."
+    "tr_help_text02" : "Para eliminar una entrada es necesario mantener pulsada una de las entradas de la página de inicio. Al cabo de un segundo aparecerá una ventana emergente para poder eliminar la entrada. La acción de eliminar no se puede deshacer.\n\nPara eliminar todas las entradas es necesario ir al menú lateral donde se encuentra la opción. Esta acción no puede deshacerse.",
+
+    "tr_select_currency" : "Seleccione una divisa"
 }

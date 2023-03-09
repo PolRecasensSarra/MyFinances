@@ -71,6 +71,7 @@
     "tr_help_title01" : "Com afegir una nova entrada",
     "tr_help_text01" : "Per afegir una nova entrada cal estar a la pàgina d'inici i clicar el botó que es troba a la part inferior dreta amb el símbol '+'.\nA la nova pantalla s'hi troben els diferents camps a omplir. Aquells que tenen el '*' són els camps obligatoris.\nPer afegir una despesa o ingrés caldrà clicar el seu botó respectivament que hi ha a la part inferior.",
     "tr_help_title02" : "Com eliminar una entrada",
-    "tr_help_text02" : "Per eliminar una entrada cal mantenir premuda una de les entrades de la pàgina d'inici. Al cap d'un segon apareixerà una finestra emergent per poder eliminar l'entrada. L'acció d'eliminar no es pot desfer.\n\nPer eliminar totes les entrades cal anar al menú lateral on es troba la opció. Aquesta acció no pot desfer-se."
+    "tr_help_text02" : "Per eliminar una entrada cal mantenir premuda una de les entrades de la pàgina d'inici. Al cap d'un segon apareixerà una finestra emergent per poder eliminar l'entrada. L'acció d'eliminar no es pot desfer.\n\nPer eliminar totes les entrades cal anar al menú lateral on es troba la opció. Aquesta acció no pot desfer-se.",
 
+    "tr_select_currency" : "Seleccioni una divisa"
 }
