@@ -1,4 +1,5 @@
 import 'package:currency_picker/currency_picker.dart';
+import 'package:finance_app/Utilities/InfoManager.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_app/Utilities/CustomDrawer.dart';
 import 'package:flutter_locales/flutter_locales.dart';
@@ -53,6 +54,9 @@ class _SettingsPageState extends State<SettingsPage> {
                             MediaQuery.of(context).size.height * 0.65,
                       ),
                       onSelect: (Currency currency) {
+                        InfoManager.get.customSettings.currencySymbol =
+                            currency.symbol;
+                        InfoManager.get.saveSettingsToJson();
                         print('Select currency: ${currency.symbol}');
                       },
                       favorite: ['EUR'],

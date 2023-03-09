@@ -90,7 +90,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                                 height: 10.0,
                               ),
                               Text(
-                                "${totalExpenses.toPrecision(Utils.decimalPrecission)} €",
+                                "${totalExpenses.toPrecision(Utils.decimalPrecission)} ${InfoManager.get.getCurrencySymbol()}",
                                 textAlign: TextAlign.left,
                                 style: const TextStyle(
                                   fontSize: 30.0,
@@ -205,7 +205,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                             ),
                           ),
                           Text(
-                            "${categoryData.values.elementAt(index).toPrecision(Utils.decimalPrecission)} €",
+                            "${categoryData.values.elementAt(index).toPrecision(Utils.decimalPrecission)} ${InfoManager.get.getCurrencySymbol()}",
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
@@ -350,7 +350,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               Text(
-                "${entry.value.toPrecision(Utils.decimalPrecission)} €",
+                "${entry.value.toPrecision(Utils.decimalPrecission)} ${InfoManager.get.getCurrencySymbol()}",
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ],
@@ -408,7 +408,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                       ),
                     ),
                     trailing: Text(
-                      "${categoryEntryList[index].value.toPrecision(Utils.decimalPrecission)} €",
+                      "${categoryEntryList[index].value.toPrecision(Utils.decimalPrecission)} ${InfoManager.get.getCurrencySymbol()}",
                       style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,

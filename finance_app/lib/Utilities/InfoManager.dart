@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:finance_app/Utilities/Settings.dart';
+import 'package:flutter_locales/flutter_locales.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'Entry.dart';
@@ -19,7 +21,8 @@ class InfoManager {
   // Custom DateTime for the custom filter.
   DateTime customFilterDateStart = DateTime.now();
   DateTime customFilterDateEnd = DateTime.now();
-  // TODO: crear la classe Settings igual que Entry.
+  // Custom user Settings class.
+  Settings customSettings = Settings();
 
   // ------- METHODS -------
 
@@ -58,7 +61,7 @@ class InfoManager {
   // Method that reads the settings from the savedata file.
   Future<void> parseSettingsFromJson() async {
     // Get the save data file.
-    File dataFile = await getSaveDataFile();
+    File dataFile = await getSettingsDataFile();
     Map<String, dynamic> jsonDataEntries;
     Map<String, dynamic> settings;
     // If the file exists, read it as a String.
@@ -67,17 +70,16 @@ class InfoManager {
       jsonDataEntries = jsonDecode(content);
       // Decode the settings. {"settings":{}}
       settings = jsonDecode(jsonDataEntries["settings"]);
-      // TODO: initialize the settings class.
+      customSettings = Settings.fromJson(settings);
     }
   }
 
   // Method that writes the settings to the save data file.
   void saveSettingsToJson() async {
     // Get the data file.
-    File dataFile = await getSaveDataFile();
-    // Encode the entry list as a json string.
-    // TODO: encodar aquí el Mapa dels settings.
-    String encodedData = jsonEncode(null);
+    File dataFile = await getSettingsDataFile();
+    // Encode the settings as a json string.
+    String encodedData = jsonEncode(customSettings);
     encodedData = jsonEncode({"settings": encodedData});
     // Save the data. If the file does not exist, it will be created.
     await dataFile.writeAsString(encodedData);
@@ -99,8 +101,16 @@ class InfoManager {
     saveBalanceToJson();
   }
 
-  void resetSettingsConfiguration() {
-    // TODO: resetejar els settings i saveSettingsToJson().
+  // Reset the settings.
+  void resetSettingsConfiguration() async {
+    customSettings.resetSettings();
+    saveSettingsToJson();
+    // Get the data file.
+    File dataFile = await getSettingsDataFile();
+    // Encode the settings as a json string.
+    String encodedData = jsonEncode({"settings": ""});
+    // Save the data. If the file does not exist, it will be created.
+    await dataFile.writeAsString(encodedData);
   }
 
   // Method to add a new entry to the list.
@@ -114,6 +124,14 @@ class InfoManager {
         ? await getExternalStorageDirectory()
         : await getApplicationDocumentsDirectory();
     return File("${directory!.path}/savedata.save");
+  }
+
+  // Method that returns the curent File object fo the settings data file.
+  Future<File> getSettingsDataFile() async {
+    Directory? directory = Platform.isAndroid
+        ? await getExternalStorageDirectory()
+        : await getApplicationDocumentsDirectory();
+    return File("${directory!.path}/settingsdata.save");
   }
 
   // Method that updates the entry list depending on all the filters.
@@ -162,5 +180,14 @@ class InfoManager {
       }
     }
     entryListFiltered = List.from(tmpEntryList);
+  }
+
+  // Returns the settings currency symbol. If it is empty, returns the currency symbol according to the current locale.
+  String getCurrencySymbol() {
+    return customSettings.currencySymbol.isNotEmpty
+        ? customSettings.currencySymbol
+        : NumberFormat.simpleCurrency(
+                locale: Locales.selectedLocale.languageCode)
+            .currencySymbol;
   }
 }

@@ -4,6 +4,7 @@ import 'package:finance_app/Utilities/InfoManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import '../Utilities/CustomWidgets.dart';
 import '../Utilities/Utils.dart';
 
@@ -26,6 +27,7 @@ class _FinancePageState extends State<FinancePage> {
   void initState() {
     initializeLocale();
     parseBalanceFromJson();
+    parseSettingsFromJson();
     super.initState();
   }
 
@@ -39,6 +41,12 @@ class _FinancePageState extends State<FinancePage> {
     await InfoManager.get.parseBalanceFromJson();
     // Force update view type.
     InfoManager.get.updateEntries(_selectedViewType);
+    setState(() {});
+  }
+
+  // Async method to parse all settings the info.
+  void parseSettingsFromJson() async {
+    await InfoManager.get.parseSettingsFromJson();
     setState(() {});
   }
 
@@ -213,7 +221,7 @@ class _FinancePageState extends State<FinancePage> {
                                         ),
                                       ),
                                       trailing: Text(
-                                        "${InfoManager.get.entryListFiltered[index].value.toPrecision(Utils.decimalPrecission)} €",
+                                        "${InfoManager.get.entryListFiltered[index].value.toPrecision(Utils.decimalPrecission)} ${InfoManager.get.getCurrencySymbol()}",
                                         style: const TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
@@ -298,7 +306,7 @@ class _FinancePageState extends State<FinancePage> {
   String getFormattedBalance() {
     double balance = getBalance();
     String formattedBalance =
-        "${balance.toPrecision(Utils.decimalPrecission)} €";
+        "${balance.toPrecision(Utils.decimalPrecission)} ${InfoManager.get.getCurrencySymbol()}";
     return formattedBalance;
   }
 
