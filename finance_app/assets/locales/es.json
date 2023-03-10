@@ -73,5 +73,6 @@
     "tr_help_title02" : "Como eliminar una entrada",
     "tr_help_text02" : "Para eliminar una entrada es necesario mantener pulsada una de las entradas de la página de inicio. Al cabo de un segundo aparecerá una ventana emergente para poder eliminar la entrada. La acción de eliminar no se puede deshacer.\n\nPara eliminar todas las entradas es necesario ir al menú lateral donde se encuentra la opción. Esta acción no puede deshacerse.",
 
-    "tr_select_currency" : "Seleccione una divisa"
+    "tr_select_currency" : "Seleccione una divisa",
+    "tr_currency" : "Moneda"
 }

@@ -190,4 +190,13 @@ class InfoManager {
                 locale: Locales.selectedLocale.languageCode)
             .currencySymbol;
   }
+
+  // Returns the settings currency name. If it is empty, returns the currency name according to the current locale.
+  String? getCurrencyName() {
+    return customSettings.currencySymbol.isNotEmpty
+        ? customSettings.currencyName
+        : NumberFormat.simpleCurrency(
+                locale: Locales.selectedLocale.languageCode)
+            .currencyName;
+  }
 }

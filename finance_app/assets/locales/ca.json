@@ -73,5 +73,6 @@
     "tr_help_title02" : "Com eliminar una entrada",
     "tr_help_text02" : "Per eliminar una entrada cal mantenir premuda una de les entrades de la pàgina d'inici. Al cap d'un segon apareixerà una finestra emergent per poder eliminar l'entrada. L'acció d'eliminar no es pot desfer.\n\nPer eliminar totes les entrades cal anar al menú lateral on es troba la opció. Aquesta acció no pot desfer-se.",
 
-    "tr_select_currency" : "Seleccioni una divisa"
+    "tr_select_currency" : "Seleccioni una divisa",
+    "tr_currency" : "Moneda"
 }

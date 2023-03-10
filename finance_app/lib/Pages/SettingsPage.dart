@@ -26,57 +26,66 @@ class _SettingsPageState extends State<SettingsPage> {
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(
-                left: 40.0, right: 40.0, bottom: 25.0, top: 25.0),
+                left: 10.0, right: 10.0, bottom: 25.0, top: 25.0),
             child: Column(
               children: [
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: LocaleText(
-                    "tr_select_currency",
-                    style:
-                        TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      showCurrencyPicker(
-                        context: context,
-                        showFlag: false,
-                        showSearchField: true,
-                        showCurrencyName: true,
-                        showCurrencyCode: true,
-                        theme: CurrencyPickerThemeData(
-                          bottomSheetHeight:
-                              MediaQuery.of(context).size.height * 0.65,
+                ListTile(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const LocaleText(
+                        "tr_currency",
+                        style: TextStyle(
+                          fontSize: 18.0,
                         ),
-                        onSelect: (Currency currency) {
-                          InfoManager.get.customSettings.currencySymbol =
-                              currency.symbol;
-                          InfoManager.get.saveSettingsToJson();
-                          print('Select currency: ${currency.symbol}');
-                          setState(() {});
-                        },
-                        favorite: ['EUR'],
-                      );
-                    },
-                    child: Text(
-                      "Current: ${InfoManager.get.getCurrencySymbol()}",
-                      style: TextStyle(
-                        fontSize: 16.0,
                       ),
+                      Text(
+                        "${InfoManager.get.getCurrencyName()!}  ${InfoManager.get.getCurrencySymbol()}",
+                        style: const TextStyle(
+                          fontSize: 18.0,
+                        ),
+                      ),
+                    ],
+                  ),
+                  trailing: IconButton(
+                    iconSize: 28.0,
+                    onPressed: () {
+                      openCurrencySelector();
+                    },
+                    icon: const Icon(
+                      Icons.keyboard_arrow_right,
                     ),
                   ),
+                ),
+                const Divider(
+                  height: 2.0,
                 ),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  // Open the currency picker.
+  void openCurrencySelector() {
+    showCurrencyPicker(
+      context: context,
+      showFlag: false,
+      showSearchField: true,
+      showCurrencyName: true,
+      showCurrencyCode: true,
+      theme: CurrencyPickerThemeData(
+        bottomSheetHeight: MediaQuery.of(context).size.height * 0.65,
+      ),
+      onSelect: (Currency currency) {
+        InfoManager.get.customSettings.currencySymbol = currency.symbol;
+        InfoManager.get.customSettings.currencyName = currency.code;
+        InfoManager.get.saveSettingsToJson();
+        setState(() {});
+      },
+      favorite: ['EUR'],
     );
   }
 }
