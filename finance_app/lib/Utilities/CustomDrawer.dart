@@ -6,7 +6,6 @@ import 'package:flutter_locales/flutter_locales.dart';
 import '../Pages/CategoriesPage.dart';
 import 'CustomWidgets.dart';
 import '../Pages/FiltersPage.dart';
-import '../Pages/LanguagesPage.dart';
 
 /// Custom Drawer widget.
 Widget customDrawer(BuildContext context) {
@@ -103,22 +102,22 @@ Widget customDrawer(BuildContext context) {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: ListTile(
-            tileColor: getTileColor(context, const LanguagesPage().toString()),
+            tileColor: getTileColor(context, const SettingsPage().toString()),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5.0),
             ),
             leading: const Icon(
-              Icons.language,
+              Icons.settings,
             ),
-            title: const LocaleText("tr_languages"),
+            title: const LocaleText("tr_settings"),
             onTap: () {
               // Check that the selected page is not the current page.
-              if (const LanguagesPage().toString() !=
+              if (const SettingsPage().toString() !=
                   context.widget.toString()) {
-                // Navigate to the languages page.
+                // Navigate to the settings page.
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (contextCallback) => const LanguagesPage(),
+                    builder: (contextCallback) => const SettingsPage(),
                   ),
                 );
               } else {
@@ -142,33 +141,6 @@ Widget customDrawer(BuildContext context) {
               Navigator.of(context).pop();
               // Show ther alert dialogue.
               showDeleteHistoryDialog(context, false);
-            },
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: ListTile(
-            tileColor: getTileColor(context, const SettingsPage().toString()),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5.0),
-            ),
-            leading: const Icon(
-              Icons.settings,
-            ),
-            title: const LocaleText("tr_settings"),
-            onTap: () {
-              // Check that the selected page is not the current page.
-              if (const SettingsPage().toString() !=
-                  context.widget.toString()) {
-                // Navigate to the settings page.
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (contextCallback) => const SettingsPage(),
-                  ),
-                );
-              } else {
-                Navigator.of(context).pop();
-              }
             },
           ),
         ),

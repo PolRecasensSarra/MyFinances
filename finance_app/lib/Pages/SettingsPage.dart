@@ -3,6 +3,7 @@ import 'package:finance_app/Utilities/InfoManager.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_app/Utilities/CustomDrawer.dart';
 import 'package:flutter_locales/flutter_locales.dart';
+import '../Utilities/Utils.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -12,6 +13,8 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  ScrollController scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -60,6 +63,34 @@ class _SettingsPageState extends State<SettingsPage> {
                 const Divider(
                   height: 2.0,
                 ),
+                ListTile(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const LocaleText(
+                        "tr_language",
+                        style: TextStyle(
+                          fontSize: 18.0,
+                        ),
+                      ),
+                      LocaleText(
+                        Locales.selectedLocale.languageCode,
+                        style: const TextStyle(
+                          fontSize: 18.0,
+                        ),
+                      ),
+                    ],
+                  ),
+                  trailing: IconButton(
+                    iconSize: 28.0,
+                    onPressed: () {
+                      openLanguageSelector();
+                    },
+                    icon: const Icon(
+                      Icons.keyboard_arrow_right,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -87,5 +118,78 @@ class _SettingsPageState extends State<SettingsPage> {
       },
       favorite: ['EUR'],
     );
+  }
+
+  void openLanguageSelector() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          scrollable: true,
+          content: Material(
+            elevation: 5.0,
+            borderRadius: BorderRadius.circular(10.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(31, 118, 130, 153),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              width: MediaQuery.of(context).size.width * 1.0,
+              height: MediaQuery.of(context).size.height * 0.3,
+              child: ListView.builder(
+                shrinkWrap: true,
+                controller: scrollController,
+                itemCount: Languages.values.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    contentPadding: const EdgeInsets.only(
+                        left: 15.0, right: 15.0, top: 5.0, bottom: 5.0),
+                    title: LocaleText(
+                      Languages.values[index].name,
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0), //<-- SEE HERE
+                    ),
+                    trailing:
+                        getTrailingIcon(Languages.values[index].name, context),
+                    selected: getSelectedLocale(
+                        Languages.values[index].name, context),
+                    selectedTileColor: const Color.fromARGB(255, 91, 100, 112),
+                    onTap: () {
+                      setState(() {
+                        InfoManager.get.customSettings.languageCode =
+                            Languages.values[index].name;
+                        InfoManager.get.saveSettingsToJson();
+                        LocaleNotifier.of(context)
+                            ?.change(Languages.values[index].name);
+                      });
+                    },
+                  );
+                },
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  // Returns true if the given code is the current locale code.
+// @param code String the locale code to check.
+// @param context BuildContext context of this page.
+  bool getSelectedLocale(String code, BuildContext context) {
+    return Locales.currentLocale(context)?.languageCode == code;
+  }
+
+  /// Method that returns a check icon if the code is the current locale code. Otherwise returns null.
+// @param code String the locale code to check.
+// @param context BuildContext context of this page.
+  Icon? getTrailingIcon(String code, BuildContext context) {
+    return getSelectedLocale(code, context)
+        ? const Icon(Icons.check, color: Color.fromARGB(255, 126, 255, 136))
+        : null;
   }
 }
