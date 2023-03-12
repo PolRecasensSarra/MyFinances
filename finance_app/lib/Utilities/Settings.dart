@@ -1,8 +1,5 @@
 // Class that contains the Settings info.
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_locales/flutter_locales.dart';
-
 class Settings {
   // Selected currency symbol. F.e. €, $
   String currencySymbol = "";

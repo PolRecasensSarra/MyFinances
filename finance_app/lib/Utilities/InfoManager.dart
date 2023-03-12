@@ -104,11 +104,11 @@ class InfoManager {
   // Reset the settings.
   void resetSettingsConfiguration() async {
     customSettings.resetSettings();
-    saveSettingsToJson();
+    //saveSettingsToJson();
     // Get the data file.
     File dataFile = await getSettingsDataFile();
     // Encode the settings as a json string.
-    String encodedData = jsonEncode({"settings": ""});
+    String encodedData = jsonEncode({"settings": jsonEncode({})});
     // Save the data. If the file does not exist, it will be created.
     await dataFile.writeAsString(encodedData);
   }

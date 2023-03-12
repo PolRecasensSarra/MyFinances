@@ -1,4 +1,5 @@
 import 'package:currency_picker/currency_picker.dart';
+import 'package:finance_app/Utilities/CustomWidgets.dart';
 import 'package:finance_app/Utilities/InfoManager.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_app/Utilities/CustomDrawer.dart';
@@ -89,6 +90,35 @@ class _SettingsPageState extends State<SettingsPage> {
                     icon: const Icon(
                       Icons.keyboard_arrow_right,
                     ),
+                  ),
+                ),
+                const Divider(
+                  height: 2.0,
+                ),
+                ListTile(
+                  title: const LocaleText(
+                    "tr_reset_settings",
+                    style: TextStyle(
+                      fontSize: 18.0,
+                    ),
+                  ),
+                  trailing: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                        const Color.fromARGB(255, 146, 101, 101),
+                      ),
+                    ),
+                    child: const LocaleText(
+                      "tr_reset",
+                      style: TextStyle(
+                        fontSize: 18.0,
+                      ),
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        showResetSettingsDialog(context);
+                      });
+                    },
                   ),
                 ),
               ],

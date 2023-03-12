@@ -29,10 +29,10 @@ class _CategoriesPageState extends State<CategoriesPage> {
     Categories.entertainment: const Color.fromARGB(255, 255, 102, 255),
     Categories.bizum: const Color.fromARGB(255, 102, 255, 255),
     Categories.clothes: const Color.fromARGB(255, 241, 136, 94),
-    Categories.supers: const Color.fromARGB(255, 179, 179, 102),
+    Categories.supers: const Color.fromARGB(255, 102, 179, 102),
     Categories.transfers: const Color.fromARGB(255, 102, 179, 179),
     Categories.mobile: const Color.fromARGB(255, 179, 102, 102),
-    Categories.health: const Color.fromARGB(255, 102, 179, 102),
+    Categories.health: const Color.fromARGB(255, 179, 179, 102),
     Categories.wellness: const Color.fromARGB(255, 119, 74, 150),
     Categories.restaurant: const Color.fromARGB(255, 150, 74, 74)
   };

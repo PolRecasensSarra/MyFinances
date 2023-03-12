@@ -1,10 +1,10 @@
+import 'package:finance_app/Pages/SettingsPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'Entry.dart';
 import '../Pages/FinancePage.dart';
 import 'InfoManager.dart';
-import 'Utils.dart';
 
 /// Method that shows an alert dialog in order to delete the record history.
 ///
@@ -93,4 +93,58 @@ Future<void> showAboutDialogCustom(BuildContext context) async {
     applicationName: packageInfo.appName.replaceAll("_", " "),
     applicationLegalese: 'MIT License',
   );
+}
+
+// SETTINGS WIDGETS
+
+showResetSettingsDialog(BuildContext context) {
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alertResetSettingsDialog(context);
+    },
+  );
+}
+
+Widget alertResetSettingsDialog(BuildContext context) {
+  // set up the buttons
+  Widget cancelButton = ElevatedButton(
+    style: ButtonStyle(
+      backgroundColor: MaterialStateProperty.all(
+        Colors.blueAccent,
+      ),
+    ),
+    child: const LocaleText("tr_cancel"),
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
+  Widget continueButton = ElevatedButton(
+    style: ButtonStyle(
+      backgroundColor: MaterialStateProperty.all(
+        const Color.fromARGB(255, 175, 69, 69),
+      ),
+    ),
+    child: const LocaleText("tr_continue"),
+    onPressed: () {
+      InfoManager.get.resetSettingsConfiguration();
+      // Navigate to the home page.
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (contextCallback) => const SettingsPage(),
+        ),
+      );
+    },
+  );
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: const LocaleText("tr_reset_settings_popup"),
+    content: const LocaleText("tr_reset_settings_popup_text"),
+    actions: [
+      cancelButton,
+      continueButton,
+    ],
+  );
+  return alert;
 }

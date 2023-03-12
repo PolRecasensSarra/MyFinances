@@ -75,5 +75,9 @@
     "tr_help_text02" : "Para eliminar una entrada es necesario mantener pulsada una de las entradas de la página de inicio. Al cabo de un segundo aparecerá una ventana emergente para poder eliminar la entrada. La acción de eliminar no se puede deshacer.\n\nPara eliminar todas las entradas es necesario ir al menú lateral donde se encuentra la opción. Esta acción no puede deshacerse.",
 
     "tr_select_currency" : "Seleccione una divisa",
-    "tr_currency" : "Moneda"
+    "tr_currency" : "Moneda",
+    "tr_reset_settings" : "Reiniciar configuraciones",
+    "tr_reset" : "Reiniciar",
+    "tr_reset_settings_popup" : "Reinciar configuraciones",
+    "tr_reset_settings_popup_text" : "Estás seguro que quieres reiniciar las configuraciones? Esta acción no puede deshacerse."
 }
