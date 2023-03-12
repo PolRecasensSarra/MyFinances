@@ -199,4 +199,11 @@ class InfoManager {
                 locale: Locales.selectedLocale.languageCode)
             .currencyName;
   }
+
+  // Returns the language stored in the settings data or the selected one if it is empty.
+  String getCurrentLanguage() {
+    return customSettings.languageCode.isNotEmpty
+        ? customSettings.languageCode
+        : Locales.selectedLocale.languageCode;
+  }
 }

@@ -4,7 +4,6 @@ import 'package:finance_app/Utilities/InfoManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/intl.dart';
 import '../Utilities/CustomWidgets.dart';
 import '../Utilities/Utils.dart';
 
@@ -47,7 +46,16 @@ class _FinancePageState extends State<FinancePage> {
   // Async method to parse all settings the info.
   void parseSettingsFromJson() async {
     await InfoManager.get.parseSettingsFromJson();
-    setState(() {});
+    setState(() {
+      updateSettings();
+    });
+  }
+
+  // Update the Settings after parsing them, because there's info that has to be updates in runtime.
+  void updateSettings() {
+    setState(() {
+      LocaleNotifier.of(context)?.change(InfoManager.get.getCurrentLanguage());
+    });
   }
 
   @override
