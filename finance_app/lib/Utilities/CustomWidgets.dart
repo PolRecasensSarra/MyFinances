@@ -1,6 +1,7 @@
 import 'package:finance_app/Pages/SettingsPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_locales/flutter_locales.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'Entry.dart';
 import '../Pages/FinancePage.dart';
@@ -147,4 +148,17 @@ Widget alertResetSettingsDialog(BuildContext context) {
     ],
   );
   return alert;
+}
+
+// Returns a loading widget.
+Widget showLoading() {
+  return Container(
+    color: Colors.grey[850],
+    child: const Center(
+      child: SpinKitFoldingCube(
+        color: Color.fromARGB(255, 164, 93, 230),
+        size: 50,
+      ),
+    ),
+  );
 }
