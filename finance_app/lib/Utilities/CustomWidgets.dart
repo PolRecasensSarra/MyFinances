@@ -91,8 +91,8 @@ Future<void> showAboutDialogCustom(BuildContext context) async {
     context: context,
     applicationIcon: Image.asset("assets/images/logo48.png"),
     applicationVersion: packageInfo.version,
-    applicationName: packageInfo.appName.replaceAll("_", " "),
-    applicationLegalese: 'MIT License',
+    applicationName: "My Finances",
+    applicationLegalese: 'CC BY-NC-SA 4.0',
   );
 }
 
