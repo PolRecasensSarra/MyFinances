@@ -45,13 +45,13 @@ Widget alertHistoryDialog(BuildContext context, bool partialDelete,
       ),
     ),
     child: const LocaleText("tr_continue"),
-    onPressed: () {
+    onPressed: () async {
       if (partialDelete) {
         // Remove the entry.
-        InfoManager.get.deleteEntry(entry);
+        await InfoManager.get.deleteEntry(entry);
       } else {
         // Clear the entire list.
-        InfoManager.get.deleteAllHistory();
+        await InfoManager.get.deleteAllHistory();
       }
       // Navigate to the home page.
       Navigator.of(context).push(

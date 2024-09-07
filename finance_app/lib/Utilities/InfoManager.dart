@@ -48,7 +48,7 @@ class InfoManager {
   }
 
   // Method that writes info to the save data file.
-  void saveBalanceToJson() async {
+  Future<void> saveBalanceToJson() async {
     // Get the data file.
     File dataFile = await getSaveDataFile();
     // Encode the entry list as a json string.
@@ -86,19 +86,19 @@ class InfoManager {
   }
 
   // Method that deletes all the entry history from the save data file.
-  void deleteAllHistory() {
+  Future<void> deleteAllHistory() async {
     // Clear the entire list.
     entryList.clear();
     // Force save the data.
-    saveBalanceToJson();
+    await saveBalanceToJson();
   }
 
   // Method to delete an entry.
-  void deleteEntry(Entry? entry) {
+  Future<void> deleteEntry(Entry? entry) async {
     // Remove the entry.
     entryList.remove(entry);
     // Force save the list again.
-    saveBalanceToJson();
+    await saveBalanceToJson();
   }
 
   // Reset the settings.
@@ -116,6 +116,7 @@ class InfoManager {
   // Method to add a new entry to the list.
   void addNewEntry(Entry entry) {
     entryList.add(entry);
+    saveBalanceToJson();
   }
 
   // Method that returns the curent File object fo the save data file.

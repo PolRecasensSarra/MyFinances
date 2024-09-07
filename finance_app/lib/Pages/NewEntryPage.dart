@@ -444,8 +444,6 @@ class _NewEntryPageState extends State<NewEntryPage> {
       // Add a new income to the list. Change the value sign given the entry type.
       InfoManager.get.addNewEntry(
           Entry(concept, entryValue, entryDate, selectedCategory.index));
-      // Save the data.
-      InfoManager.get.saveBalanceToJson();
 
       // Clear the input field texts.
       nameTextCtrl.clear();

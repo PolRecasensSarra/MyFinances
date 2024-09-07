@@ -200,7 +200,7 @@ Widget customDrawer(BuildContext context) {
 /// Method that given the current `context` and the desired `pageName`, returns the color of the tile, highlighting it if
 /// the current visualized page is the desired page.
 Color getTileColor(BuildContext context, String pageName) {
-  return (pageName != context.widget.toString())
+  return (pageName.compareTo(context.widget.toString()) != 0)
       ? Colors.transparent
       : const Color.fromARGB(255, 90, 90, 90);
 }
