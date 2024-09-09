@@ -18,7 +18,7 @@ Widget customDrawer(BuildContext context) {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: ListTile(
-            tileColor: getTileColor(context, const FinancePage().toString()),
+            tileColor: getTileColor(context, FinancePage),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5.0),
             ),
@@ -28,7 +28,7 @@ Widget customDrawer(BuildContext context) {
             title: const LocaleText("tr_home"),
             onTap: () {
               // Check that the selected page is not the current page.
-              if (const FinancePage().toString() != context.widget.toString()) {
+              if (FinancePage != context.widget.runtimeType) {
                 // Navigate to the home page.
                 Navigator.of(context).push(
                   MaterialPageRoute(
@@ -44,7 +44,7 @@ Widget customDrawer(BuildContext context) {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: ListTile(
-            tileColor: getTileColor(context, const FiltersPage().toString()),
+            tileColor: getTileColor(context, FiltersPage),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5.0),
             ),
@@ -54,7 +54,7 @@ Widget customDrawer(BuildContext context) {
             title: const LocaleText("tr_filters"),
             onTap: () {
               // Check that the selected page is not the current page.
-              if (const FiltersPage().toString() != context.widget.toString()) {
+              if (FiltersPage != context.widget.runtimeType) {
                 // Navigate to the filters page.
                 Navigator.of(context).push(
                   MaterialPageRoute(
@@ -70,7 +70,7 @@ Widget customDrawer(BuildContext context) {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: ListTile(
-            tileColor: getTileColor(context, const CategoriesPage().toString()),
+            tileColor: getTileColor(context, CategoriesPage),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5.0),
             ),
@@ -80,8 +80,7 @@ Widget customDrawer(BuildContext context) {
             title: const LocaleText("tr_categories"),
             onTap: () {
               // Check that the selected page is not the current page.
-              if (const CategoriesPage().toString() !=
-                  context.widget.toString()) {
+              if (CategoriesPage != context.widget.runtimeType) {
                 // Navigate to the categories page.
                 Navigator.of(context).push(
                   MaterialPageRoute(
@@ -102,7 +101,7 @@ Widget customDrawer(BuildContext context) {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: ListTile(
-            tileColor: getTileColor(context, const SettingsPage().toString()),
+            tileColor: getTileColor(context, SettingsPage),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5.0),
             ),
@@ -112,8 +111,7 @@ Widget customDrawer(BuildContext context) {
             title: const LocaleText("tr_settings"),
             onTap: () {
               // Check that the selected page is not the current page.
-              if (const SettingsPage().toString() !=
-                  context.widget.toString()) {
+              if (SettingsPage != context.widget.runtimeType) {
                 // Navigate to the settings page.
                 Navigator.of(context).push(
                   MaterialPageRoute(
@@ -152,7 +150,7 @@ Widget customDrawer(BuildContext context) {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: ListTile(
-            tileColor: getTileColor(context, const HelpPage().toString()),
+            tileColor: getTileColor(context, HelpPage),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5.0),
             ),
@@ -162,7 +160,7 @@ Widget customDrawer(BuildContext context) {
             title: const LocaleText("tr_help"),
             onTap: () {
               // Check that the selected page is not the current page.
-              if (const HelpPage().toString() != context.widget.toString()) {
+              if (HelpPage != context.widget.runtimeType) {
                 // Navigate to the help page.
                 Navigator.of(context).push(
                   MaterialPageRoute(
@@ -199,8 +197,8 @@ Widget customDrawer(BuildContext context) {
 
 /// Method that given the current `context` and the desired `pageName`, returns the color of the tile, highlighting it if
 /// the current visualized page is the desired page.
-Color getTileColor(BuildContext context, String pageName) {
-  return (pageName.compareTo(context.widget.toString()) != 0)
+Color getTileColor(BuildContext context, dynamic type) {
+  return (context.widget.runtimeType != type)
       ? Colors.transparent
       : const Color.fromARGB(255, 90, 90, 90);
 }
