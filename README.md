@@ -1,4 +1,4 @@
-# MyFinances
+# MyFinances [![GitHub license](https://img.shields.io/github/license/PolRecasensSarra/MyFinances)](https://github.com/PolRecasensSarra/MyFinances/blob/master/LICENSE)
 
 ![Overview](https://github.com/user-attachments/assets/db904776-d924-4df3-9a25-39d8daed2be6)
 ![Overview](https://github.com/user-attachments/assets/f9a70ba0-0383-44c2-8ed4-b983e9709cd1)
@@ -30,3 +30,7 @@ Download the latest release on [releases section](https://github.com/PolRecasens
 This project is made by [PolRecasensSarra](https://github.com/PolRecasensSarra). This project started as a hobby.
 
 Repository: [https://github.com/PolRecasensSarra/MyFinances](https://github.com/PolRecasensSarra/MyFinances)
+
+## License
+
+This project is licensed under [BSD 2-Clause License](https://github.com/christt105/Elit3D/blob/master/LICENSE) license.
