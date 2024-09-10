@@ -1,4 +1,4 @@
-# MyFinances [![GitHub license](https://img.shields.io/github/license/PolRecasensSarra/MyFinances)](https://github.com/PolRecasensSarra/MyFinances/blob/master/LICENSE)
+# MyFinances
 
 ![Overview](https://github.com/user-attachments/assets/db904776-d924-4df3-9a25-39d8daed2be6)
 ![Overview](https://github.com/user-attachments/assets/f9a70ba0-0383-44c2-8ed4-b983e9709cd1)
