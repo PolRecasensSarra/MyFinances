@@ -10,11 +10,14 @@ My Finances is an Android application for that. It helps to track all of your in
 
 
 
+## Last Release
 <p>
     <a href="https://github.com/PolRecasensSarra/MyFinances/releases">
         <img alt="Releases" src="https://img.shields.io/github/v/release/PolRecasensSarra/MyFinances?color=blue" />
     </a>
 </p>
+
+## Reports
 
 <p>
     <a href="https://github.com/PolRecasensSarra/MyFinances/issues">
