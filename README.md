@@ -8,6 +8,14 @@ My Finances is an Android application for that. It helps to track all of your in
 - Catalan
 - Spanish
 
+
+
+<p>
+    <a href="https://github.com/PolRecasensSarra/MyFinances/releases">
+        <img alt="Releases" src="https://img.shields.io/github/v/release/PolRecasensSarra/MyFinances?color=blue" />
+    </a>
+</p>
+
 <p>
     <a href="https://github.com/PolRecasensSarra/MyFinances/issues">
       <img alt="Issues" src="https://img.shields.io/github/issues/PolRecasensSarra/MyFinances?color=D94D4C" />
