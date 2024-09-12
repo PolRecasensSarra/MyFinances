@@ -1,7 +1,7 @@
 # MyFinances
 
-![Overview](https://github.com/user-attachments/assets/db904776-d924-4df3-9a25-39d8daed2be6)
-![Overview](https://github.com/user-attachments/assets/f9a70ba0-0383-44c2-8ed4-b983e9709cd1)
+![Overview](https://raw.githubusercontent.com/PolRecasensSarra/MyFinances/main/docs/images/cover.png)
+
 
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/PolRecasensSarra/MyFinances)](https://github.com/PolRecasensSarra/MyFinances/releases/latest)
 ![GitHub Release Date](https://img.shields.io/github/release-date/PolRecasensSarra/MyFinances)
@@ -18,6 +18,35 @@ My Finances is an Android application for that. It helps you to track all of you
 ## Download
 
 Download the latest release on [releases section](https://github.com/PolRecasensSarra/MyFinances/releases/latest) on GitHub.
+
+## How it works
+
+### Balance
+
+The section shows the balance in a period of time defined by the selected filter.
+The selected filter is displayed at the bottom of the balance box.
+The main container shows all entries, both expenses and income, showing colored income is green and expenses are red.
+At the bottom there are 3 buttons. One to see both expenses and income, one to see only income and the last one to see only expenses.
+
+### Filters
+
+The filter page allows you to change the period that is displayed on the balance screen. You must click 'Apply' to save the changes.
+
+### Categories
+
+The categories page breaks down the expenses by different categories, showing each percentage and value.
+
+### How to add a new entry
+
+To add a new entry it is necessary to be on the balance page and click on the button at the bottom right with the '+' symbol.
+In this new section you will find the different fields to fill out. Those that have the '*' are the mandatory fields.
+To add an expense or income it will be necessary to click their button respectively at the bottom.
+
+### How to delete an entry
+
+To delete an entry it is necessary to press and hold one of the entries on the balance page. After a second, a pop-up window will appear to allow you to delete the entry. The delete action cannot be undone.
+To delete all the entries it is necessary to go to the side menu where the option is located. This action cannot be undone.
+
 
 ## Supported Languages
 
