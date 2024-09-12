@@ -1,7 +1,9 @@
-# MyFinances
-
-![Overview](https://raw.githubusercontent.com/PolRecasensSarra/MyFinances/main/docs/images/cover.png)
-
+<div align="center">
+  <a href="https://github.com/PolRecasensSarra/MyFinances">
+    <img src="https://github.com/PolRecasensSarra/MyFinances/blob/main/docs/images/icon_circle.png" alt="Logo" width="80" height="80">
+  </a>
+  <h1>MyFinances</h1>
+</div>
 
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/PolRecasensSarra/MyFinances)](https://github.com/PolRecasensSarra/MyFinances/releases/latest)
 ![GitHub Release Date](https://img.shields.io/github/release-date/PolRecasensSarra/MyFinances)
@@ -20,6 +22,8 @@ My Finances is an Android application for that. It helps you to track all of you
 Download the latest release on [releases section](https://github.com/PolRecasensSarra/MyFinances/releases/latest) on GitHub.
 
 ## How it works
+
+![Overview](https://raw.githubusercontent.com/PolRecasensSarra/MyFinances/main/docs/images/cover.png)
 
 ### Balance
 
