@@ -19,7 +19,7 @@ My Finances is an Android application for that. It helps you to track all of you
 
 ## Download
 
-Download the latest release on [releases section](https://github.com/PolRecasensSarra/MyFinances/releases/latest) on GitHub.
+Download the latest release on itch.io [polhostrex.itch.io/my-finances](https://polhostrex.itch.io/my-finances) naming your own price (icluding 0€) or on [releases section](https://github.com/PolRecasensSarra/MyFinances/releases/latest) on GitHub.
 
 ## How it works
 
