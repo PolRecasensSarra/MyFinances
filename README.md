@@ -1,6 +1,6 @@
 <div align="center">
   <a href="https://github.com/PolRecasensSarra/MyFinances">
-    <img src="https://github.com/PolRecasensSarra/MyFinances/blob/main/docs/images/icon_circle.png" alt="Logo" width="80" height="80">
+    <img src="https://github.com/PolRecasensSarra/MyFinances/blob/main/docs/images/icon_rounded.png" alt="Logo" width="80" height="80">
   </a>
   <h1>MyFinances</h1>
 </div>
