@@ -121,18 +121,14 @@ class InfoManager {
 
   // Method that returns the curent File object fo the save data file.
   Future<File> getSaveDataFile() async {
-    Directory? directory = Platform.isAndroid
-        ? await getExternalStorageDirectory()
-        : await getApplicationDocumentsDirectory();
-    return File("${directory!.path}/savedata.save");
+    Directory? directory = await getApplicationSupportDirectory();
+    return File("${directory.path}/savedata.save");
   }
 
   // Method that returns the curent File object fo the settings data file.
   Future<File> getSettingsDataFile() async {
-    Directory? directory = Platform.isAndroid
-        ? await getExternalStorageDirectory()
-        : await getApplicationDocumentsDirectory();
-    return File("${directory!.path}/settingsdata.save");
+    Directory? directory = await getApplicationSupportDirectory();
+    return File("${directory.path}/settingsdata.save");
   }
 
   // Method that updates the entry list depending on all the filters.
