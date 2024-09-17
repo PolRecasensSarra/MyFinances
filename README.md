@@ -66,4 +66,4 @@ Repository: [https://github.com/PolRecasensSarra/MyFinances](https://github.com/
 
 ## License
 
-This project is licensed under [BSD 2-Clause License](https://github.com/christt105/Elit3D/blob/master/LICENSE) license.
+This project is licensed under [Creative Commons Attribution-NonCommercial 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/deed.en).
