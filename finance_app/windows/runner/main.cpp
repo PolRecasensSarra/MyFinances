@@ -26,10 +26,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
 
   FlutterWindow window(project);
   Win32Window::Point origin(10, 10);
-  Win32Window::Size size(1280, 720);
+  Win32Window::Size size(432, 936);
   if (!window.CreateAndShow(L"finance_app", origin, size)) {
     return EXIT_FAILURE;
   }
+
+  // Aquí es donde ajustamos los estilos de la ventana para deshabilitar el resize.
+  HWND hwnd = window.GetHandle();  // Obtener el manejador (handle) de la ventana.
+  LONG style = GetWindowLong(hwnd, GWL_STYLE);
+  style &= ~WS_SIZEBOX;  // Eliminar el estilo WS_SIZEBOX (o WS_THICKFRAME).
+  SetWindowLong(hwnd, GWL_STYLE, style);
+
   window.SetQuitOnClose(true);
 
   ::MSG msg;
